@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent, computed } from 'vue'
+import { defineComponent, defineAsyncComponent } from 'vue'
 import { useCatalog } from 'src/composables/useCatalog'
 import links from 'src/router/links'
 
@@ -57,7 +57,7 @@ export default defineComponent({
     EssentialLink: defineAsyncComponent(() => import('components/EssentialLink.vue'))
   },
 
-  setup ( props ) {
+  setup ( ) {
     const catalog = useCatalog()
     const {sideMenuOpen , toogleLeftDrawer} = catalog
 

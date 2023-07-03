@@ -47,11 +47,11 @@
 
 <script>
 import { defineComponent, defineAsyncComponent, computed } from 'vue'
-import { useCatalog } from 'src/composables/useCatalog'
-import links from 'src/router/links'
+import { useCatalog } from '../composables/useCatalog'
+import links from '../router/links'
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: 'CatalogLayout',
 
   components: {
     EssentialLink: defineAsyncComponent(() => import('components/EssentialLink.vue'))
@@ -59,12 +59,13 @@ export default defineComponent({
 
   setup ( props ) {
     const catalog = useCatalog()
-    const {sideMenuOpen , toogleLeftDrawer} = catalog
+    const { sideMenuOpen , toogleLeftDrawer} = catalog
 
     return {
       links,   
       sideMenuOpen, 
-      toogleLeftDrawer,    
+      toogleLeftDrawer,
+     
      
     }
   }

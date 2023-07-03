@@ -32,7 +32,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { useCatalog } from "src/composables/useCatalog";
+import { useCatalog } from "../composables/useCatalog";
 export default defineComponent({
   name: "TypographyPage",
   setup () {
