@@ -86,24 +86,8 @@ export default defineComponent({
   object-position: center;
 }
 
-/* .card-size {
-  height: 100%;
-  width: 100%;
-  max-width: 300px;
-  max-height: 300px;
-  min-width: 300px;
-  min-height: 300px;
-  margin: 0 auto;
-  padding: 0;
-  border-radius: 0;
-  box-shadow: 0 0 17px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  background-color: #fff;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-} */
+.q-item-section-img > div > img:hover {
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
+}
 </style>

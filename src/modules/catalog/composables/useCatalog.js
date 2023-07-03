@@ -43,15 +43,7 @@ export const useCatalog = () => {
     });
   };
 
-  const immediateSearch = async (query) => {
-    console.log('immediate, query', query)
-    // Llama a la función de búsqueda en el store
-    const results = await store.dispatch("catalogModule/searchAssembly", query);
-    // Llama a la acción que actualiza el estado de Vuex con los resultados
-    await store.dispatch("catalogModule/setSearchResults", results);
-  };
-
-
+  
   return {
     getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
@@ -64,7 +56,6 @@ export const useCatalog = () => {
     }),
   
     // METHODS
-    immediateSearch,
     debouncedSearch,
     loadAssemblies,
     getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
