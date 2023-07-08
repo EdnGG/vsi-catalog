@@ -51,10 +51,11 @@ export default defineComponent({
     const assemblyName = ref("");
     const router = useRouter();
 
-    const { loadAssemblies, getAssemblies, getAssemblyByName } = useCatalog();
+    const { loadAssemblies, getAssemblies, getAssemblyByName, loadAssembliesVsi } = useCatalog();
 
     onMounted(() => {
-      loadAssemblies();
+      // loadAssemblies();
+      loadAssembliesVsi()
     });
 
     const filteredAssemblies = computed(() =>
@@ -62,6 +63,7 @@ export default defineComponent({
     );
 
     return {
+      // loadAssembliesVsi,
       assemblyName,
       getAssemblyByName,
       loadAssemblies,

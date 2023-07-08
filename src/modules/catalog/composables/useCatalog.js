@@ -10,6 +10,20 @@ export const useCatalog = () => {
     store.dispatch("catalogModule/loadAssemblies");
   };
 
+  const loadAssembliesVsi = () => {
+    store.dispatch("catalogModule/loadAssembliesVsi");
+  };
+
+  const addAssemblyVsi = async (assembly) => {
+    const resp = await store.dispatch("catalogModule/addAssemblyVsi", assembly);
+    return resp;
+  };
+
+
+  const addAssemblyWaterWorks = async (assembly) => {
+    const resp = await store.dispatch("catalogModule/addAssemblyWaterWorks", assembly);
+    return resp;
+  };
 
   // ===================
 
@@ -33,15 +47,15 @@ export const useCatalog = () => {
 
   // ===================
 
-  const debouncedSearch = (query) => {
-    return new Promise(resolve => {
-      setTimeout(async () => {
-        const results = await store.dispatch("catalogModule/searchAssembly", query);
-        store.dispatch("catalogModule/setSearchResults", results);
-        resolve();
-      }, 300);
-    });
-  };
+  // const debouncedSearch = (query) => {
+  //   return new Promise(resolve => {
+  //     setTimeout(async () => {
+  //       const results = await store.dispatch("catalogModule/searchAssembly", query);
+  //       store.dispatch("catalogModule/setSearchResults", results);
+  //       resolve();
+  //     }, 300);
+  //   });
+  // };
 
   
   return {
@@ -56,7 +70,10 @@ export const useCatalog = () => {
     }),
   
     // METHODS
-    debouncedSearch,
+    // debouncedSearch,
+    addAssemblyWaterWorks,
+    addAssemblyVsi,
+    loadAssembliesVsi,
     loadAssemblies,
     getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
     toogleLeftDrawer: () => store.commit("catalogModule/toggleSideMenu"),
