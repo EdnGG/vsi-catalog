@@ -52,6 +52,9 @@ export default {
       props: (route) => {
         return {
           id: route.params.id,
+          assemblie: route.params.assemblie,
+          // name: route.params.name,
+          // description: route.params.description,
         };
       },
     },

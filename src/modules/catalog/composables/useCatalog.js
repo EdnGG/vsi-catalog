@@ -4,8 +4,6 @@ import { useStore } from "vuex";
 export const useCatalog = () => {
   const store = useStore();
 
-  // let debounceTimeout = null;
-
   const loadAssemblies = () => {
     store.dispatch("catalogModule/loadAssemblies");
   };
@@ -25,40 +23,17 @@ export const useCatalog = () => {
     return resp;
   };
 
-  // ===================
+  const getAssemblyById = async (id) => {
+    console.log("Fetching assembly with ID:", id);
 
-  // const debouncedSearch = (query) => {
-  //   console.log('debounce, query', query)
-  //   // Cancela el timeout anterior si el usuario sigue escribiendo
-  //   // if (debounceTimeout) {
-  //   //   clearTimeout(debounceTimeout);
-  //   // }
-  //   // Inicia un nuevo timeout
-  //   debounceTimeout = setTimeout(async () => {
-  //     // Llama a la función de búsqueda en el store
-  //     const results = await store.dispatch("catalogModule/searchAssembly", query);
-  //     console.log('results', results)
-  //     // Llama a la acción que actualiza el estado de Vuex con los resultados
-  //   await store.dispatch("catalogModule/setSearchResults", results);
-    
-  
-  // }, 300); // Espera 300ms después de que el usuario haya dejado de escribir
-  // };
+    const assembly = await store.getters["catalogModule/getAssemblyById"](id);
+    console.log("Assembly fetched:", assembly);
+    return assembly;
 
-  // ===================
-
-  // const debouncedSearch = (query) => {
-  //   return new Promise(resolve => {
-  //     setTimeout(async () => {
-  //       const results = await store.dispatch("catalogModule/searchAssembly", query);
-  //       store.dispatch("catalogModule/setSearchResults", results);
-  //       resolve();
-  //     }, 300);
-  //   });
-  // };
-
+  };
   
   return {
+    getAssemblyById,
     getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
       get() {
@@ -70,7 +45,6 @@ export const useCatalog = () => {
     }),
   
     // METHODS
-    // debouncedSearch,
     addAssemblyWaterWorks,
     addAssemblyVsi,
     loadAssembliesVsi,

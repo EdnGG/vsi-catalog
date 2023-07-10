@@ -14,6 +14,8 @@ export function toggleSideMenu ( state ) {
 
 export const setAssembliesVsi = (state, assemblies) => {
     state.assemblies = assemblies
+    // console.log('action setAssembliesVsi ' ,state.assemblies)
+
 }
 
 export const setAssemblies = (state, assemblies) => {

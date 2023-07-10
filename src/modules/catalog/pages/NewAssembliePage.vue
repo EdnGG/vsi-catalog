@@ -75,27 +75,16 @@
 
         <div class="q-pa-md">
           <div class="row justify-center">
-            <h4>
-              <!-- <span class="text-h5">Add Media</span> -->
-              <button @click="openUploadWidget">Upload Media</button>
-            </h4>
-            <!-- <q-uploader
-              :url="cloudinaryUrl"
-              :files="files"
-              @add="onFilesAdded"
-              @remove="onFileRemoved"
-              label="Upload video/image"
-              bordered
-              multiple
-              auto-upload
-              batch
-              max-total-size="10000000"
-              style="max-width: 2000px"
-            /> -->
+            <q-btn class="button_upload" 
+              label="Upload Media" 
+              type="button" 
+              @click="openUploadWidget"
+              color="primary"
+            />
           </div>
         </div>
 
-        <div class="q-pt-lg">
+        <div class="q-pt-lg text-center">
           <q-btn unelevated label="Submit" type="submit" color="primary" />
           <q-btn
             label="Reset"
@@ -107,114 +96,79 @@
         </div>
       </q-form>
     </div>
-    <!-- </div> -->
   </q-page>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
 
-import uploadFiles from "../helpers/uploadFiles";
+// import uploadFiles from "../helpers/uploadFiles";
 import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
   name: "NewAssembliePage",
   setup() {
-    const files = ref([]);
-    const uploadPreset = "catalog-vsi";
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dxzbc2qed/upload?upload_preset=${uploadPreset}`;
+    const assemblyMedia = ref([]);
+    // const uploadPreset = "catalog-vsi";
+    // const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dxzbc2qed/upload?upload_preset=${uploadPreset}`;
 
     const { addAssemblyVsi } = useCatalog();
 
-    const widget = window.cloudinary.createUploadWidget({
-      cloudName: "dxzbc2qed",
-      uploadPreset: "catalog-vsi",
-      sources: ["local", "url", "camera", "image_search"],
-      multiple: true,
-      maxFileSize: 10000000,
-      maxImageFileSize: 10000000,
-      maxVideoFileSize: 10000000,
-      resourceType: "auto",
-      clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
-      maxFiles: 10,
-      showAdvancedOptions: true,
-      cropping: false,
-      showSkipCropButton: false,
-      styles: {
-        palette: {
-          window: "#FFFFFF",
-          windowBorder: "#90A0B3",
-          tabIcon: "#0078FF",
-          menuIcons: "#5A616A",
-          textDark: "#000000",
-          textLight: "#FFFFFF",
-          link: "#0078FF",
-          action: "#FF620C",
-          inactiveTabIcon: "#0E2F5A",
-          error: "#F44235",
-          inProgress: "#0078FF",
-          complete: "#20B832",
-          sourceBg: "#E4EBF1",
-        },
-        fonts: {
-          default: null,
-          "'Poppins', sans-serif": {
-            url: "https://fonts.googleapis.com/css?family=Poppins",
-            active: true,
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "dxzbc2qed",
+        uploadPreset: "catalog-vsi",
+        sources: ["local", "url", "camera", "image_search"],
+        multiple: true,
+        maxFileSize: 10000000,
+        maxImageFileSize: 10000000,
+        maxVideoFileSize: 10000000,
+        maxVideoDuration: 120,
+        resourceType: "auto",
+        clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
+        maxFiles: 10,
+        showAdvancedOptions: true,
+        cropping: false,
+        showSkipCropButton: false,
+        styles: {
+          palette: {
+            window: "#FFFFFF",
+            windowBorder: "#90A0B3",
+            tabIcon: "#0078FF",
+            menuIcons: "#5A616A",
+            textDark: "#000000",
+            textLight: "#FFFFFF",
+            link: "#0078FF",
+            action: "#FF620C",
+            inactiveTabIcon: "#0E2F5A",
+            error: "#F44235",
+            inProgress: "#0078FF",
+            complete: "#20B832",
+            sourceBg: "#E4EBF1",
+          },
+          fonts: {
+            default: null,
+            "'Poppins', sans-serif": {
+              url: "https://fonts.googleapis.com/css?family=Poppins",
+              active: true,
+            },
           },
         },
       },
-    }, (error, results)=> {
-      if (!error && results && results.event === "success") {
-        console.log("Done! Here is the image info: ", results.info);
+      (error, results) => {
+        if (!error && results && results.event === "success") {
+          console.log("Done! Here is the image info: ", results.info);
+          const secureUrl = results.info.secure_url;
+          assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
+
+        }
       }
-    })
+    );
 
     const openUploadWidget = () => {
-      widget.open()
-      // uploadFiles(files, uploadPreset, cloudinaryUrl);
-    };
+      widget.open();
+  };
 
-    // =============================
-
-    // const onFilesAdded = async (addedFiles) => {
-    //   try {
-    //     for (let i = 0; i < addedFiles.files.length; i++) {
-    //       const file = addedFiles.files[i];
-    //       console.log("File name:", file.name);
-    //       console.log("File size:", file.size);
-    //       console.log("File type:", file.type);
-
-    //       const formData = new FormData();
-    //       formData.append("file", file);
-    //       formData.append("upload_preset", uploadPreset);
-
-    //       const response = await axios.post(cloudinaryUrl, formData, {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       });
-
-    //       const mediaUrl = response.data.secure_url;
-    //       console.log("Media URL:", mediaUrl);
-    //       files.value.push(mediaUrl);
-    //     }
-    //   } catch (error) {
-    //     console.error("Failed to upload files:", error);
-    //   }
-    // };
-
-   
-    // const onFileRemoved = (removedFile) => {
-    //   // Remover el archivo del array de files
-    //   console.log("removedFile: ", removedFile);
-    //   const index = files.value.indexOf(removedFile);
-    //   if (index !== -1) {
-    //     files.value.splice(index, 1);
-    //   }
-    // };
-
-    // ===========================
 
     const assembly = ref({
       name: "",
@@ -236,32 +190,16 @@ export default defineComponent({
 
     const onSubmit = async () => {
       console.log("Submitted!", assembly.value);
-      console.log("Files: ", files.value);
-
-      // let media = [];
-      // if (files.value.length > 0) {
-      //   try {
-      //     media = await uploadFiles(files.value);
-      //     assembly.value.media = media;
-      //   } catch (error) {
-      //     console.error("Failed to upload files:", error);
-      //     // Manejo del error
-      //     throw new Error("Failed to upload files");
-      //   }
-      // }
+      assembly.value.media = assemblyMedia.value
 
       await addAssemblyVsi(assembly.value);
+      onReset();
 
-      // files.value = [];
     };
 
     return {
+      assemblyMedia,
       openUploadWidget,
-      cloudinaryUrl,
-      uploadPreset,
-      files,
-      // onFilesAdded,
-      // onFileRemoved,
       assembly,
       onSubmit,
       onReset,
@@ -270,4 +208,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-upload {
+  background-color: #0078ff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+</style>

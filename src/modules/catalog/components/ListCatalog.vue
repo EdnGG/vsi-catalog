@@ -6,7 +6,7 @@
           class="q-item-section-img"
         >
           <div style="width: 60%;">
-            <img :src="image" />
+            <img :src="media[0]" :alt="media[0].name"/>
           </div>
         </q-item-section>
         <q-item-section style="width: 100%;">
@@ -21,10 +21,6 @@
           >
         </q-item-section>
 
-        <!-- <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section> -->
       </q-item>
 
       <q-separator spaced inset />
@@ -38,12 +34,16 @@ export default defineComponent({
   name: "CatalogCard",
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
     name: {
       type: String,
       required: true,
+    },
+    media: {
+      type: Array,
+      default: () => [],
     },
 
     image: {

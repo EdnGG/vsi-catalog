@@ -1,10 +1,5 @@
 <template>
   <q-page class="q-pa-md">
-    <!-- <search-assemblies></search-assemblies> -->
-    <!-- <search-assemblies
-      @update="updateAssemblies"
-      >
-    </search-assemblies> -->
     <div class="container_search row q-pa-md justify-center">
       <div class="col-12 col-md-4 col-sm-6 q-ma-md">
         <q-input
@@ -22,7 +17,7 @@
         v-for="assemblie in filteredAssemblies"
         :key="assemblie.id"
         v-bind="assemblie"
-        @click="getAssembliePage(assemblie.id)"
+        @click="getAssembliePage(assemblie)"
       />
     </div>
   </q-page>
@@ -42,7 +37,6 @@ import { useCatalog } from "../composables/useCatalog";
 export default defineComponent({
   name: "CatalogPage",
   components: {
-    // SearchAssemblies: defineAsyncComponent(() => import('../components/search/SearchAssemblies.vue')),
     ListCatalog: defineAsyncComponent(() =>
       import("../components/ListCatalog.vue")
     ),
@@ -71,8 +65,10 @@ export default defineComponent({
 
       // METHODS
       filteredAssemblies,
-      getAssembliePage: (id) => {
-        router.push({ name: "AssembliePage", params: { id: id } });
+      getAssembliePage: (assemblie) => {
+        console.log(assemblie);
+        console.log(assemblie.id);
+        router.push({ name: "AssembliePage", params: { id: assemblie.id, assemblie: assemblie} } );
       },
     };
   },
