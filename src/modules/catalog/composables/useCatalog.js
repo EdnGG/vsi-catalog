@@ -24,10 +24,10 @@ export const useCatalog = () => {
   };
 
   const getAssemblyById = async (id) => {
-    console.log("Fetching assembly with ID:", id);
+    // console.log("Fetching assembly with ID:", id);
 
     const assembly = await store.getters["catalogModule/getAssemblyById"](id);
-    console.log("Assembly fetched:", assembly);
+    // console.log("Assembly fetched:", assembly);
     return assembly;
 
   };

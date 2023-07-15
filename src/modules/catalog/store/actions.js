@@ -28,7 +28,7 @@ export const loadAssembliesVsi = async ({ commit }) => {
 
       assemblies.push(assembly);
     });
-    console.log("assembblies: ", assemblies);
+    // console.log("assembblies: ", assemblies);
     commit("setAssembliesVsi", assemblies);
   } catch (error) {
     console.error("Error loading assemblies from Firestore:", error);

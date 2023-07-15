@@ -24,6 +24,6 @@ export const getAssemblyByName =
   };
 
 export const getAssemblyById = (state) => (id) => {
-  console.log('getter: ' , state.assemblies)
+  // console.log('getter: ' , state.assemblies)
   return state.assemblies.find( assembly => assembly.id === id);
 };

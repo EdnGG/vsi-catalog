@@ -4,7 +4,7 @@
       class="flex flex-center column q-gutter-md cursor-pointer" 
       @click="goToCatalog">
       <div>
-        <h4 class="text-h4 q-my-md ">VSI CATALOG</h4>
+        <h4 class="text-h4 q-my-md ">VSI ASSEMBLIES</h4>
       </div>
       <div>
         <img
