@@ -1,8 +1,9 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="container_search row q-pa-md justify-center">
-      <div class="col-12 col-md-4 col-sm-6 q-ma-md">
+    <div class="container_search row q-pa-sm justify-center">
+      <div class="col-12 col-md-4 col-sm-6">
         <q-input
+          class="search-input"
           rounded
           outlined
           v-model="assemblyName"
@@ -11,14 +12,19 @@
       </div>
     </div>
 
-    <h1 class="text-h4">Catalog</h1>
     <div class="list-catalog-container row justify-center">
-      <ListCatalog
+      <div class="col-12 justify-center items-center text-center">
+        <h1 class="text-h4 text-dark q-py-sm">VSI Assemblies</h1>
+      </div>
+      <div class="col-12 justify-center items-center text-center">
+
+        <ListCatalog
         v-for="assemblie in filteredAssemblies"
         :key="assemblie.id"
         v-bind="assemblie"
         @click="getAssembliePage(assemblie)"
-      />
+        />
+      </div>
     </div>
   </q-page>
 </template>
@@ -45,11 +51,16 @@ export default defineComponent({
     const assemblyName = ref("");
     const router = useRouter();
 
-    const { loadAssemblies, getAssemblies, getAssemblyByName, loadAssembliesVsi } = useCatalog();
+    const {
+      loadAssemblies,
+      getAssemblies,
+      getAssemblyByName,
+      loadAssembliesVsi,
+    } = useCatalog();
 
     onMounted(() => {
       // loadAssemblies();
-      loadAssembliesVsi()
+      loadAssembliesVsi();
     });
 
     const filteredAssemblies = computed(() =>
@@ -68,7 +79,10 @@ export default defineComponent({
       getAssembliePage: (assemblie) => {
         console.log(assemblie);
         console.log(assemblie.id);
-        router.push({ name: "AssembliePage", params: { id: assemblie.id, assemblie: assemblie} } );
+        router.push({
+          name: "AssembliePage",
+          params: { id: assemblie.id, assemblie: assemblie },
+        });
       },
     };
   },
@@ -76,8 +90,27 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.search-input{
+  width: 100%;
+  border-radius: 4px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  padding: 12px;
+  font-size: 20px;
+
+
+}
+.text-dark {
+  color: #444;
+  font-weight: 300;
+}
 .list-catalog-container {
-  width: 100%vw;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  cursor: pointer;
+  width: 60%vw;
   height: 100%vh;
 }
 </style>

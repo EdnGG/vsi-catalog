@@ -1,13 +1,22 @@
 <template>
   <q-page>
-    <h2 class="text-h4">Assemblie Page</h2>
-    <div v-if="assemblie">
-      <p><strong>ID:</strong> {{ id }}</p>
-      <p><strong>Name:</strong> {{ assemblie.name }}</p>
-      <p><strong>Description:</strong> {{ assemblie.description }}</p>
-      <p><strong>Hardware:</strong> {{ assemblie.hardware }}</p>
-      <p><strong>Notes:</strong> {{ assemblie.notes }}</p>
-      <p><strong>Category:</strong> {{ assemblie.category }}</p>
+    <div class="flex assembly-title row align-center justify-center text-center">
+      
+      <h2 class="text-h4">ASSEMBLY</h2>
+    </div>
+    <div v-if="assemblie" class="flex row">
+      <!--  -->
+      <div class="assembly-container__description">
+
+        <h5>Name: {{ assemblie.name }}</h5>
+        <h5>Description: {{ assemblie.description }}</h5>
+        <h5>Hardware: {{ assemblie.hardware }}</h5>
+        <h5>Notes: {{ assemblie.notes }}</h5>
+        <h5>Category: {{ assemblie.category }}</h5>
+      </div>
+
+
+      <!--  -->
       <div>
         <p><strong>Media:</strong></p>
         <ul class="media-list">
@@ -22,7 +31,11 @@
             >
               <img :src="mediaItem" alt="Media item" class="media-item" />
             </div>
-            <div v-else-if="mediaItem.endsWith('.mp4')">
+            <div
+              v-else-if="
+                mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')
+              "
+            >
               <video controls class="media-item">
                 <source :src="mediaItem" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -70,7 +83,27 @@ export default defineComponent({
 });
 </script>
 
+
 <style scoped>
+
+.assembly-title{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+.assembly-container__description{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 1rem;
+  padding: 1rem;
+}
 .media-list {
   list-style-type: none;
   padding: 0;

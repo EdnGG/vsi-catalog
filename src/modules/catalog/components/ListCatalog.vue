@@ -1,26 +1,26 @@
 <template>
-  <div style="max-width: 100%; max-height: 800px">
-    <q-list style="height: 250px; max-width: 100vw">
+  <div clas="main-container">
+    <q-list 
+    class="container-qlist"
+    >
       <q-item>
-        <q-item-section 
-          class="q-item-section-img"
-        >
-          <div style="width: 60%;">
-            <img :src="media[0]" :alt="media[0].name"/>
+        <q-item-section class="q-item-section-img">
+          <div class="container-img">
+            <img :src="media[0]" :alt="media[0].name" />
           </div>
         </q-item-section>
-        <q-item-section style="width: 100%;">
-          <q-item-label 
-            style="font-weight: bolder;
-            font-size: 1.6em;
-            line-height: 1.2em;
-            margin-bottom: 1em;"
-          >{{name}}</q-item-label>
-          <q-item-label caption lines="2"
-            >{{ description }}</q-item-label
+        <q-item-section class="container-description">
+          <q-item-label
+            style="
+              font-weight: bolder;
+              font-size: 1.6em;
+              line-height: 1.2em;
+              margin-bottom: 1em;
+            "
+            >{{ name }}</q-item-label
           >
+          <q-item-label caption lines="2">{{ description }}</q-item-label>
         </q-item-section>
-
       </q-item>
 
       <q-separator spaced inset />
@@ -56,18 +56,29 @@ export default defineComponent({
     hardware: Object,
   },
   setup() {
-    return {
-      
-    };
+    return {};
   },
 });
 </script>
 
 <style scoped>
+.main-container {
+  max-width: 100%;
+  max-height: 800px;
+}
+
+.container-qlist{
+  height: 250px; 
+  max-width: 80vw;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+
+}
 .q-item-section-img {
   justify-content: center;
   align-items: center;
-  width: 40px;
+  width: 40%;
   height: 160px;
   overflow: hidden;
   margin-right: 10px;
@@ -75,10 +86,40 @@ export default defineComponent({
   /* border: 1px solid red; */
   background-size: cover;
 }
-.q-item-section-img > div {
-  width: 100%;
+.container-img {
+  width: 50%;
   height: 100%;
+  margin-left: 200px;
 }
+.container-description {
+  width: 50%;
+  height: 100%;
+  margin-right: 200px;
+}
+
+@media screen and (max-width: 600px) {
+  .container-qlist{
+  height: 250px; 
+  max-width: 100vw
+}
+  .q-item-section-img {
+    width: 100%;
+    height: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  .container-img {
+    width: 100%;
+    height: 100%;
+    margin-left: 0px;
+  }
+  .container-description {
+    width: 100%;
+    height: 100%;
+    margin-right: 0px;
+  }
+}
+
 .q-item-section-img > div > img {
   width: 100%;
   height: 100%;

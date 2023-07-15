@@ -1,10 +1,8 @@
 <template>
-  <q-page class="q-ma-md">
-    <div class="row q-ma-md justify-center items-center">
-      <div class="justify-center text-center items-center q-ma-md col-12">
-        <span class="justify-center items-center text-h3 q-pa-md"
-          >New Assembly</span
-        >
+  <q-page class="q-ma-sm">
+    <div class="row  justify-center items-center">
+      <div class="justify-center text-center items-center col-12">
+        <h2 class="text-h4 text-dark q-py-sm">Add New Assembly</h2>
       </div>
     </div>
     <q-separator></q-separator>
@@ -75,9 +73,10 @@
 
         <div class="q-pa-md">
           <div class="row justify-center">
-            <q-btn class="button_upload" 
-              label="Upload Media" 
-              type="button" 
+            <q-btn
+              class="button_upload"
+              label="Upload Media"
+              type="button"
               @click="openUploadWidget"
               color="primary"
             />
@@ -101,18 +100,33 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { useQuasar } from "quasar";
 
-// import uploadFiles from "../helpers/uploadFiles";
 import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
   name: "NewAssembliePage",
   setup() {
     const assemblyMedia = ref([]);
-    // const uploadPreset = "catalog-vsi";
-    // const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dxzbc2qed/upload?upload_preset=${uploadPreset}`;
-
+    const $q = useQuasar();
     const { addAssemblyVsi } = useCatalog();
+
+    const alert = () => {
+      $q.dialog({
+        title: "Media Uploaded Successfully",
+        ok: "OK",
+        color: "primary",
+      })
+        .onOk(() => {
+          console.log("OK");
+        })
+        .onCancel(() => {
+          console.log("Cancel");
+        })
+        .onDismiss(() => {
+          console.log("Dismiss");
+        });
+    };
 
     const widget = window.cloudinary.createUploadWidget(
       {
@@ -120,9 +134,9 @@ export default defineComponent({
         uploadPreset: "catalog-vsi",
         sources: ["local", "url", "camera", "image_search"],
         multiple: true,
-        maxFileSize: 10000000,
-        maxImageFileSize: 10000000,
-        maxVideoFileSize: 10000000,
+        maxFileSize: 10000000000,
+        maxImageFileSize: 10000000000,
+        maxVideoFileSize: 10000000000,
         maxVideoDuration: 120,
         resourceType: "auto",
         clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
@@ -157,18 +171,16 @@ export default defineComponent({
       },
       (error, results) => {
         if (!error && results && results.event === "success") {
-          console.log("Done! Here is the image info: ", results.info);
           const secureUrl = results.info.secure_url;
           assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
-
+          alert();
         }
       }
     );
 
     const openUploadWidget = () => {
       widget.open();
-  };
-
+    };
 
     const assembly = ref({
       name: "",
@@ -190,11 +202,9 @@ export default defineComponent({
 
     const onSubmit = async () => {
       console.log("Submitted!", assembly.value);
-      assembly.value.media = assemblyMedia.value
-
+      assembly.value.media = assemblyMedia.value;
       await addAssemblyVsi(assembly.value);
       onReset();
-
     };
 
     return {
@@ -209,6 +219,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.text-dark {
+  color: #444;
+  font-weight: 300;
+}
 .button-upload {
   background-color: #0078ff;
   color: #fff;
