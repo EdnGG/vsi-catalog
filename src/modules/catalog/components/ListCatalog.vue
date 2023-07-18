@@ -51,9 +51,9 @@ export default defineComponent({
       default: "",
     },
     description: String,
-    price: Number,
+    // price: Number,
     category: String,
-    hardware: Object,
+    hardware: String,
   },
   setup() {
     return {};

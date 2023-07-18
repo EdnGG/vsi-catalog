@@ -16,15 +16,28 @@
       <div class="col-12 justify-center items-center text-center">
         <h1 class="text-h4 text-dark q-py-sm">VSI Assemblies</h1>
       </div>
-      <div class="col-12 justify-center items-center text-center">
 
+      <!--  ***************** -->
+
+      <!-- <div v-if="isLoading" class="row justify-center align-center">
+        <div class="col-3  text-center q-mt-md">
+          Please wait...
+          <h3 class="mt-2">
+            <i class="fa fa-spin fa-sync"></i>
+          </h3>
+        </div>
+      </div> -->
+
+      <!-- *****************-->
+      <div class="col-12 justify-center items-center text-center">
         <ListCatalog
-        v-for="assemblie in filteredAssemblies"
-        :key="assemblie.id"
-        v-bind="assemblie"
-        @click="getAssembliePage(assemblie)"
+          v-for="assemblie in filteredAssemblies"
+          :key="assemblie.id"
+          v-bind="assemblie"
+          @click="getAssembliePage(assemblie.id)"
         />
       </div>
+
     </div>
   </q-page>
 </template>
@@ -38,6 +51,7 @@ import {
   computed,
 } from "vue";
 import { useRouter } from "vue-router";
+
 import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
@@ -46,10 +60,13 @@ export default defineComponent({
     ListCatalog: defineAsyncComponent(() =>
       import("../components/ListCatalog.vue")
     ),
+    // LoadingSpinner: defineAsyncComponent(() => import("../components/LoadingSpinner.vue")),
   },
   setup() {
     const assemblyName = ref("");
     const router = useRouter();
+
+    const isLoading = ref(true);
 
     const {
       loadAssemblies,
@@ -58,9 +75,12 @@ export default defineComponent({
       loadAssembliesVsi,
     } = useCatalog();
 
-    onMounted(() => {
-      // loadAssemblies();
-      loadAssembliesVsi();
+    onMounted(async () => {
+      isLoading.value = true;
+      console.log(isLoading.value)
+      await loadAssembliesVsi();
+      isLoading.value = false;
+      console.log(isLoading.value)
     });
 
     const filteredAssemblies = computed(() =>
@@ -68,7 +88,7 @@ export default defineComponent({
     );
 
     return {
-      // loadAssembliesVsi,
+      isLoading,
       assemblyName,
       getAssemblyByName,
       loadAssemblies,
@@ -77,11 +97,11 @@ export default defineComponent({
       // METHODS
       filteredAssemblies,
       getAssembliePage: (assemblie) => {
-        console.log(assemblie);
-        console.log(assemblie.id);
+        // console.log(assemblie);
+        // console.log(assemblie.id);
         router.push({
           name: "AssembliePage",
-          params: { id: assemblie.id, assemblie: assemblie },
+          params: { id: assemblie },
         });
       },
     };
@@ -90,7 +110,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.search-input{
+.search-input {
   width: 100%;
   border-radius: 4px;
   margin-top: 6px;
@@ -98,8 +118,6 @@ export default defineComponent({
   resize: vertical;
   padding: 12px;
   font-size: 20px;
-
-
 }
 .text-dark {
   color: #444;

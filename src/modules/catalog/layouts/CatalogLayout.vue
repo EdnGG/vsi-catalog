@@ -12,10 +12,25 @@
         />
 
         <q-toolbar-title>
-          CATALOG
+          <router-link
+            to="/"
+            class="text-primary"
+          >
+            <q-avatar
+              square
+              size="xl"
+              class="q-mr-sm"
+            >
+              <img
+                src="https://lh6.googleusercontent.com/-abnSC9wsKEs/AAAAAAAAAAI/AAAAAAAAAAA/ESxpoblFfb0/s66-p-k-no-ns-nd/photo.jpg"
+                alt="Quasar Logo"
+              />
+            </q-avatar>
+            <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
+          </router-link>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
     </q-header>
 

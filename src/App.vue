@@ -12,6 +12,11 @@ export default defineComponent({
   name: 'App',
   setup() {
     const { loadAssembliesVsi } = useCatalog();  
+
+    // Cargar los datos de la base de datos
+
+    // loadAssembliesVsi();
+
     onMounted(async () => {
       // Hacer algo después de que se monte el componente, si es necesario
       await loadAssembliesVsi()

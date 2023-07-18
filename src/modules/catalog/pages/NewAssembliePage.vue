@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-ma-sm">
-    <div class="row  justify-center items-center">
+    <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
         <h2 class="text-h4 text-dark q-py-sm">Add New Assembly</h2>
       </div>
@@ -100,6 +100,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
 import { useCatalog } from "../composables/useCatalog";
@@ -107,9 +108,13 @@ import { useCatalog } from "../composables/useCatalog";
 export default defineComponent({
   name: "NewAssembliePage",
   setup() {
+    const router = useRouter();
     const assemblyMedia = ref([]);
     const $q = useQuasar();
     const { addAssemblyVsi } = useCatalog();
+    const totalFiles = ref(0);
+    const uploadedFiles = ref(0);
+    const isAlertShown = ref(false);
 
     const alert = () => {
       $q.dialog({
@@ -130,8 +135,8 @@ export default defineComponent({
 
     const widget = window.cloudinary.createUploadWidget(
       {
-        cloudName: "dxzbc2qed",
-        uploadPreset: "catalog-vsi",
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
         sources: ["local", "url", "camera", "image_search"],
         multiple: true,
         maxFileSize: 10000000000,
@@ -170,16 +175,30 @@ export default defineComponent({
         },
       },
       (error, results) => {
+        // if (!error && results && results.event === "success") {
+        //   const secureUrl = results.info.secure_url;
+        //   assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
+        // }
         if (!error && results && results.event === "success") {
           const secureUrl = results.info.secure_url;
-          assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
-          alert();
+          assemblyMedia.value.push(secureUrl);
+
+          // Si assemblyMedia contiene al menos un archivo y la alerta no se ha mostrado, muestra la alerta.
+          if (!error && results && results.event === "close") {
+            // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
+            if (assemblyMedia.value.length > 0) {
+              alert();
+            }
+          }
         }
       }
     );
 
     const openUploadWidget = () => {
       widget.open();
+      isAlertShown.value = false;
+      // uploadedFiles.value = 0;
+      // totalFiles.value = 0;
     };
 
     const assembly = ref({
@@ -201,9 +220,10 @@ export default defineComponent({
     };
 
     const onSubmit = async () => {
-      console.log("Submitted!", assembly.value);
+      // console.log("Submitted!", assembly.value);
       assembly.value.media = assemblyMedia.value;
       await addAssemblyVsi(assembly.value);
+      router.push({ name: "CatalogPage" });
       onReset();
     };
 
@@ -211,8 +231,10 @@ export default defineComponent({
       assemblyMedia,
       openUploadWidget,
       assembly,
-      onSubmit,
       onReset,
+
+      // METHODS
+      onSubmit,
     };
   },
 });
