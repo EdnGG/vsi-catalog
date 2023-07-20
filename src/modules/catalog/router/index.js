@@ -43,6 +43,14 @@ export default {
         ),
     },
     {
+      path: "waterworks-assembly",
+      name: "AddWaterWorksAssemblyPage",
+      component: () =>
+        import(
+          /* webpackChunkName: "catalog-forms-page" */ "src/modules/catalog/pages/WaterWorksAssembly.vue"
+        ),
+    },
+    {
       path: ":id",
       name: "AssembliePage",
       component: () =>

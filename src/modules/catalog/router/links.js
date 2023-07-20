@@ -17,12 +17,12 @@ const links = [
   //     icon: 'las la-ellipsis-v',
   //     link: 'https://github.com/quasarframework'
   //   },
-  // {
-  //   title: "Add Waterworks-Assemblie",
-  //   caption: "Add New Assemblie",
-  //   icon: "las la-cogs",
-  //   link: "NewAssembliePage",
-  // },
+  {
+    title: "Add Waterworks-Assemblie",
+    caption: "Add New Assemblie",
+    icon: "las la-cogs",
+    link: "AddWaterWorksAssemblyPage",
+  },
   {
     title: "Add VSI-Assemblie",
     caption: "Add New Assemblie",
