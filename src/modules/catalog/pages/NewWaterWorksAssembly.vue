@@ -7,7 +7,7 @@
       </div>
       <q-separator></q-separator>
 
-     <FormData :assembly="assembly" />
+     <FormData :assembly="assembly" /> 
      <!-- <FormData /> -->
     </q-page>
   </template>
@@ -22,7 +22,7 @@
   import { useCatalog } from "../composables/useCatalog";
   
   export default defineComponent({
-    name: "NewAssembliePage",
+    name: "NewWaterWorksAssembly",
     components: {
         FormData: defineAsyncComponent( () => import("../components/FormData.vue") )
     },

@@ -2,7 +2,7 @@
   <q-page class="q-ma-sm">
     <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
-        <h2 class="text-h4 text-dark q-py-sm">Add New Assembly</h2>
+        <h2 class="text-h4 text-dark q-py-sm">Add VSI Assembly</h2>
       </div>
     </div>
     <q-separator></q-separator>

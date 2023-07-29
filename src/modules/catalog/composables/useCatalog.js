@@ -4,12 +4,16 @@ import { useStore } from "vuex";
 export const useCatalog = () => {
   const store = useStore();
 
-  const loadAssemblies = () => {
-    store.dispatch("catalogModule/loadAssemblies");
-  };
+  // const loadAssemblies = () => {
+  //   store.dispatch("catalogModule/loadAssemblies");
+  // };
 
   const loadAssembliesVsi = () => {
     store.dispatch("catalogModule/loadAssembliesVsi");
+  };
+
+  const loadAssembliesWworks = () => {
+    store.dispatch("catalogModule/loadAssembliesWworks");
   };
 
   const addAssemblyVsi = async (assembly) => {
@@ -24,12 +28,8 @@ export const useCatalog = () => {
   };
 
   const getAssemblyById = async (id) => {
-    // console.log("Fetching assembly with ID:", id);
-
     const assembly = await store.getters["catalogModule/getAssemblyById"](id);
-    // console.log("Assembly fetched:", assembly);
     return assembly;
-
   };
   
   return {
@@ -45,10 +45,11 @@ export const useCatalog = () => {
     }),
   
     // METHODS
+    // loadAssemblies,
     addAssemblyWaterWorks,
     addAssemblyVsi,
     loadAssembliesVsi,
-    loadAssemblies,
+    loadAssembliesWworks,
     getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
     toogleLeftDrawer: () => store.commit("catalogModule/toggleSideMenu"),
   };

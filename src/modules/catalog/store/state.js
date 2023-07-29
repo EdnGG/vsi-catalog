@@ -4,7 +4,7 @@ export default function () {
     isSideMenuOpen: true,
     assemblies: [],
     assembliesVsi: [],
-    assembliesWaterWorks: [],
+    assembliesWaterWorks: [], 
 
   }
 }
