@@ -6,7 +6,7 @@
           class="search-input"
           rounded
           outlined
-          v-model="assemblyName"
+          v-model="assemblyName" 
           label="Search for Assemblie"
         />
       </div>

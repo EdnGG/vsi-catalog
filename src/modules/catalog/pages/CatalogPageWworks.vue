@@ -14,7 +14,7 @@
   
       <div class="list-catalog-container row justify-center">
         <div class="col-12 justify-center items-center text-center">
-          <h1 class="text-h4 text-dark q-py-sm">VSI Assemblies</h1>
+          <h1 class="text-h4 text-dark q-py-sm">Water Works Assemblies</h1>
         </div>
   
         <!--  ***************** -->
@@ -34,7 +34,7 @@
             v-for="assemblie in filteredAssemblies"
             :key="assemblie.id"
             v-bind="assemblie"
-            @click="getAssembliePage(assemblie.id)"
+            @click="getAssembliePage(assemblie.id)" 
           />
         </div>
   
@@ -71,7 +71,7 @@
       const {
         loadAssemblies,
         getAssemblies,
-        getAssemblyByName,
+        getWworksAssemblyByName,
         loadAssembliesWworks,
       } = useCatalog();
   
@@ -84,13 +84,13 @@
       });
   
       const filteredAssemblies = computed(() =>
-        getAssemblyByName(assemblyName.value)
+        getWworksAssemblyByName(assemblyName.value)
       );
   
       return {
         isLoading,
         assemblyName,
-        getAssemblyByName,
+        getWworksAssemblyByName,
         loadAssemblies,
         getAssemblies,
   
@@ -100,7 +100,7 @@
           // console.log(assemblie);
           // console.log(assemblie.id);
           router.push({
-            name: "AssembliePage",
+            name: "WworksAssembliePage", 
             params: { id: assemblie },
           });
         },

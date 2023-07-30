@@ -168,24 +168,24 @@ export default defineComponent({
     const slide = ref(1);
     const autoplay = ref(false);
     const assemblie = ref(null);
-    const { getAssemblyById, loadAssembliesVsi,  } = useCatalog();
+    const {  getWworksAssemblyById,  loadAssembliesWworks } = useCatalog();
 
-    // const loadWworksAssemblies = async () => {
-    //   await loadAssembliesWworks();
-    //   return (assemblie.value = await getWworksAssemblyById(props.id));
-    // };
-
-    const loadAssemblies = async () => {
-      await loadAssembliesVsi();
-      return (assemblie.value = await getAssemblyById(props.id));
+    const loadWworksAssemblies = async () => {
+      await loadAssembliesWworks();
+      return (assemblie.value = await getWworksAssemblyById(props.id));
     };
 
-    loadAssemblies();
-    // loadWworksAssemblies()
+    // const loadAssemblies = async () => {
+    //   await loadAssembliesVsi();
+    //   return (assemblie.value = await getAssemblyById(props.id));
+    // };
+
+    // loadAssemblies();
+    loadWworksAssemblies()
 
     onMounted(async () => {
-      await loadAssemblies();
-      // await loadWworksAssemblies()
+      // await loadAssemblies();
+      await loadWworksAssemblies()
     });
 
     return {
@@ -195,7 +195,7 @@ export default defineComponent({
 
       // METHODS
       goBack: () => {
-        router.push({ name: "CatalogPage" });
+        router.push({ name: "CatalogPageWworks" });
       },
     };
   },

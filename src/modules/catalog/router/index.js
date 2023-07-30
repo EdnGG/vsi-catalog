@@ -65,6 +65,20 @@ export default {
       },
     },
     {
+      path: ":id",
+      name: "WworksAssembliePage",
+      component: () =>
+        import(
+          /* webpackChunkName: "Wworks-assembly-description-page" */ "src/modules/catalog/pages/WworksAssembliePage.vue"
+        ),
+      props: (route) => {
+        return {
+          id: route.params.id,
+          assemblie: route.params.assemblie,
+        };
+      },
+    },
+    {
       path: "catalog-page",
       name: "CatalogPage",
       component: () =>

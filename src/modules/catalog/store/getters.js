@@ -15,15 +15,26 @@ export const getAssemblyByName =
     if (assemblyName.length === 0) {
       return state.assemblies;
     }
-    // if (!assemblyName) {
-    //     return state.assemblies;
-    // }
     return state.assemblies.filter((assembly) =>
+      assembly.name.toLowerCase().includes(assemblyName.toLowerCase())
+    );
+  };
+  // getWworksAssemblyByName
+  export const getWworksAssemblyByName =
+  (state) =>
+  (assemblyName = "") => {
+    if (assemblyName.length === 0) {
+      return state.assembliesWaterWorks;
+    }
+    return state.assembliesWaterWorks.filter((assembly) =>
       assembly.name.toLowerCase().includes(assemblyName.toLowerCase())
     );
   };
 
 export const getAssemblyById = (state) => (id) => {
-  // console.log('getter: ' , state.assemblies)
   return state.assemblies.find( assembly => assembly.id === id);
+};
+
+export const getWworksAssemblyById = (state) => (id) => {
+  return state.assembliesWaterWorks.find( assembly => assembly.id === id);
 };

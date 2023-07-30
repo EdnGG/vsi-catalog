@@ -17,7 +17,7 @@ export const addAssemblyVsi = async ({ commit }, assembly) => {
 };
 
 export const addAssemblyWaterWorks = async ({ commit }, assembly) => {
-  await db.collection("waterworks").add(assembly);
+  await addDoc(collection(db, "waterworks"), assembly);
   commit("addAssemblyWaterWorks", assembly);
 };
 

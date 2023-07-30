@@ -7,7 +7,6 @@
     </div>
     <q-separator></q-separator>
     <div class="row justify-center">
-      <!-- <div class=""> -->
       <q-form
         @submit="onSubmit"
         @reset="onReset"

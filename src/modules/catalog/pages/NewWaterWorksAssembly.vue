@@ -7,19 +7,15 @@
       </div>
       <q-separator></q-separator>
 
-     <FormData :assembly="assembly" /> 
-     <!-- <FormData /> -->
+      <FormData :isVSI="false" />
+      <!-- <FormData :assembly="assembly" />  -->
+
     </q-page>
   </template>
   
   <script>
-  import { defineComponent, defineAsyncComponent,ref } from "vue";
-  import { useRouter } from "vue-router";
-  import { useQuasar } from "quasar";
-
-//   import {} from "../components/Form.vue";
+  import { defineComponent, defineAsyncComponent } from "vue";
   
-  import { useCatalog } from "../composables/useCatalog";
   
   export default defineComponent({
     name: "NewWaterWorksAssembly",
@@ -27,131 +23,10 @@
         FormData: defineAsyncComponent( () => import("../components/FormData.vue") )
     },
     setup() {
-      const router = useRouter();
-      const assemblyMedia = ref([]);
-      const $q = useQuasar();
-      const { addAssemblyVsi } = useCatalog();
-      const totalFiles = ref(0);
-      const uploadedFiles = ref(0);
-      const isAlertShown = ref(false);
-  
-      const alert = () => {
-        $q.dialog({
-          title: "Media Uploaded Successfully",
-          ok: "OK",
-          color: "primary",
-        })
-          .onOk(() => {
-            console.log("OK");
-          })
-          .onCancel(() => {
-            console.log("Cancel");
-          })
-          .onDismiss(() => {
-            console.log("Dismiss");
-          });
-      };
-  
-      const widget = window.cloudinary.createUploadWidget(
-        {
-          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
-          sources: ["local", "url", "camera", "image_search"],
-          multiple: true,
-          maxFileSize: 10000000000,
-          maxImageFileSize: 10000000000,
-          maxVideoFileSize: 10000000000,
-          maxVideoDuration: 120,
-          resourceType: "auto",
-          clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
-          maxFiles: 10,
-          showAdvancedOptions: true,
-          cropping: false,
-          showSkipCropButton: false,
-          styles: {
-            palette: {
-              window: "#FFFFFF",
-              windowBorder: "#90A0B3",
-              tabIcon: "#0078FF",
-              menuIcons: "#5A616A",
-              textDark: "#000000",
-              textLight: "#FFFFFF",
-              link: "#0078FF",
-              action: "#FF620C",
-              inactiveTabIcon: "#0E2F5A",
-              error: "#F44235",
-              inProgress: "#0078FF",
-              complete: "#20B832",
-              sourceBg: "#E4EBF1",
-            },
-            fonts: {
-              default: null,
-              "'Poppins', sans-serif": {
-                url: "https://fonts.googleapis.com/css?family=Poppins",
-                active: true,
-              },
-            },
-          },
-        },
-        (error, results) => {
-          // if (!error && results && results.event === "success") {
-          //   const secureUrl = results.info.secure_url;
-          //   assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
-          // }
-          if (!error && results && results.event === "success") {
-            const secureUrl = results.info.secure_url;
-            assemblyMedia.value.push(secureUrl);
-  
-            // Si assemblyMedia contiene al menos un archivo y la alerta no se ha mostrado, muestra la alerta.
-            if (!error && results && results.event === "close") {
-              // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
-              if (assemblyMedia.value.length > 0) {
-                alert();
-              }
-            }
-          }
-        }
-      );
-  
-      const openUploadWidget = () => {
-        widget.open();
-        isAlertShown.value = false;
-      };
-  
-      const assembly = ref({
-        name: "",
-        description: "",
-        category: "",
-        hardware: "",
-        notes: "",
-        media: [],
-      });
-      const onReset = () => {
-        assembly.value = {
-          name: "",
-          description: "",
-          category: "",
-          hardware: "",
-          notes: "",
-        };
-      };
-  
-      const onSubmit = async () => {
-        // console.log("Submitted!", assembly.value);
-        assembly.value.media = assemblyMedia.value;
-        await addAssemblyVsi(assembly.value);
-        router.push({ name: "CatalogPage" });
-        onReset();
-      };
-  
+    
       return {
-        assemblyMedia,
-        openUploadWidget,
-        assembly,
-        onReset,
   
         // METHODS
-        onSubmit,
       };
     },
   });

@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-ma-sm">
     <div class="row justify-center">
-      <!-- <div class=""> -->
       <q-form
         @submit="onSubmit"
         @reset="onReset"
@@ -9,8 +8,8 @@
       >
         <q-input
           filled
-          
-          label="Assembly name"
+          v-model="assembly.name"
+          label="Assembly name" 
           type="text"
           lazy-rules
           :rules="[
@@ -21,7 +20,7 @@
         <q-input
           filled
           autogrow
-          
+          v-model="assembly.description"
           label="Description"
           type="text"
           lazy-rules
@@ -32,7 +31,7 @@
 
         <q-input
           filled
-          
+          v-model="assembly.category"
           label="Category"
           type="text"
           lazy-rules
@@ -44,7 +43,7 @@
         <q-input
           filled
           autogrow
-          
+          v-model="assembly.hardware"
           label="Add Hardware"
           type="text"
           lazy-rules
@@ -56,7 +55,7 @@
         <q-input
           filled
           autogrow
-          
+          v-model="assembly.notes"
           label="Add Notes"
           type="text"
           lazy-rules
@@ -102,26 +101,30 @@ import { useCatalog } from "../composables/useCatalog";
 export default defineComponent({
   name: "NewAssembliePage",
   props: {
-    assembly: {
-        type: Object,
-        default: () => ({
-            name: "",
-            description: "",
-            category: "",
-            hardware: "",
-            notes: "",
-            media: [],
-        }),
+    isVSI: {
+      type: Boolean,
+      default: false
     }
+    // assembly: {
+    //     type: Object,
+    //     default: () => ({
+    //         name: "",
+    //         description: "",
+    //         category: "",
+    //         hardware: "",
+    //         notes: "",
+    //         media: [],
+    //     }),
+    // }
   },
 
   setup() {
     const router = useRouter();
-    const assemblyMedia = ref([]);
     const $q = useQuasar();
-    const { addAssemblyVsi } = useCatalog();
-    const totalFiles = ref(0);
-    const uploadedFiles = ref(0);
+    const { addAssemblyWaterWorks } = useCatalog();
+    
+    const assemblyMedia = ref([]);
+    const isVSI = ref(false);
     const isAlertShown = ref(false);
 
     const alert = () => {
@@ -205,18 +208,18 @@ export default defineComponent({
     const openUploadWidget = () => {
       widget.open();
       isAlertShown.value = false;
-      // uploadedFiles.value = 0;
-      // totalFiles.value = 0;
+      
     };
 
-    // const assembly = ref({
-    //   name: "",
-    //   description: "",
-    //   category: "",
-    //   hardware: "",
-    //   notes: "",
-    //   media: [],
-    // });
+    const assembly = ref({
+      name: "",
+      description: "",
+      category: "",
+      hardware: "",
+      notes: "",
+      media: [],
+    });
+
     const onReset = () => {
       assembly.value = {
         name: "",
@@ -228,17 +231,19 @@ export default defineComponent({
     };
 
     const onSubmit = async () => {
-      // console.log("Submitted!", assembly.value);
       assembly.value.media = assemblyMedia.value;
-      await addAssemblyVsi(assembly.value);
-      router.push({ name: "CatalogPage" });
+      await addAssemblyWaterWorks(assembly.value);
+      // if(isVSI.value){
+      //   router.push({ name: "CatalogPage" });
+      // }
+      router.push({ name: "CatalogPageWworks" });
       onReset();
     };
 
     return {
       assemblyMedia,
       openUploadWidget,
-    //   assembly,
+      assembly,
       onReset,
 
       // METHODS

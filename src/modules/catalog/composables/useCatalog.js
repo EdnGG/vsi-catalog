@@ -5,7 +5,7 @@ export const useCatalog = () => {
   const store = useStore();
 
   // const loadAssemblies = () => {
-  //   store.dispatch("catalogModule/loadAssemblies");
+  //   store.dispatch("catalogModule/loadAssemblies");  
   // };
 
   const loadAssembliesVsi = () => {
@@ -27,6 +27,13 @@ export const useCatalog = () => {
     return resp;
   };
 
+  // getWworksAssemblyById
+
+  const getWworksAssemblyById = async (id) => {
+    const assembly = await store.getters["catalogModule/getWworksAssemblyById"](id);
+    return assembly;
+  };
+
   const getAssemblyById = async (id) => {
     const assembly = await store.getters["catalogModule/getAssemblyById"](id);
     return assembly;
@@ -34,6 +41,7 @@ export const useCatalog = () => {
   
   return {
     getAssemblyById,
+    getWworksAssemblyById,
     getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
       get() {
@@ -50,8 +58,11 @@ export const useCatalog = () => {
     addAssemblyVsi,
     loadAssembliesVsi,
     loadAssembliesWworks,
-    getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
     toogleLeftDrawer: () => store.commit("catalogModule/toggleSideMenu"),
+
+    // GETTERS
+    getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
+    getWworksAssemblyByName: (query) => store.getters["catalogModule/getWworksAssemblyByName"](query), // No computed
   };
 };
 
