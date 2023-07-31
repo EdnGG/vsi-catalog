@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <div v-if="assemblie" class="main-container flex row">
+    <div v-if="assemblie" class="responsive-main-container flex row">
       <!-- descriptions -->
-      <div class="assembly-container__description">
+      <div class="assembly-container__description col-12">
         <div class="assembly-card">
           <h3>{{ assemblie.name }}</h3>
           <p class="assembly-category">{{ assemblie.category }}</p>
@@ -24,9 +24,9 @@
       </div>
       <!-- Ends descriptions -->
 
+      <!-- Caroussel -->
       <div class="container-media col-12 q-pa-md">
         <!-- <span>Media:</span> -->
-        <!-- Caroussel -->
         <div class="carousel-container">
           <q-carousel
             animated
@@ -252,6 +252,7 @@ export default defineComponent({
 }
 .container-media {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1.5rem;
@@ -276,7 +277,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 3rem;
+  /* padding: 3rem; */
 }
 
 .assembly-card {
@@ -329,7 +330,7 @@ export default defineComponent({
 
 /* Media Query */
 @media (max-width: 1024px) {
-  .main-container {
+  .responsive-main-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
