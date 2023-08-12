@@ -1,41 +1,18 @@
 <template>
   <q-page>
     <div v-if="assemblie" class="responsive-main-container flex row">
-      <!-- descriptions -->
-      <div class="assembly-container__description col-12">
-        <div class="assembly-card">
-          <h3>{{ assemblie.name }}</h3>
-          <p class="assembly-category">{{ assemblie.category }}</p>
-          <div class="assembly-info-block">
-            <div class="assembly-info">
-              <strong>Description:</strong>
-              <p>{{ assemblie.description }}</p>
-            </div>
-            <div class="assembly-info">
-              <strong>Hardware:</strong>
-              <p>{{ assemblie.hardware }}</p>
-            </div>
-            <div class="assembly-info">
-              <strong>Notes:</strong>
-              <p>{{ assemblie.notes }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Ends descriptions -->
-
       <!-- Caroussel -->
-      <div class="container-media col-12 q-pa-md">
-        <!-- <span>Media:</span> -->
+      <div class="container-media col-6 q-pa-md">
         <div class="carousel-container">
           <q-carousel
             animated
+            vertical-swipe="standard"
             v-model="slide"
             infinite
             :autoplay="autoplay"
             ref="carousel"
-            transition-prev="slide-right"
-            transition-next="slide-left"
+            transition-prev="slide-down"
+            transition-next="slide-up"
             @mouseenter="autoplay = false"
             @mouseleave="autoplay = true"
           >
@@ -60,12 +37,12 @@
                 />
               </div>
               <div
-                class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                class="q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-else-if="
                   mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')
                 "
               >
-                <video controls :src="mediaItem" autoplay>
+                <video controls :src="mediaItem" autoplay style="width: 600px; height: 400px;">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -74,10 +51,9 @@
               </div>
             </q-carousel-slide>
 
-            <!--  Controls  -->
             <template v-slot:control>
               <q-carousel-control
-                position="top-right"
+                position="top-left"
                 :offset="[18, 18]"
                 class="container-controls__autoplay text-white rounded-borders"
                 style="padding: 4px 8px"
@@ -102,7 +78,7 @@
                   dense
                   color="orange"
                   text-color="black"
-                  icon="arrow_left"
+                  icon="arrow_upward"
                   @click="$refs.carousel.previous()"
                 />
                 <q-btn
@@ -111,16 +87,78 @@
                   dense
                   color="orange"
                   text-color="black"
-                  icon="arrow_right"
+                  icon="arrow_downward"
                   @click="$refs.carousel.next()"
                 />
               </q-carousel-control>
             </template>
-            <!--  End Controls  -->
           </q-carousel>
         </div>
-        <!-- End Caroussel -->
       </div>
+      <!-- End Caroussel -->
+
+      <!-- <div class="container-media col-2 q-pa-md">
+      <div
+        v-for="(mediaItem, index) in assemblie.media"
+        :key="index"
+        :media="mediaItem"
+      >
+        <div
+          class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+          v-if="
+            mediaItem.endsWith('.jpg') ||
+            mediaItem.endsWith('.jpeg') ||
+            mediaItem.endsWith('.png')
+          "
+        >
+          <img
+            :src="mediaItem"
+            alt="Media item"
+            class="responsive-image__img"
+          />
+        </div>
+        <div
+          class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+          v-else-if="mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')"
+        >
+          <video controls :src="mediaItem">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div v-else>
+          {{ mediaItem }}
+        </div>
+      </div>
+    </div> -->
+
+    <!--  -->
+    <!-- <div class="middle-container col-5"><img class="single-img" :src="assemblie.media[0]" alt="content"></div> -->
+    <!--  -->
+
+      <!-- descriptions -->
+      <div class="assembly-container__description col-6">
+        <div class="assembly-card">
+          <h3>{{ assemblie.name }}</h3>
+          <p class="assembly-category">{{ assemblie.category }}</p>
+          <div class="assembly-info-block">
+            <div class="assembly-info">
+              <strong>Description:</strong>
+              <p>{{ assemblie.description }}</p>
+            </div>
+            <div class="assembly-info">
+              <strong>Hardware:</strong>
+              <p>{{ assemblie.hardware }}</p>
+            </div>
+            <div class="assembly-info">
+              <strong>Notes:</strong>
+              <p>{{ assemblie.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End descriptions -->
+
+      <!-- Button Back -->
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
@@ -132,7 +170,7 @@
         </q-btn>
       </div>
     </div>
-
+    <!-- Loading -->
     <div v-else class="row justify-center align-center">
       <div class="col-3 alert-info text-center mt-5">
         Please wait...
@@ -141,7 +179,6 @@
         </h3>
       </div>
     </div>
-
   </q-page>
 </template>
 
@@ -168,24 +205,17 @@ export default defineComponent({
     const slide = ref(1);
     const autoplay = ref(false);
     const assemblie = ref(null);
-    const {  getWworksAssemblyById,  loadAssembliesWworks } = useCatalog();
+    const { getWworksAssemblyById, loadAssembliesWworks } = useCatalog();
 
     const loadWworksAssemblies = async () => {
       await loadAssembliesWworks();
       return (assemblie.value = await getWworksAssemblyById(props.id));
     };
 
-    // const loadAssemblies = async () => {
-    //   await loadAssembliesVsi();
-    //   return (assemblie.value = await getAssemblyById(props.id));
-    // };
-
-    // loadAssemblies();
-    loadWworksAssemblies()
+    loadWworksAssemblies();
 
     onMounted(async () => {
-      // await loadAssemblies();
-      await loadWworksAssemblies()
+      await loadWworksAssemblies();
     });
 
     return {
@@ -219,7 +249,7 @@ export default defineComponent({
   font-size: 2rem;
 }
 .carousel-container {
-  height: 70vh;
+  height: 80vh;
   position: relative; /* Asegura que los controles se posicionan respecto a este contenedor */
 }
 .carousel-container .q-carousel {
@@ -241,6 +271,24 @@ export default defineComponent({
   align-items: center;
 }
 
+.single-img{
+  /* max-width: 50%;
+  max-height: 50%; */
+  object-fit: scale-down;
+  
+  /* border-radius: 10px; */
+  /* box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease-in-out;
+}
+
+.middle-container{
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 10vw;
+  height: 20vh;
+}
 .container-controls__arrows {
   left: 0%;
   width: 100%;
@@ -268,16 +316,28 @@ export default defineComponent({
   height: 50%;
 }
 .responsive-video {
-  max-width: 30vw;
-  height: 50%;
+  position: relative;
+    padding-top: 56.25%; /* Aspect ratio 16:9 */
+    overflow: hidden;
 }
+
+.responsive-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 .assembly-container__description {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* padding: 3rem; */
+  max-height: 100%; /* Limit the maximum height of the container */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+  height: 100%; /* Limit the maximum height of the container */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
 }
 
 .assembly-card {
@@ -317,7 +377,6 @@ export default defineComponent({
   border-radius: 5px;
   background-color: #f5f5f5;
 }
-
 .assembly-info p {
   margin: 0;
   margin-bottom: 10px;
@@ -403,8 +462,8 @@ export default defineComponent({
     max-height: 100vh;
   }
   .responsive-video {
-    max-width: 70vw;
-    max-height: 60%;
+    max-width: 20vw;
+    max-height: 20%;
   }
 }
 

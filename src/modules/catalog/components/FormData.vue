@@ -4,7 +4,7 @@
       <q-form
         @submit="onSubmit"
         @reset="onReset"
-        class="q-gutter-xs col-xs-12 col-sm-12 col-md-6 q-pt-xl"
+        class="q-gutter-xs col-xs-12 col-sm-12 col-md-6 q-pt-xl q-pb-xl"
       >
         <q-input
           filled
@@ -13,7 +13,7 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type something ',
+            (val) => (val && val.length > 0) || 'Please introduce the assembly name',
           ]"
         />
 
@@ -25,7 +25,7 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type something ',
+            (val) => (val && val.length > 0) || 'Please introduce a description',
           ]"
         />
 
@@ -36,7 +36,7 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type something ',
+            (val) => (val && val.length > 0) || 'Please introduce a category',
           ]"
         />
 
@@ -48,7 +48,7 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type something ',
+            (val) => (val && val.length > 0) || 'Please introduce a hardware type',
           ]"
         />
 
@@ -60,7 +60,19 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type something ',
+            (val) => (val && val.length > 0) || 'Please add some notes',
+          ]"
+        />
+
+        <q-input
+          filled
+          autogrow
+          v-model="assembly.technical_name"
+          label="Technical Name"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) => (val && val.length > 0) || 'Please type technical name',
           ]"
         />
 
@@ -150,9 +162,9 @@ export default defineComponent({
         uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
         sources: ["local", "url", "camera", "image_search"],
         multiple: true,
-        maxFileSize: 10000000000,
-        maxImageFileSize: 10000000000,
-        maxVideoFileSize: 10000000000,
+        maxFileSize: 100000000000,
+        maxImageFileSize: 100000000000,
+        maxVideoFileSize: 100000000000,
         maxVideoDuration: 120,
         resourceType: "auto",
         clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
@@ -216,6 +228,7 @@ export default defineComponent({
       description: "",
       category: "",
       hardware: "",
+      technical_name: "",
       notes: "",
       media: [],
     });
