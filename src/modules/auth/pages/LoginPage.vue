@@ -32,17 +32,6 @@
           ]"
         />
 
-        <!-- <div class="q-pa-md">
-          <div class="row justify-center">
-            <q-btn
-              class="button_upload"
-              label="Upload Media"
-              type="button"
-              color="primary"
-            />
-          </div>
-        </div> -->
-
         <div class="q-pt-lg text-center">
           <q-btn unelevated label="Submit" type="submit" color="primary" />
           <q-btn
@@ -54,6 +43,17 @@
           />
         </div>
       </q-form>
+    </div>
+    <div class="q-pa-md">
+      <div class="row justify-center">
+        <q-btn
+          @click="backToHome"
+          class="button_upload"
+          label="BACK TO HOME"
+          type="button"
+          color="primary"
+        />
+      </div>
     </div>
   </q-page>
 </template>
@@ -69,7 +69,7 @@ export default defineComponent({
   name: "LoginPage",
   setup() {
     const router = useRouter();
-    const { login } = useAuth();
+    const { login, backToHome } = useAuth();
     // const $q = useQuasar();
     // const { login } = useAuth();
     // const isAlertShown = ref(false);
@@ -92,8 +92,8 @@ export default defineComponent({
     // };
 
     const user = ref({
-      email: "gresseden@gmail.com",
-      password: "123123123",
+      email: "",
+      password: "",
     });
     const onReset = () => {
       user.value = {
@@ -115,6 +115,7 @@ export default defineComponent({
       // METHODS
       onReset,
       onSubmit,
+      backToHome,
     };
   },
 });

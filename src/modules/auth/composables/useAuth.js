@@ -1,8 +1,10 @@
+import { useRouter } from 'vue-router'
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 export const useAuth = () => {
   const store = useStore();
+  const router = useRouter()
 
   const login = async ({email, password}) => {
     try {
@@ -46,6 +48,7 @@ export const useAuth = () => {
     // METHODS
     login,
     register,
+    backToHome: () => router.push({ name: "IndexPage" }),
     // GETTERS
   };
 };
