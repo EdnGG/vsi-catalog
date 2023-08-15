@@ -19,6 +19,10 @@
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
+            <div class="assembly-info">
+              <strong>Assembled By:</strong>
+              <p>{{ assemblie.technical_name || 'EDEN G' }}</p>
+            </div>
           </div>
         </div>
       </div>

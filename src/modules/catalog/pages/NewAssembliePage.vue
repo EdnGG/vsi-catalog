@@ -123,8 +123,8 @@ export default defineComponent({
     const assemblyMedia = ref([]);
     const $q = useQuasar();
     const { addAssemblyVsi } = useCatalog();
-    const totalFiles = ref(0);
-    const uploadedFiles = ref(0);
+    // const totalFiles = ref(0);
+    // const uploadedFiles = ref(0);
     const isAlertShown = ref(false);
 
     const alert = () => {
@@ -156,7 +156,7 @@ export default defineComponent({
         maxVideoDuration: 120,
         resourceType: "auto",
         clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
-        maxFiles: 10,
+        maxFiles: 40,
         showAdvancedOptions: true,
         cropping: false,
         showSkipCropButton: false,
@@ -208,8 +208,6 @@ export default defineComponent({
     const openUploadWidget = () => {
       widget.open();
       isAlertShown.value = false;
-      // uploadedFiles.value = 0;
-      // totalFiles.value = 0;
     };
 
     const assembly = ref({

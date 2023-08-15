@@ -168,7 +168,7 @@ export default defineComponent({
         maxVideoDuration: 120,
         resourceType: "auto",
         clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
-        maxFiles: 10,
+        maxFiles: 40,
         showAdvancedOptions: true,
         cropping: false,
         showSkipCropButton: false,

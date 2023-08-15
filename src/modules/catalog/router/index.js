@@ -2,14 +2,14 @@ export default {
   name: "catalog",
   component: () => import("../layouts/CatalogLayout.vue"),
   children: [
-    {
-      path: "",
-      name: "IndexPage",
-      component: () =>
-        import(
-          /* webpackChunkName: "catalog-index" */ "src/modules/catalog/pages/IndexPage.vue" 
-        ),
-    },
+    // {
+    //   path: "",
+    //   name: "IndexPage",
+    //   component: () =>
+    //     import(
+    //       /* webpackChunkName: "catalog-index" */ "src/modules/catalog/pages/IndexPage.vue" 
+    //     ),
+    // },
     // {
     //   path: "typography",
     //   name: "TypographyPage",
