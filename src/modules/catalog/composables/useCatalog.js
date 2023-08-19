@@ -8,6 +8,22 @@ export const useCatalog = () => {
   //   store.dispatch("catalogModule/loadAssemblies");  
   // };
 
+  // const loadAssemblyVsiByTechnical = (technical) => {
+  //   store.dispatch("catalogModule/loadAssemblyVsiByTechnical", technical);
+  // }
+
+  // const loadAssemblyWwByTechnical = (technical) => {
+  //   store.dispatch("catalogModule/loadAssemblyWwByTechnical", technical);
+  // }
+
+  // const loadAssembliesVsiByCategory = (category) => {
+  //   store.dispatch("catalogModule/loadAssemblyVsiByCategory", category);
+  // }
+
+  // const loadAssembliesWwByCategory = (category) => {
+  //   store.dispatch("catalogModule/loadAssemblyWwByCategory", category);
+  // }
+
   const loadAssembliesVsi = () => {
     store.dispatch("catalogModule/loadAssembliesVsi");
   };
@@ -42,6 +58,10 @@ export const useCatalog = () => {
   return {
     getAssemblyById,
     getWworksAssemblyById,
+    // loadAssembliesVsiByCategory,
+    // loadAssembliesWwByCategory,
+    // loadAssemblyVsiByTechnical,
+    // loadAssemblyWwByTechnical,
     getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
       get() {
@@ -62,6 +82,7 @@ export const useCatalog = () => {
 
     // GETTERS
     getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
+    getAssembliesVsiByCategory: (query) => store.getters["catalogModule/getAssemblyVsiByCategory"](query), // No computed
     getWworksAssemblyByName: (query) => store.getters["catalogModule/getWworksAssemblyByName"](query), // No computed
   };
 };

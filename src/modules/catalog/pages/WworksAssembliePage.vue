@@ -3,9 +3,12 @@
     <div v-if="assemblie" class="responsive-main-container flex row">
       <!-- Caroussel -->
       <div class="container-media col-6 q-pa-md">
+
         <div class="carousel-container">
           <q-carousel
+            swipeable
             animated
+            thumbnails
             vertical-swipe="standard"
             v-model="slide"
             infinite

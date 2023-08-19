@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, provide } from 'vue'
+import { defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { auth, db } from './boot/firebase'
 
 import { useCatalog } from "./modules/catalog/composables/useCatalog";
@@ -11,7 +11,16 @@ import { useCatalog } from "./modules/catalog/composables/useCatalog";
 export default defineComponent({
   name: 'App',
   setup() {
+
+    const user = ref(null);
+
     const { loadAssembliesVsi, loadAssembliesWworks } = useCatalog();    
+
+
+    const onAuthStateChanged = (currentUser) => {
+      user.value = currentUser;
+    };
+
 
     // Cargar los datos de la base de datos
 
@@ -20,6 +29,7 @@ export default defineComponent({
     onMounted(async () => {
       // Hacer algo después de que se monte el componente, si es necesario
       try{
+        auth.onAuthStateChanged(onAuthStateChanged);
         await loadAssembliesWworks()
         await loadAssembliesVsi()
 
@@ -28,6 +38,11 @@ export default defineComponent({
       }
     })
 
+    onUnmounted(() => {
+      // Remueve el listener cuando el componente es destruido
+      auth.onAuthStateChanged(() => {});
+    });
+
     // Proporcionar las instancias de autenticación y firestore a través de Provide/Inject
     provide('$auth', auth)
     provide('$db', db)
@@ -35,7 +50,7 @@ export default defineComponent({
     return {
       // Propiedades que se pueden usar en el template
 
-      
+      user
     }
   }
 })

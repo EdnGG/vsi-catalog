@@ -11,7 +11,6 @@ const routes = [
     path: "/catalog",
     ...catalogRouter
   },
- 
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),

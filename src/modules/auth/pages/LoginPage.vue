@@ -53,13 +53,15 @@
           type="button"
           color="primary"
         />
+        <google-sign-in />
+
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineAsyncComponent ,defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 // import { useQuasar } from "quasar";
 
@@ -67,6 +69,11 @@ import { useAuth } from "../composables/useAuth";
 
 export default defineComponent({
   name: "LoginPage",
+  components:{
+    GoogleSignIn: defineAsyncComponent(() =>
+      import("../components/GoogleSignIn.vue")
+    ),
+  },
   setup() {
     const router = useRouter();
     const { login, backToHome } = useAuth();

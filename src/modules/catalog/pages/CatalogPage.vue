@@ -7,7 +7,7 @@
           rounded
           outlined
           v-model="assemblyName" 
-          label="Search for Assemblie"
+          label="Search for Assemblie, Category or Technical Name"
         />
       </div>
     </div>
@@ -21,7 +21,8 @@
 
       <!-- <div v-if="isLoading" class="row justify-center align-center">
         <div class="col-3  text-center q-mt-md">
-          Please wait...
+          Please wait...   technical_name
+`
           <h3 class="mt-2">
             <i class="fa fa-spin fa-sync"></i>
           </h3>
@@ -73,6 +74,7 @@ export default defineComponent({
       getAssemblies,
       getAssemblyByName,
       loadAssembliesVsi,
+      getAssembliesVsiByCategory,
     } = useCatalog();
 
     onMounted(async () => {
@@ -84,7 +86,8 @@ export default defineComponent({
     });
 
     const filteredAssemblies = computed(() =>
-      getAssemblyByName(assemblyName.value)
+      getAssemblyByName(assemblyName.value),
+      // getAssembliesVsiByCategory(assemblie.category)
     );
 
     return {

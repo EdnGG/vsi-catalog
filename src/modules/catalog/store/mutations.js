@@ -12,6 +12,10 @@ export function toggleSideMenu ( state ) {
     state.isSideMenuOpen = !state.isSideMenuOpen
 }
 
+// export const setAssembliesVsiByCategory = (state, category) => {
+//     state.assembliesVsiByCategoty = category
+// }
+
 export const setAssembliesVsi = (state, assemblies) => {
     state.assemblies = assemblies
 }

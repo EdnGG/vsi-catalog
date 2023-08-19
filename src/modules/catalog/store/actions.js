@@ -11,16 +11,6 @@ import { db } from "../../../boot/firebase";
 //   commit("setAssemblies", assemblies);
 // };
 
-export const addAssemblyVsi = async ({ commit }, assembly) => {
-  await addDoc(collection(db, "vsi"), assembly);
-  commit("addAssemblyVsi", assembly);
-};
-
-export const addAssemblyWaterWorks = async ({ commit }, assembly) => {
-  await addDoc(collection(db, "waterworks"), assembly);
-  commit("addAssemblyWaterWorks", assembly);
-};
-
 export const loadAssembliesVsi = async ({ commit }) => {
   try {
     const querySnapshot = await getDocs(collection(db, "vsi"));
@@ -57,6 +47,37 @@ export const loadAssembliesWworks = async ({ commit }) => {
     console.error("Error loading assemblies from Firestore:", error);
     throw new Error(error);
   }
+};
+
+export const loadAssembliesVsiByCategory = async ({commit}, category) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "vsi"));
+    const assemblies = [];
+    querySnapshot.forEach((doc) => {
+      const assembly = {
+        id: doc.id,
+        ...doc.data(),
+      };
+
+      if (assembly.category === category) {
+        assemblies.push(assembly);
+      }
+    });
+    commit("setAssembliesVsiByCategory", assemblies);
+  } catch (error) {
+    console.error("Error loading assemblies from Firestore:", error);
+    throw new Error(error);
+  }
+} 
+
+export const addAssemblyVsi = async ({ commit }, assembly) => {
+  await addDoc(collection(db, "vsi"), assembly);
+  commit("addAssemblyVsi", assembly);
+};
+
+export const addAssemblyWaterWorks = async ({ commit }, assembly) => {
+  await addDoc(collection(db, "waterworks"), assembly);
+  commit("addAssemblyWaterWorks", assembly);
 };
 
 export const setSearchResults = ({ commit }, results) => {
