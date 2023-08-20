@@ -8,8 +8,7 @@
       <q-separator></q-separator>
 
       <FormData :isVSI="false" />
-      <!-- <FormData :assembly="assembly" />  -->
-
+ 
     </q-page>
   </template>
   

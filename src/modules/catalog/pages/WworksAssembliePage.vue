@@ -1,145 +1,69 @@
 <template>
   <q-page>
     <div v-if="assemblie" class="responsive-main-container flex row">
-      <!-- Caroussel -->
-      <div class="container-media col-6 q-pa-md">
-
-        <div class="carousel-container">
-          <q-carousel
-            swipeable
-            animated
-            thumbnails
-            vertical-swipe="standard"
-            v-model="slide"
-            infinite
-            :autoplay="autoplay"
-            ref="carousel"
-            transition-prev="slide-down"
-            transition-next="slide-up"
-            @mouseenter="autoplay = false"
-            @mouseleave="autoplay = true"
+      <div class="container-media col-4 q-pa-md" style="height:1500px; overflow-y: auto;">
+        <div
+          v-for="(mediaItem, index) in assemblie.media"
+          :key="index"
+          @click="selectedMedia = mediaItem; playVideo()"
+          :media="mediaItem"
+        >
+          <div
+            class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+            v-if="
+              mediaItem.endsWith('.jpg') ||
+              mediaItem.endsWith('.jpeg') ||
+              mediaItem.endsWith('.png')
+            "
           >
-            <q-carousel-slide
-              v-for="(mediaItem, index) in assemblie.media"
-              :key="index"
-              :name="index"
-              :media="mediaItem"
-            >
-              <div
-                class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-if="
-                  mediaItem.endsWith('.jpg') ||
-                  mediaItem.endsWith('.jpeg') ||
-                  mediaItem.endsWith('.png')
-                "
-              >
-                <img
-                  :src="mediaItem"
-                  alt="Media item"
-                  class="responsive-image__img"
-                />
-              </div>
-              <div
-                class="q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-else-if="
-                  mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')
-                "
-              >
-                <video controls :src="mediaItem" autoplay style="width: 600px; height: 400px;">
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-              <div v-else>
-                {{ mediaItem }}
-              </div>
-            </q-carousel-slide>
-
-            <template v-slot:control>
-              <q-carousel-control
-                position="top-left"
-                :offset="[18, 18]"
-                class="container-controls__autoplay text-white rounded-borders"
-                style="padding: 4px 8px"
-              >
-                <q-toggle
-                  dense
-                  dark
-                  color="orange"
-                  v-model="autoplay"
-                  label="Auto Play"
-                />
-              </q-carousel-control>
-
-              <q-carousel-control
-                position="bottom-right"
-                :offset="[18, 18]"
-                class="q-gutter-xs container-controls__arrows"
-              >
-                <q-btn
-                  push
-                  round
-                  dense
-                  color="orange"
-                  text-color="black"
-                  icon="arrow_upward"
-                  @click="$refs.carousel.previous()"
-                />
-                <q-btn
-                  push
-                  round
-                  dense
-                  color="orange"
-                  text-color="black"
-                  icon="arrow_downward"
-                  @click="$refs.carousel.next()"
-                />
-              </q-carousel-control>
-            </template>
-          </q-carousel>
+            <img
+              :src="mediaItem"
+              alt="Media item"
+              class="responsive-image__img"
+            />
+          </div>
+          <div
+            class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+            v-else-if="mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')"
+          >
+            <video :src="mediaItem">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div v-else>
+            {{ mediaItem }}
+          </div>
         </div>
       </div>
-      <!-- End Caroussel -->
 
-      <!-- <div class="container-media col-2 q-pa-md">
-      <div
-        v-for="(mediaItem, index) in assemblie.media"
-        :key="index"
-        :media="mediaItem"
-      >
+<!-- Segunda columna  -->
+
+      <div class="middle-container col-4 q-pa-md">
         <div
-          class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
           v-if="
-            mediaItem.endsWith('.jpg') ||
-            mediaItem.endsWith('.jpeg') ||
-            mediaItem.endsWith('.png')
+            selectedMedia.endsWith('.jpg') ||
+            selectedMedia.endsWith('.jpeg') ||
+            selectedMedia.endsWith('.png')
           "
         >
-          <img
-            :src="mediaItem"
-            alt="Media item"
-            class="responsive-image__img"
-          />
+          <img class="single-img" :src="selectedMedia" alt="content" />
         </div>
         <div
-          class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-          v-else-if="mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')"
+          v-else-if="
+            selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.mov')
+          "
         >
-          <video controls :src="mediaItem">
+          <video controls class="single-video" 
+            :src="selectedMedia"
+            ref="videoElement"
+          >
             Your browser does not support the video tag.
           </video>
         </div>
-        <div v-else>
-          {{ mediaItem }}
-        </div>
       </div>
-    </div> -->
-
-    <!--  -->
-    <!-- <div class="middle-container col-5"><img class="single-img" :src="assemblie.media[0]" alt="content"></div> -->
-    <!--  -->
 
       <!-- descriptions -->
-      <div class="assembly-container__description col-6">
+      <div class="assembly-container__description col-4 q-pa-md">
         <div class="assembly-card">
           <h3>{{ assemblie.name }}</h3>
           <p class="assembly-category">{{ assemblie.category }}</p>
@@ -155,6 +79,10 @@
             <div class="assembly-info">
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
+            </div>
+            <div class="assembly-info">
+              <strong>Assembled By:</strong>
+              <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
           </div>
         </div>
@@ -173,6 +101,7 @@
         </q-btn>
       </div>
     </div>
+
     <!-- Loading -->
     <div v-else class="row justify-center align-center">
       <div class="col-3 alert-info text-center mt-5">
@@ -186,7 +115,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
@@ -205,10 +134,27 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const slide = ref(1);
-    const autoplay = ref(false);
-    const assemblie = ref(null);
     const { getWworksAssemblyById, loadAssembliesWworks } = useCatalog();
+    const slide = ref(1);
+
+    const autoplay = ref(false);
+
+    const assemblie = ref(null);
+    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
+    const videoElementRef = ref(null);
+
+
+    const playVideo = async () => {
+      await nextTick();  // nextTick es similar al usado en Vue 2 pero ahora es una función asíncrona.
+
+      // if (videoElementRef.value) {
+      //   videoElementRef.value.play();
+      // }
+      const videoElement = document.querySelector(".middle-container video");
+      if (videoElement) {
+        videoElement.play();
+      }
+    };
 
     const loadWworksAssemblies = async () => {
       await loadAssembliesWworks();
@@ -225,7 +171,9 @@ export default defineComponent({
       assemblie,
       slide,
       autoplay,
-
+      selectedMedia,
+      playVideo,
+      videoElementRef,
       // METHODS
       goBack: () => {
         router.push({ name: "CatalogPageWworks" });
@@ -236,6 +184,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.slider-media {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
 .alert-info {
   height: auto;
   width: auto;
@@ -274,23 +232,28 @@ export default defineComponent({
   align-items: center;
 }
 
-.single-img{
-  /* max-width: 50%;
-  max-height: 50%; */
-  object-fit: scale-down;
-  
-  /* border-radius: 10px; */
-  /* box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); */
-  transition: all 0.3s ease-in-out;
+.single-img {
+  width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
+  max-height: 60vh; /* Ajusta el alto máximo de la imagen */
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 
-.middle-container{
+.single-video {
+  width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
+  max-height: 60vh; /* Ajusta el alto máximo de la imagen */
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+}
+
+.middle-container {
   /* display: flex; */
+  padding-top: 200px;
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 10vw;
-  height: 20vh;
+  width: 100%;
+  height: 100%;
 }
 .container-controls__arrows {
   left: 0%;
@@ -302,35 +265,43 @@ export default defineComponent({
   align-items: center;
 }
 .container-media {
+  /* implementar una barr adesplazadora verticalmente */
+  overflow-y: auto;
+  /* Cambia este valor para modificar el ancho de los controles */
+  width: 50%;
+  /* Cambia este valor para modificar el alto de los controles */
+  height: 50%;
+  /* Permite posicionar los controles respecto a su contenedor */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem;
+  text-align: center;
 }
 .responsive-image__img {
   width: 100%;
-  max-height: 100vh;
-  /* O 'cover', dependiendo de lo que necesites */
-  object-fit: cover;
+  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
+  max-height: 60vh;
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 .responsive-image {
-  max-width: 30vw;
-  height: 50%;
+  max-width: 10vw;
+  max-height: 30%;
 }
 .responsive-video {
+  max-width: 10vw;
   position: relative;
-    padding-top: 56.25%; /* Aspect ratio 16:9 */
-    overflow: hidden;
+  height: auto;
+  /* Aspect ratio 16:9 */
+  /* padding-top: 56.25%; */
+  overflow: hidden;
 }
 
 .responsive-video video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+  width: 100%;
+  max-height: 30vh; /* Ajusta el alto máximo del vídeo */
+  object-fit: cover; /* Ajusta el vídeo dentro del contenedor */
+}
 .assembly-container__description {
   display: flex;
   flex-direction: column;
@@ -338,8 +309,6 @@ export default defineComponent({
   align-items: center;
   text-align: center;
   max-height: 100%; /* Limit the maximum height of the container */
-  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
-  height: 100%; /* Limit the maximum height of the container */
   overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
 }
 
@@ -389,7 +358,14 @@ export default defineComponent({
 .assembly-info p strong {
   color: #666;
 }
-
+/* Establece un tamaño fijo para las columnas */
+.container-media,
+.middle-container,
+.assembly-container__description {
+  flex: 1; /* Esto hace que todas las columnas tengan el mismo tamaño */
+  max-width: 33.333%; /* 100% / 3 = 33.333% */
+  overflow: hidden; /* Esto oculta cualquier contenido que exceda el límite de la columna */
+}
 /* Media Query */
 @media (max-width: 1024px) {
   .responsive-main-container {
@@ -401,6 +377,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
   }
+
   .assembly-container__description {
     padding: 1rem;
     margin-right: 1rem;

@@ -49,26 +49,26 @@ export const loadAssembliesWworks = async ({ commit }) => {
   }
 };
 
-export const loadAssembliesVsiByCategory = async ({commit}, category) => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "vsi"));
-    const assemblies = [];
-    querySnapshot.forEach((doc) => {
-      const assembly = {
-        id: doc.id,
-        ...doc.data(),
-      };
+// export const loadAssembliesVsiByCategory = async ({commit}, category) => {
+//   try {
+//     const querySnapshot = await getDocs(collection(db, "vsi"));
+//     const assemblies = [];
+//     querySnapshot.forEach((doc) => {
+//       const assembly = {
+//         id: doc.id,
+//         ...doc.data(),
+//       };
 
-      if (assembly.category === category) {
-        assemblies.push(assembly);
-      }
-    });
-    commit("setAssembliesVsiByCategory", assemblies);
-  } catch (error) {
-    console.error("Error loading assemblies from Firestore:", error);
-    throw new Error(error);
-  }
-} 
+//       if (assembly.category === category) {
+//         assemblies.push(assembly);
+//       }
+//     });
+//     commit("setAssembliesVsiByCategory", assemblies);
+//   } catch (error) {
+//     console.error("Error loading assemblies from Firestore:", error);
+//     throw new Error(error);
+//   }
+// } 
 
 export const addAssemblyVsi = async ({ commit }, assembly) => {
   await addDoc(collection(db, "vsi"), assembly);

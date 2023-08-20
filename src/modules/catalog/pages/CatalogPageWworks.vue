@@ -11,7 +11,7 @@
           />
         </div>
       </div>
-  
+   
       <div class="list-catalog-container row justify-center">
         <div class="col-12 justify-center items-center text-center">
           <h1 class="text-h4 text-dark q-py-sm">Water Works Assemblies</h1>

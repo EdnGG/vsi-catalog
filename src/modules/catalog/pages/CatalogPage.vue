@@ -74,7 +74,7 @@ export default defineComponent({
       getAssemblies,
       getAssemblyByName,
       loadAssembliesVsi,
-      getAssembliesVsiByCategory,
+      // getAssembliesVsiByCategory,
     } = useCatalog();
 
     onMounted(async () => {

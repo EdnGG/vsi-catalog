@@ -82,8 +82,8 @@ export const useCatalog = () => {
 
     // GETTERS
     getAssemblyByName: (query) => store.getters["catalogModule/getAssemblyByName"](query), // No computed
-    getAssembliesVsiByCategory: (query) => store.getters["catalogModule/getAssemblyVsiByCategory"](query), // No computed
     getWworksAssemblyByName: (query) => store.getters["catalogModule/getWworksAssemblyByName"](query), // No computed
+    getAssembliesVsiByCategory: (query) => store.getters["catalogModule/getAssemblyVsiByCategory"](query), // No computed
   };
 };
 

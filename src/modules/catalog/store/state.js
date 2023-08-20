@@ -5,7 +5,7 @@ export default function () {
     assemblies: [],
     assembliesVsi: [],
     assembliesWaterWorks: [], 
-    assembliesVsiByCategoty: [],
+    // assembliesVsiByCategoty: [],
 
   }
 }
