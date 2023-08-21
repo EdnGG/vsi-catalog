@@ -7,7 +7,7 @@
             rounded
             outlined
             v-model="assemblyName"
-            label="Search for Assemblie"
+            label="Search for Assemblie, Category or Technical Name"
           />
         </div>
       </div>

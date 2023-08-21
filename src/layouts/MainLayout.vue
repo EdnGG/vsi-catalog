@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-         VSI CATALOG'S ASSEMBLIES
+          ASSEMBLY CATALOG
         </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->

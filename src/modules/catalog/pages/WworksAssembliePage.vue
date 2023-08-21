@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div v-if="assemblie" class="responsive-main-container flex row">
-      <div class="container-media col-4 q-pa-md" style="height:1500px; overflow-y: auto;">
+      <div class="container-media col-2 q-pa-md">
         <div
           v-for="(mediaItem, index) in assemblie.media"
           :key="index"
@@ -38,7 +38,7 @@
 
 <!-- Segunda columna  -->
 
-      <div class="middle-container col-4 q-pa-md">
+      <div class="middle-container col-6 q-pa-md">
         <div
           v-if="
             selectedMedia.endsWith('.jpg') ||
@@ -233,22 +233,23 @@ export default defineComponent({
 }
 
 .single-img {
-  width: 100%; /* Utiliza todo el ancho disponible de la columna */
-  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
-  max-height: 60vh; /* Ajusta el alto máximo de la imagen */
+  max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  /* Este cambio mantiene el aspecto original de la imagen */
+  max-height: 100%; 
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 
 .single-video {
-  width: 100%; /* Utiliza todo el ancho disponible de la columna */
-  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
-  max-height: 60vh; /* Ajusta el alto máximo de la imagen */
+  max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  max-height: 90%; /* Este cambio mantiene el aspecto original de la imagen */
+  /* Ajusta el alto máximo de la imagen */
+  /* max-height: 60vh;  */
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 
 .middle-container {
   /* display: flex; */
-  padding-top: 200px;
+  padding-top: 150px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -265,61 +266,67 @@ export default defineComponent({
   align-items: center;
 }
 .container-media {
+  margin-top: 60px;
+  margin-left: 60px;
   /* implementar una barr adesplazadora verticalmente */
   overflow-y: auto;
   /* Cambia este valor para modificar el ancho de los controles */
-  width: 50%;
+  width: 100%;
   /* Cambia este valor para modificar el alto de los controles */
-  height: 50%;
+  height: 100%;
   /* Permite posicionar los controles respecto a su contenedor */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-}
-.responsive-image__img {
-  width: 100%;
-  height: auto; /* Este cambio mantiene el aspecto original de la imagen */
-  max-height: 60vh;
-  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+  text-align: left;
 }
 .responsive-image {
-  max-width: 10vw;
-  max-height: 30%;
+  width: 100%;
+  height: 100%;
+}
+.responsive-image__img {
+  max-width: 40%;
+  max-height: 40%; /* Este cambio mantiene el aspecto original de la imagen */
+  /* max-height: 60vh; */
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 .responsive-video {
-  max-width: 10vw;
-  position: relative;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  /* position: relative; */
   /* Aspect ratio 16:9 */
   /* padding-top: 56.25%; */
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .responsive-video video {
-  width: 100%;
-  max-height: 30vh; /* Ajusta el alto máximo del vídeo */
+  max-width: 40%;
+  max-height: 40%; /* Ajusta el alto máximo del vídeo */
   object-fit: cover; /* Ajusta el vídeo dentro del contenedor */
 }
 .assembly-container__description {
   display: flex;
+  margin-top: 60px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  max-height: 100%; /* Limit the maximum height of the container */
+  width: 100%;
+  height: 100%; /* Limit the maximum height of the container */
   overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
 }
 
 .assembly-card {
   padding: 20px;
+  margin-right: 25px;
+  margin-left: 25px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  width: 50%;
+  max-width: 100%;
 }
 .assembly-card h3 {
   margin: 0;
@@ -330,7 +337,7 @@ export default defineComponent({
   color: #333;
 }
 .assembly-card .assembly-category {
-  margin: 0;
+  /* margin: 0; */
   margin-bottom: 20px;
   font-size: 1rem;
   color: #666;
@@ -358,12 +365,21 @@ export default defineComponent({
 .assembly-info p strong {
   color: #666;
 }
+
 /* Establece un tamaño fijo para las columnas */
-.container-media,
+.container-media {
+  flex: 0 0 20%; /* Esto establece un tamaño fijo del 20% para la columna 1, sin crecer ni encogerse */
+  overflow: hidden;
+}
 .middle-container,
 .assembly-container__description {
-  flex: 1; /* Esto hace que todas las columnas tengan el mismo tamaño */
-  max-width: 33.333%; /* 100% / 3 = 33.333% */
+  /* hacer que la columna 1 sea mas pequena y la columna 2 y 3 tengan el mismo tamano */
+  /* flex: 1 0 0; */
+  flex: 1; 
+  /* Esto hace que todas las columnas tengan el mismo tamaño */
+  /* 100% / 3 = 33.333% */
+  /* max-width: 33.333%;  */
+  max-width: 40%;
   overflow: hidden; /* Esto oculta cualquier contenido que exceda el límite de la columna */
 }
 /* Media Query */
@@ -387,17 +403,19 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     text-align: center;
-    max-width: 100%;
+    width: 100%;
     height: 100%;
   }
   .assembly-card {
+    margin-left: 10px;
+    margin-right:20px;
     padding: 30px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
-    width: 90vw;
+    width: 100vw;
     box-sizing: border-box;
 
     /* max-width: 500px; */
