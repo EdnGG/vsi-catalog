@@ -1,6 +1,93 @@
 <template>
   <q-page>
-    <div v-if="assemblie" class="main-container flex row">
+    <div v-if="assemblie" class="responsive-main-container flex row">
+      <!-- CONTAINER MEDIA -->
+
+      <div class="container-media col-2 q-pa-md">
+        <div
+          v-for="(mediaItem, index) in assemblie.media"
+          :key="index"
+          @click="
+            selectedMedia = mediaItem;
+            playVideo();
+          "
+          :media="mediaItem"
+        >
+          <div
+            class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+            v-if="
+              mediaItem.endsWith('.jpg') ||
+              mediaItem.endsWith('.jpeg') ||
+              mediaItem.endsWith('.png')
+            "
+          >
+            <img
+              :src="mediaItem"
+              alt="Media item"
+              class="responsive-image__img"
+            />
+          </div>
+          <div
+            class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+            v-else-if="mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')"
+          >
+            <video :src="mediaItem">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div v-else>
+            {{ mediaItem }}
+          </div>
+        </div>
+      </div>
+
+      <!--  -->
+
+      <!-- MIDDLE CONTAINER -->
+
+      <div class="middle-container col-6 q-pa-md">
+        <div
+          v-if="
+            selectedMedia.endsWith('.jpg') ||
+            selectedMedia.endsWith('.jpeg') ||
+            selectedMedia.endsWith('.png')
+          "
+        >
+          <inner-image-zoom  
+            class="single-img"
+            :src="selectedMedia"
+            :zoom-scale="0.9"
+            :zoom-speed="0.1"
+            :move-speed="0.1" 
+            :transition-duration="0.3"
+            :min-height="500" 
+            :min-width="500"
+            :zoom-out-scale="3"
+            :drag-scroll="true"
+            :zoom-position="top"
+            
+          >
+          <!-- <img class="single-img" :src="selectedMedia" alt="content" /> -->
+          </inner-image-zoom>
+        </div>
+        <div
+          v-else-if="
+            selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.mov')
+          "
+        >
+          <video
+            controls
+            class="single-video"
+            :src="selectedMedia"
+            ref="videoElement"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      
+      <!--  -->
+
       <!-- descriptions -->
       <div class="assembly-container__description">
         <div class="assembly-card">
@@ -28,103 +115,6 @@
       </div>
       <!-- Ends descriptions -->
 
-      <div class="container-media col-12 q-pa-md">
-        <!-- <span>Media:</span> -->
-        <!-- Caroussel -->
-        <div class="carousel-container">
-          <q-carousel
-            animated
-            v-model="slide"
-            infinite
-            :autoplay="autoplay"
-            ref="carousel"
-            transition-prev="slide-right"
-            transition-next="slide-left"
-            @mouseenter="autoplay = false"
-            @mouseleave="autoplay = true"
-          >
-            <q-carousel-slide
-              v-for="(mediaItem, index) in assemblie.media"
-              :key="index"
-              :name="index"
-              :media="mediaItem"
-            >
-              <div
-                class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-if="
-                  mediaItem.endsWith('.jpg') ||
-                  mediaItem.endsWith('.jpeg') ||
-                  mediaItem.endsWith('.png')
-                "
-              >
-                <img
-                  :src="mediaItem"
-                  alt="Media item"
-                  class="responsive-image__img"
-                />
-              </div>
-              <div
-                class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-else-if="
-                  mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')
-                "
-              >
-                <video controls :src="mediaItem" autoplay>
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-              <div v-else>
-                {{ mediaItem }}
-              </div>
-            </q-carousel-slide>
-
-            <!--  Controls  -->
-            <template v-slot:control>
-              <q-carousel-control
-                position="top-right"
-                :offset="[18, 18]"
-                class="container-controls__autoplay text-white rounded-borders"
-                style="padding: 4px 8px"
-              >
-                <q-toggle
-                  dense
-                  dark
-                  color="orange"
-                  v-model="autoplay"
-                  label="Auto Play"
-                />
-              </q-carousel-control>
-
-              <q-carousel-control
-                position="bottom-right"
-                :offset="[18, 18]"
-                class="q-gutter-xs container-controls__arrows"
-              >
-                <q-btn
-                  push
-                  round
-                  dense
-                  color="orange"
-                  text-color="black"
-                  icon="arrow_left"
-                  @click="$refs.carousel.previous()"
-                />
-                <q-btn
-                  push
-                  round
-                  dense
-                  color="orange"
-                  text-color="black"
-                  icon="arrow_right"
-                  @click="$refs.carousel.next()"
-                />
-              </q-carousel-control>
-            </template>
-            <!--  End Controls  -->
-          </q-carousel>
-        </div>
-        <!-- End Caroussel -->
-      </div>
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
@@ -137,6 +127,7 @@
       </div>
     </div>
 
+    <!-- LOADING -->
     <div v-else class="row justify-center align-center">
       <div class="col-3 alert-info text-center mt-5">
         Please wait...
@@ -150,34 +141,43 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css';
+import InnerImageZoom from 'vue-inner-image-zoom';
+
+import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
   name: "AssembliePage",
+  components: {
+    'inner-image-zoom' : InnerImageZoom,
+  },
   props: {
     id: {
       type: String,
       required: true,
     },
-    // assemblie: {
-    //   type: Object,
-    //   required: true,
-    // },
   },
   setup(props) {
     const router = useRouter();
-    const slide = ref(1);
-    const autoplay = ref(false);
-    const assemblie = ref(null);
     const { getAssemblyById, loadAssembliesVsi,  } = useCatalog();
+    
+    // const slide = ref(1);
+    // const autoplay = ref(false);
+    
+    const assemblie = ref(null);
+    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
+    const videoElementRef = ref(null);
 
-    // const loadWworksAssemblies = async () => {
-    //   await loadAssembliesWworks();
-    //   return (assemblie.value = await getWworksAssemblyById(props.id));
-    // };
+    const playVideo = async () => {
+      await nextTick(); 
+      const videoElement = document.querySelector(".middle-container video");
+      if (videoElement) {
+        videoElement.play();
+      }
+    };
 
     const loadAssemblies = async () => {
       await loadAssembliesVsi();
@@ -185,17 +185,17 @@ export default defineComponent({
     };
 
     loadAssemblies();
-    // loadWworksAssemblies()
 
     onMounted(async () => {
       await loadAssemblies();
-      // await loadWworksAssemblies()
     });
 
     return {
       assemblie,
-      slide,
-      autoplay,
+      selectedMedia,
+      videoElementRef,
+      // slide,
+      // autoplay,
 
       // METHODS
       goBack: () => {
@@ -219,78 +219,90 @@ export default defineComponent({
   border-color: #bce8f1;
 }
 
-.fa-sync {
-  font-size: 2rem;
-}
-.carousel-container {
-  height: 70vh;
-  position: relative; /* Asegura que los controles se posicionan respecto a este contenedor */
-}
-.carousel-container .q-carousel {
-  height: 100%;
-}
-.container-controls__autoplay {
-  /* Cambia este valor para mover los controles hacia arriba o hacia abajo */
-  /* bottom: 0%;  */
-  /* Cambia este valor para mover los controles hacia la izquierda o hacia la derecha */
-  left: 0%;
-  /* Cambia este valor para modificar el ancho de los controles */
-  width: 100%;
-  padding: auto;
-  /* Cambia este valor para modificar el alto de los controles */
-  height: 10%;
-  /* Permite posicionar los controles respecto a su contenedor */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.single-img {
+  overflow: hidden;  
+  width: 100%; 
+  display: inline-block; /* Esto asegura que el overflow hidden funcione correctamente */
+  max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  max-height: 100%;
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 
-.container-controls__arrows {
-  left: 0%;
-  width: 100%;
-  padding: auto;
-  height: 10%;
-  display: flex;
+.single-video {
+  max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
+  max-height: 90%; /* Este cambio mantiene el aspecto original de la imagen */
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+}
+
+.middle-container {
+  padding-top: 150px;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 .container-media {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1.5rem;
-}
-.responsive-image__img {
+  margin-top: 60px;
+  margin-left: 60px;
+  overflow-y: auto;
   width: 100%;
-  max-height: 100vh;
-  /* O 'cover', dependiendo de lo que necesites */
-  object-fit: cover;
-}
-.responsive-image {
-  max-width: 30vw;
-  height: 50%;
-}
-.responsive-video {
-  max-width: 30vw;
-  height: 50%;
-}
-.assembly-container__description {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 3rem;
+  text-align: left;
+}
+.responsive-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Asegúrate de que la imagen no se desborde del contenedor */
+  position: relative; /* Esto es necesario para el siguiente paso */
+}
+.responsive-image__img {
+  max-width: 40%;
+  max-height: 40%; 
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+}
+.responsive-video {
+  transition: transform 0.3s; /* Transición suave al hacer zoom */
+  display: block; /* Remueve espacios no deseados debajo de la imagen */
+
+  width: 100%;
+  height: 100%;
 }
 
+.responsive-image:hover .responsive-image__img {
+  transform: scale(1.5); /* Escala la imagen 1.5 veces su tamaño original */
+}
+
+.responsive-video video {
+  max-width: 40%;
+  max-height: 40%; /* Ajusta el alto máximo del vídeo */
+  object-fit: cover; /* Ajusta el vídeo dentro del contenedor */
+}
+.assembly-container__description {
+  display: flex;
+  margin-top: 60px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%; /* Limit the maximum height of the container */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+}
 .assembly-card {
   padding: 20px;
+  margin-right: 25px;
+  margin-left: 25px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  width: 50%;
+  max-width: 100%;
 }
 .assembly-card h3 {
   margin: 0;
@@ -301,12 +313,11 @@ export default defineComponent({
   color: #333;
 }
 .assembly-card .assembly-category {
-  margin: 0;
+  /* margin: 0; */
   margin-bottom: 20px;
   font-size: 1rem;
   color: #666;
 }
-
 .assembly-info-block {
   display: grid;
   grid-gap: 20px;
@@ -320,7 +331,6 @@ export default defineComponent({
   border-radius: 5px;
   background-color: #f5f5f5;
 }
-
 .assembly-info p {
   margin: 0;
   margin-bottom: 10px;
@@ -331,9 +341,66 @@ export default defineComponent({
   color: #666;
 }
 
+/* Establece un tamaño fijo para las columnas */
+.container-media {
+  flex: 0 0 20%; /* Esto establece un tamaño fijo del 20% para la columna 1, sin crecer ni encogerse */
+  overflow: hidden;
+}
+.middle-container,
+.assembly-container__description {
+  flex: 1;
+  max-width: 40%;
+  overflow: hidden; 
+}
 /* Media Query */
-@media (max-width: 1024px) {
-  .main-container {
+
+
+/* Media Query para Tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .responsive-video{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display:flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .responsive-image{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display:flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .responsive-image__img{
+    max-width: 40vw;
+    max-height: 40vh;
+    overflow: hidden; 
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative; 
+    /* Esto es necesario para el siguiente paso */
+  }
+  .container-media{
+    margin-top: 0px;
+    margin-left: 0px;
+    display:flex;
+    flex-direction: row;
+    /* necesito darle un tamano definido y agregarle un scroll */
+    width: 100%;
+    height: 60%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+  }
+  .middle-container{
+    padding-top: 0px;
+  }
+  .responsive-main-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -342,74 +409,81 @@ export default defineComponent({
     width: 100%;
     height: 100%;
   }
+  .container-media, 
+  .middle-container, 
   .assembly-container__description {
-    padding: 1rem;
-    margin-right: 1rem;
-    margin-left: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    max-width: 100%;
-    height: 100%;
-  }
-  .assembly-card {
-    padding: 30px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-    width: 90vw;
-    box-sizing: border-box;
-
-    /* max-width: 500px; */
-  }
-  .assembly-card .assembly-category {
-    margin: 0;
-    margin-bottom: 20px;
-    /* max-width: 100%; */
-    font-size: 0.7rem;
-    color: #666;
-  }
-  .assembly-card h3 {
-    margin: 0;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #333;
-  }
-  .assembly-info-block {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  .responsive-image__img {
-    width: 100%;
-    max-height: 100vh;
-    height: 100vh;
-    object-fit: cover;
-  }
-  .container-controls__arrows {
-    position: absolute;
-    left: 50%;
-    bottom: 0%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .responsive-image {
-    max-width: 100vw;
-    max-height: 100vh;
-  }
-  .responsive-video {
-    max-width: 70vw;
-    max-height: 60%;
+    flex: 1;
+    max-width: 100%; /* Ocupar todo el ancho en tablet */
+    margin: 0; /* Eliminar cualquier margen que pudieran tener */
   }
 }
+
+/* Media Query para Móviles */
+@media (max-width: 767px) {
+  .responsive-video{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display:flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .responsive-image{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display:flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .responsive-image__img{
+    max-width: 40vw;
+    max-height: 40vh;
+    overflow: hidden; 
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative; 
+    /* Esto es necesario para el siguiente paso */
+  }
+  .container-media{
+    margin-top: 0px;
+    margin-left: 0px;
+    display:flex;
+    flex-direction: row;
+    /* necesito darle un tamano definido y agregarle un scroll */
+    width: 100%;
+    height: 60%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+  }
+  .middle-container{
+    padding-top: 0px;
+  }
+  .responsive-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .container-media, 
+  .middle-container, 
+  .assembly-container__description {
+    flex: 1;
+    max-width: 100%; /* Ocupar todo el ancho en móviles */
+    margin: 0; /* Eliminar cualquier margen que pudieran tener */
+  }
+
+  /* Otras adaptaciones específicas para móviles */
+}
+
+
 
 /* Ends Media Query */
 </style>
