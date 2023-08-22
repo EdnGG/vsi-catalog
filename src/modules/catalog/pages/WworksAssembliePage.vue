@@ -5,7 +5,10 @@
         <div
           v-for="(mediaItem, index) in assemblie.media"
           :key="index"
-          @click="selectedMedia = mediaItem; playVideo()"
+          @click="
+            selectedMedia = mediaItem;
+            playVideo();
+          "
           :media="mediaItem"
         >
           <div
@@ -36,7 +39,7 @@
         </div>
       </div>
 
-<!-- Segunda columna  -->
+      <!-- Segunda columna  -->
 
       <div class="middle-container col-6 q-pa-md">
         <div
@@ -46,14 +49,31 @@
             selectedMedia.endsWith('.png')
           "
         >
-          <img class="single-img" :src="selectedMedia" alt="content" />
+          <inner-image-zoom  
+            class="single-img"
+            :src="selectedMedia"
+            :zoom-scale="0.9"
+            :zoom-speed="0.1"
+            :move-speed="0.1" 
+            :transition-duration="0.3"
+            :min-height="500" 
+            :min-width="500"
+            :zoom-out-scale="3"
+            :drag-scroll="true"
+            :zoom-position="top"
+            
+          >
+          <!-- <img class="single-img" :src="selectedMedia" alt="content" /> -->
+          </inner-image-zoom>
         </div>
         <div
           v-else-if="
             selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.mov')
           "
         >
-          <video controls class="single-video" 
+          <video
+            controls
+            class="single-video"
             :src="selectedMedia"
             ref="videoElement"
           >
@@ -115,6 +135,9 @@
 </template>
 
 <script>
+import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css';
+import InnerImageZoom from 'vue-inner-image-zoom';
+
 import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
@@ -122,15 +145,14 @@ import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
   name: "AssembliePage",
+  components: {
+    'inner-image-zoom' : InnerImageZoom,
+  },
   props: {
     id: {
       type: String,
       required: true,
     },
-    // assemblie: {
-    //   type: Object,
-    //   required: true,
-    // },
   },
   setup(props) {
     const router = useRouter();
@@ -143,13 +165,8 @@ export default defineComponent({
     const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
     const videoElementRef = ref(null);
 
-
     const playVideo = async () => {
-      await nextTick();  // nextTick es similar al usado en Vue 2 pero ahora es una función asíncrona.
-
-      // if (videoElementRef.value) {
-      //   videoElementRef.value.play();
-      // }
+      await nextTick(); 
       const videoElement = document.querySelector(".middle-container video");
       if (videoElement) {
         videoElement.play();
@@ -233,10 +250,24 @@ export default defineComponent({
 }
 
 .single-img {
+  overflow: hidden;  
+  
+  width: 100%; 
+  /* transition: transform 0.3s, filter 0.3s;  */
+
+  display: inline-block; /* Esto asegura que el overflow hidden funcione correctamente */
+/*  */
   max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
   /* Este cambio mantiene el aspecto original de la imagen */
-  max-height: 100%; 
+  max-height: 100%;
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+}
+
+.single-img:hover  {
+  /* Efecto de zoom al pasar el cursor */
+    /* transform: scale(1.5);  */
+    z-index: 1;
+    /* filter: brightness(50%); */
 }
 
 .single-video {
@@ -284,20 +315,28 @@ export default defineComponent({
 .responsive-image {
   width: 100%;
   height: 100%;
+  overflow: hidden; /* Asegúrate de que la imagen no se desborde del contenedor */
+  position: relative; /* Esto es necesario para el siguiente paso */
 }
 .responsive-image__img {
   max-width: 40%;
-  max-height: 40%; /* Este cambio mantiene el aspecto original de la imagen */
+  max-height: 40%; 
+  /* Coloca la imagen por encima del video */
+  
+  /* Este cambio mantiene el aspecto original de la imagen */
   /* max-height: 60vh; */
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 .responsive-video {
+  transition: transform 0.3s; /* Transición suave al hacer zoom */
+  display: block; /* Remueve espacios no deseados debajo de la imagen */
+
   width: 100%;
   height: 100%;
-  /* position: relative; */
-  /* Aspect ratio 16:9 */
-  /* padding-top: 56.25%; */
-  /* overflow: hidden; */
+}
+
+.responsive-image:hover .responsive-image__img {
+  transform: scale(1.5); /* Escala la imagen 1.5 veces su tamaño original */
 }
 
 .responsive-video video {
@@ -375,7 +414,7 @@ export default defineComponent({
 .assembly-container__description {
   /* hacer que la columna 1 sea mas pequena y la columna 2 y 3 tengan el mismo tamano */
   /* flex: 1 0 0; */
-  flex: 1; 
+  flex: 1;
   /* Esto hace que todas las columnas tengan el mismo tamaño */
   /* 100% / 3 = 33.333% */
   /* max-width: 33.333%;  */
@@ -408,7 +447,7 @@ export default defineComponent({
   }
   .assembly-card {
     margin-left: 10px;
-    margin-right:20px;
+    margin-right: 20px;
     padding: 30px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
