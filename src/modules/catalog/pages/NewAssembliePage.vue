@@ -123,8 +123,6 @@ export default defineComponent({
     const assemblyMedia = ref([]);
     const $q = useQuasar();
     const { addAssemblyVsi } = useCatalog();
-    // const totalFiles = ref(0);
-    // const uploadedFiles = ref(0);
     const isAlertShown = ref(false);
 
     const alert = () => {
