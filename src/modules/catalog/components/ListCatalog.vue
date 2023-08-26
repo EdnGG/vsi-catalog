@@ -62,19 +62,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .main-container {
   max-width: 100%;
   max-height: 800px;
 }
 
-.container-qlist{
-  height: 250px; 
+.container-qlist {
+  height: 250px;
   max-width: 80vw;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
-
 }
+
 .q-item-section-img {
   justify-content: center;
   align-items: center;
@@ -82,15 +83,15 @@ export default defineComponent({
   height: 160px;
   overflow: hidden;
   margin-right: 10px;
-  /* margin-left: 40px; */
-  /* border: 1px solid red; */
   background-size: cover;
 }
+
 .container-img {
   width: 50%;
   height: 100%;
   margin-left: 200px;
 }
+
 .container-description {
   width: 50%;
   height: 100%;
@@ -109,55 +110,49 @@ export default defineComponent({
   transition: transform 0.5s ease;
 }
 
-/* TABLET  */
-@media (min-width: 768px) and (max-width: 1024px) {
- 
-  .container-qlist{
-  height: 250px; 
-  max-width: 100vw
-}
-  .q-item-section-img {
-    width: 100%;
-    height: 100%;
-    margin-right: 0px;
-    margin-left: 0px;
+/* TABLET AND MOBILE  */
+@media (max-width: 1024px) {
+  .container-qlist {
+    height: auto; /* Para permitir que el contenedor crezca con su contenido */
+    max-width: 100vw;
+    padding: 1rem 0; /* Espacio en la parte superior e inferior para mejor visualización */
   }
-  .container-img {
-    max-width: 100%;
-    max-height: 100%;
-    margin-left: 0px;
-  }
+
+  .q-item-section-img,
+  .container-img,
   .container-description {
     width: 100%;
-    height: 100%;
-    margin-right: 0px;
+    height: auto; /* Cambio para permitir que se ajuste al contenido */
+    margin: 0;
   }
-}
 
-
-
-
-/* MOBILE  */
-@media screen and (max-width: 600px) {
-  .container-qlist{
-  height: 250px; 
-  max-width: 100vw
-}
   .q-item-section-img {
-    width: 100%;
-    height: 100%;
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-bottom: 1rem; /* Espacio entre la imagen y la descripción */
   }
-  .container-img {
-    width: 100%;
-    height: 100%;
-    margin-left: 0px;
+
+  .q-item-section-img > div > img {
+    height: auto; /* Permitir que la imagen mantenga su proporción original */
   }
+}
+
+/* Ajuste específico para breakpoint 1016x948 */
+@media (min-width: 768px) and (max-width: 1016px) {
+  .container-img img {
+    max-width: 80%; /* Ajusta según lo que necesites, esto reduce la imagen al 80% de su contenedor */
+    margin: 0 auto; /* Centrar la imagen */
+  }
+
+  .q-item-section-img,
   .container-description {
-    width: 100%;
-    height: 100%;
-    margin-right: 0px;
+    padding: 1rem; /* Espacio alrededor para que no se vea tan apretado */
+  }
+}
+
+/* EXTRA MOBILE OPTIMIZATIONS */
+@media (max-width: 600px) {
+  q-item-label {
+    font-size: 1.2em;
   }
 }
 </style>
+
