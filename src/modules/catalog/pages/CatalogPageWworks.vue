@@ -29,8 +29,9 @@
         </div> -->
   
         <!-- *****************-->
-        <div class="col-12 justify-center items-center text-center">
+        <div class="container-listcatalog col-12 justify-center items-center text-center">
           <ListCatalog
+            class="container-listcatalog__item"
             v-for="assemblie in filteredAssemblies"
             :key="assemblie.id"
             v-bind="assemblie"
@@ -110,26 +111,46 @@
   </script>
   
   <style scoped>
-  .search-input {
-    width: 100%;
-    border-radius: 4px;
-    margin-top: 6px;
-    margin-bottom: 16px;
-    resize: vertical;
-    padding: 12px;
-    font-size: 20px;
-  }
-  .text-dark {
-    color: #444;
-    font-weight: 300;
-  }
+.search-input {
+  width: 100%;
+  border-radius: 4px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  padding: 12px;
+  font-size: 20px;
+}
+.text-dark {
+  color: #444;
+  font-weight: 300;
+}
+.list-catalog-container {
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  cursor: pointer;
+  width: 60%vw;
+  height: 100%vh;
+}
+
+/* MEDIA QUERIES */
+/* TABLET  */
+@media (min-width: 768px) and (max-width: 1024px) {
   .list-catalog-container {
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    cursor: pointer;
-    width: 60%vw;
-    height: 100%vh;
+    width: 100%;
   }
-  </style>
-  
+  .container-listcatalog{
+    width: 100%;
+
+  }
+  .container-listcatalog__item{
+    width: 100%;
+  }
+}
+
+/* Media Query para Móviles */
+@media (max-width: 767px) {
+ 
+}
+
+</style>

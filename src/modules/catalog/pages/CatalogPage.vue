@@ -42,7 +42,7 @@
 
     </div>
   </q-page>
-</template>
+</template> 
 
 <script>
 import {
