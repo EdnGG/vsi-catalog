@@ -30,8 +30,9 @@
       </div> -->
 
       <!-- *****************-->
-      <div class="col-12 justify-center items-center text-center">
+      <div class="container-listcatalog col-12 justify-center items-center text-center">
         <ListCatalog
+          class="container-listcatalog__item"
           v-for="assemblie in filteredAssemblies"
           :key="assemblie.id"
           v-bind="assemblie"
@@ -134,4 +135,25 @@ export default defineComponent({
   width: 60%vw;
   height: 100%vh;
 }
+
+/* MEDIA QUERIES */
+/* TABLET  */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .list-catalog-container {
+    width: 100%;
+  }
+  .container-listcatalog{
+    width: 100%;
+
+  }
+  .container-listcatalog__item{
+    width: 100%;
+  }
+}
+
+/* Media Query para Móviles */
+@media (max-width: 767px) {
+ 
+}
+
 </style>

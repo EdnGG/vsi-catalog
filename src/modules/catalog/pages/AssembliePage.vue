@@ -384,6 +384,14 @@ export default defineComponent({
     margin-top: 0px;
     margin-left: 0px;
   }
+  .responsive-video video {
+    max-width: 60vw;
+    max-height: 60vh;
+    overflow: hidden;
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative;
+    /* Esto es necesario para el siguiente paso */
+  }
   .responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
 
@@ -424,8 +432,9 @@ export default defineComponent({
     /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
   }
-
   .container-media__item {
+    max-width: 50%;
+    max-height: 100%;
     padding: 0px;
     margin: 0px;
   }
@@ -455,13 +464,20 @@ export default defineComponent({
 @media (max-width: 767px) {
   .responsive-video {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
     display: flex;
     flex-direction: row;
     width: 60%;
     height: 60%;
     margin-top: 0px;
     margin-left: 0px;
+  }
+  .responsive-video video {
+    max-width: 60vw;
+    max-height: 60vh; 
+    overflow: hidden;
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative;
+    /* Esto es necesario para el siguiente paso */
   }
   .responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
@@ -503,8 +519,9 @@ export default defineComponent({
     /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
   }
-
   .container-media__item {
+    max-width: 100%;
+    max-height: 100vh;
     padding: 0px;
     margin: 0px;
   }

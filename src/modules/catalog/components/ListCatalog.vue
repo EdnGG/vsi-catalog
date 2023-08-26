@@ -97,6 +97,47 @@ export default defineComponent({
   margin-right: 200px;
 }
 
+.q-item-section-img > div > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.q-item-section-img > div > img:hover {
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
+}
+
+/* TABLET  */
+@media (min-width: 768px) and (max-width: 1024px) {
+ 
+  .container-qlist{
+  height: 250px; 
+  max-width: 100vw
+}
+  .q-item-section-img {
+    width: 100%;
+    height: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  .container-img {
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: 0px;
+  }
+  .container-description {
+    width: 100%;
+    height: 100%;
+    margin-right: 0px;
+  }
+}
+
+
+
+
+/* MOBILE  */
 @media screen and (max-width: 600px) {
   .container-qlist{
   height: 250px; 
@@ -118,17 +159,5 @@ export default defineComponent({
     height: 100%;
     margin-right: 0px;
   }
-}
-
-.q-item-section-img > div > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.q-item-section-img > div > img:hover {
-  transform: scale(1.1);
-  transition: transform 0.5s ease;
 }
 </style>

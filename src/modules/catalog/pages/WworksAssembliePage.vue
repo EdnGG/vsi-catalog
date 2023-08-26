@@ -214,8 +214,8 @@ export default defineComponent({
 }
 
 .single-img {
-  overflow: hidden;  
-  width: 100%; 
+  overflow: hidden;
+  width: 100%;
   display: inline-block; /* Esto asegura que el overflow hidden funcione correctamente */
   max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
   max-height: 100%;
@@ -239,6 +239,8 @@ export default defineComponent({
 .container-media {
   margin-top: 60px;
   margin-left: 60px;
+  flex: 0 0 15%;
+  /* overflow: hidden; */
   overflow-y: auto;
   width: 100%;
   height: 100%;
@@ -248,6 +250,23 @@ export default defineComponent({
   align-items: center;
   text-align: left;
 }
+.subcontainer-media {
+  /* necesito darle un tamano definido y agregarle un scroll */
+  max-width: 100vw;
+  max-height: 85vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+/* .container-media__item{
+  overflow-y: scroll;
+  margin-bottom: 20px;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
 .responsive-image {
   width: 100%;
   height: 100%;
@@ -256,7 +275,7 @@ export default defineComponent({
 }
 .responsive-image__img {
   max-width: 40%;
-  max-height: 40%; 
+  max-height: 40%;
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 .responsive-video {
@@ -336,62 +355,81 @@ export default defineComponent({
 }
 
 /* Establece un tamaño fijo para las columnas */
-.container-media {
-  flex: 0 0 20%; /* Esto establece un tamaño fijo del 20% para la columna 1, sin crecer ni encogerse */
-  overflow: hidden;
-}
 .middle-container,
 .assembly-container__description {
   flex: 1;
   max-width: 40%;
-  overflow: hidden; 
+  overflow: hidden;
 }
 /* Media Query */
 
-
 /* Media Query para Tablets */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .responsive-video{
+  .responsive-video {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
-    display:flex;
+    display: flex;
     flex-direction: row;
     width: 60%;
     height: 60%;
     margin-top: 0px;
     margin-left: 0px;
   }
-  .responsive-image{
-    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
-    display:flex;
-    flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
-  }
-  .responsive-image__img{
-    max-width: 40vw;
-    max-height: 40vh;
-    overflow: hidden; 
+  .responsive-video video {
+    max-width: 60vw;
+    max-height: 60vh;
+    overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
-    position: relative; 
+    position: relative;
     /* Esto es necesario para el siguiente paso */
   }
-  .container-media{
+  .responsive-image {
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
     margin-top: 0px;
     margin-left: 0px;
-    display:flex;
-    flex-direction: row;
-    /* necesito darle un tamano definido y agregarle un scroll */
-    width: 100%;
-    height: 60%;
-    overflow-x: auto;
-    overflow-y: hidden;
-
+    margin-right: 0px;
+    padding: 0px;
   }
-  .middle-container{
+  .responsive-image__img {
+    max-width: 40vw;
+    max-height: 40vh;
+    overflow: hidden;
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative;
+    /* Esto es necesario para el siguiente paso */
+  }
+  .container-media {
+    margin-top: 0px;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: row;
+    /* Cambia a 'column' para mostrar los elementos en filas */
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  .subcontainer-media {
+    max-width: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    /* Cambia a 'column' para mostrar los elementos en filas */
+    /* flex-wrap:nowrap; */
+  }
+  .container-media__item {
+    max-width: 50%;
+    max-height: 100%;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .middle-container {
     padding-top: 0px;
   }
   .responsive-main-container {
@@ -403,8 +441,8 @@ export default defineComponent({
     width: 100%;
     height: 100%;
   }
-  .container-media, 
-  .middle-container, 
+  .container-media,
+  .middle-container,
   .assembly-container__description {
     flex: 1;
     max-width: 100%; /* Ocupar todo el ancho en tablet */
@@ -414,47 +452,70 @@ export default defineComponent({
 
 /* Media Query para Móviles */
 @media (max-width: 767px) {
-  .responsive-video{
+  .responsive-video {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
-    display:flex;
+    display: flex;
     flex-direction: row;
     width: 60%;
     height: 60%;
     margin-top: 0px;
     margin-left: 0px;
   }
-  .responsive-image{
-    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
-    display:flex;
-    flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
-  }
-  .responsive-image__img{
-    max-width: 40vw;
-    max-height: 40vh;
-    overflow: hidden; 
+  .responsive-video video {
+    max-width: 60vw;
+    max-height: 60vh; 
+    overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
-    position: relative; 
+    position: relative;
     /* Esto es necesario para el siguiente paso */
   }
-  .container-media{
+  .responsive-image {
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 60%;
     margin-top: 0px;
     margin-left: 0px;
-    display:flex;
-    flex-direction: row;
-    /* necesito darle un tamano definido y agregarle un scroll */
-    width: 100%;
-    height: 60%;
-    overflow-x: auto;
-    overflow-y: hidden;
-
+    margin-right: 0px;
+    padding: 0px;
   }
-  .middle-container{
+  .responsive-image__img {
+    max-width: 40vw;
+    max-height: 40vh;
+    overflow: hidden;
+    /* Asegúrate de que la imagen no se desborde del contenedor */
+    position: relative;
+    /* Esto es necesario para el siguiente paso */
+  }
+  .container-media {
+    margin-top: 0px;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: row;
+    /* Cambia a 'column' para mostrar los elementos en filas */
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  .subcontainer-media {
+    max-width: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    /* Cambia a 'column' para mostrar los elementos en filas */
+    /* flex-wrap:nowrap; */
+  }
+  .container-media__item {
+    max-width: 100%;
+    max-height: 100vh;
+    padding: 0px;
+    margin: 0px;
+  }
+  .middle-container {
     padding-top: 0px;
   }
   .responsive-main-container {
@@ -466,18 +527,14 @@ export default defineComponent({
     width: 100%;
     height: 100%;
   }
-  .container-media, 
-  .middle-container, 
+  .container-media,
+  .middle-container,
   .assembly-container__description {
     flex: 1;
     max-width: 100%; /* Ocupar todo el ancho en móviles */
     margin: 0; /* Eliminar cualquier margen que pudieran tener */
   }
-
   /* Otras adaptaciones específicas para móviles */
 }
-
-
-
 /* Ends Media Query */
 </style>
