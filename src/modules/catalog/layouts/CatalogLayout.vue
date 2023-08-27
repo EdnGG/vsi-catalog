@@ -28,9 +28,13 @@
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
           </router-link>
+           <span>ASSEMBLY CATALOG</span>
         </q-toolbar-title>
 
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
+        <div v-if="isAuthenticated" class="container-logout">
+          <q-icon name="las la-door-open" />
+          <q-toolbar-title> EXIT </q-toolbar-title>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -40,9 +44,7 @@
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
+        <q-item-label header>
           VALVE SOLUTIONS INC.
         </q-item-label>
 
@@ -63,6 +65,7 @@
 <script>
 import { defineComponent, defineAsyncComponent, computed } from 'vue'
 import { useCatalog } from '../composables/useCatalog'
+import { useAuth } from '../../auth/composables/useAuth'
 import links from '../router/links'
 
 export default defineComponent({
@@ -73,6 +76,7 @@ export default defineComponent({
   },
 
   setup ( props ) {
+    const { isAuthenticated } = useAuth()
     const catalog = useCatalog()
     const { sideMenuOpen , toogleLeftDrawer} = catalog
 
@@ -80,9 +84,28 @@ export default defineComponent({
       links,   
       sideMenuOpen, 
       toogleLeftDrawer,
+      isAuthenticated
      
      
     }
   }
 })
 </script>
+
+<style scoped>
+.container-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 0 10px;
+  border-radius: 5px;
+  background-color: rgba(183, 183, 194, 0.568);
+  color: whitesmoke;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+</style>

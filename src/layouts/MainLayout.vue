@@ -11,30 +11,23 @@
           @click="toogleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          ASSEMBLY CATALOG
-        </q-toolbar-title>
+        <q-toolbar-title> ASSEMBLY CATALOG </q-toolbar-title>
 
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
+        <div v-if="isAuthenticated" class="container-logout">
+          <q-icon name="las la-door-open" />
+          <q-toolbar-title> EXIT </q-toolbar-title>
+        </div>
+
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="sideMenuOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="sideMenuOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          VALVE SOLUTIONS INC.
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in links"
-          :key="link.title"
-          v-bind="link"
+        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+        <EssentialLink 
+          v-for="link in links" 
+          :key="link.title" 
+          v-bind="link" 
         />
       </q-list>
     </q-drawer>
@@ -46,27 +39,49 @@
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent } from 'vue'
-import { useCatalog } from 'src/composables/useCatalog'
-import links from 'src/router/links'
+import { defineComponent, defineAsyncComponent } from "vue";
+import { useCatalog } from "src/composables/useCatalog";
+import { useAuth } from "src/modules/auth/composables/useAuth";
+import links from "src/router/links";
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
-    EssentialLink: defineAsyncComponent(() => import('components/EssentialLink.vue'))
+    EssentialLink: defineAsyncComponent(() =>
+      import("components/EssentialLink.vue")
+    ),
   },
 
-  setup ( ) {
-    const catalog = useCatalog()
-    const {sideMenuOpen , toogleLeftDrawer} = catalog
+  setup() {
+    const { isAuthenticated } = useAuth()
+    const catalog = useCatalog();
+    const { sideMenuOpen, toogleLeftDrawer } = catalog;
 
     return {
-      links,   
-      sideMenuOpen, 
-      toogleLeftDrawer,    
-     
-    }
-  }
-})
+      links,
+      sideMenuOpen,
+      toogleLeftDrawer,
+      isAuthenticated,
+    };
+  },
+});
 </script>
+
+<style scoped>
+.container-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 0 10px;
+  border-radius: 5px;
+  background-color: rgba(183, 183, 194, 0.568);
+  color: whitesmoke;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+</style>

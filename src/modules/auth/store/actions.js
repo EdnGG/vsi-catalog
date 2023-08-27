@@ -50,4 +50,8 @@ export const register = async ({ commit }, { name, email, password}) => {
       return error;
     }
   };
+
+  export const logout = async ({commit}) => {
+    
+  }
   

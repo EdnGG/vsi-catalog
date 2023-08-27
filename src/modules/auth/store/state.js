@@ -3,7 +3,5 @@ export default function () {
     user: null,
     isUserLoggedIn: false,
     isSideMenuOpen: true,
-
-
   }
 }

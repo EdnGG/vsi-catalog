@@ -34,6 +34,16 @@ export const useAuth = () => {
     }
   };
 
+  const logout = async () => {
+    try {
+      const response = await store.dispatch("authModule/logout");
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return error;
+    }
+  }
+
   return {
     sideMenuOpen: computed({
       get() {
@@ -48,7 +58,9 @@ export const useAuth = () => {
     // METHODS
     login,
     register,
+    logout,
     backToHome: () => router.push({ name: "IndexPage" }),
     // GETTERS
+    isAuthenticated: computed(() => store.getters["authModule/isAuthenticated"]),
   };
 };

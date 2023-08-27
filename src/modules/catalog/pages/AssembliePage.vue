@@ -198,6 +198,7 @@ export default defineComponent({
       assemblie,
       selectedMedia,
       videoElementRef,
+      playVideo,
       // slide,
       // autoplay,
 
