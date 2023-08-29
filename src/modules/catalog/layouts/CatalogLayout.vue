@@ -31,7 +31,11 @@
            <span>ASSEMBLY CATALOG</span>
         </q-toolbar-title>
 
-        <div v-if="isAuthenticated" class="container-logout">
+        <div 
+          v-if="isAuthenticated" 
+          class="container-logout"
+          @click="logout"
+        >
           <q-icon name="las la-door-open" />
           <q-toolbar-title> EXIT </q-toolbar-title>
         </div>
@@ -76,7 +80,7 @@ export default defineComponent({
   },
 
   setup ( props ) {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, logout } = useAuth()
     const catalog = useCatalog()
     const { sideMenuOpen , toogleLeftDrawer} = catalog
 
@@ -84,9 +88,8 @@ export default defineComponent({
       links,   
       sideMenuOpen, 
       toogleLeftDrawer,
-      isAuthenticated
-     
-     
+      isAuthenticated,
+      logout
     }
   }
 })

@@ -54,7 +54,6 @@
           color="primary"
         />
         <google-sign-in />
-
       </div>
     </div>
   </q-page>
@@ -63,7 +62,6 @@
 <script>
 import { defineAsyncComponent ,defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-// import { useQuasar } from "quasar";
 
 import { useAuth } from "../composables/useAuth";
 
