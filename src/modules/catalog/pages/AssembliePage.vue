@@ -66,8 +66,8 @@
             :zoom-speed="0.1"
             :move-speed="0.1"
             :transition-duration="0.3"
-            :min-height="500"
-            :min-width="500"
+            :min-height="300"
+            :min-width="300"
             :zoom-out-scale="3"
             :drag-scroll="true"
             :zoom-position="top"
@@ -240,7 +240,7 @@ export default defineComponent({
 }
 
 .middle-container {
-  padding-top: 150px;
+  padding-top: 66px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -315,7 +315,7 @@ export default defineComponent({
   text-align: center;
   width: 100%;
   height: 100%; /* Limit the maximum height of the container */
-  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+  overflow-y: scroll; /* Enable vertical scrolling when content exceeds the height */
 }
 .assembly-card {
   padding: 20px;
@@ -327,6 +327,7 @@ export default defineComponent({
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
   max-width: 100%;
+  max-height: 60vw;
 }
 .assembly-card h3 {
   margin: 0;
