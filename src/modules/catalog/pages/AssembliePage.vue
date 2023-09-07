@@ -60,6 +60,7 @@
           "
         >
           <inner-image-zoom
+            v-if="selectedMedia"
             class="single-img"
             :src="selectedMedia"
             :zoom-scale="0.9"
@@ -70,10 +71,25 @@
             :min-width="300"
             :zoom-out-scale="3"
             :drag-scroll="true"
-            :zoom-position="top"
           >
-            <!-- <img class="single-img" :src="selectedMedia" alt="content" /> -->
-          </inner-image-zoom>
+        </inner-image-zoom>
+
+        <inner-image-zoom
+            v-else
+            class="single-img"
+            :src="assemblie.media[2]"
+            :zoom-scale="0.9"
+            :zoom-speed="0.1"
+            :move-speed="0.1"
+            :transition-duration="0.3"
+            :min-height="300"
+            :min-width="300"
+            :zoom-out-scale="3"
+            :drag-scroll="true"
+          >
+        </inner-image-zoom>
+
+        <!-- <img class="single-img" :src="selectedMedia" alt="content" /> -->
         </div>
         <div
           v-else-if="
@@ -168,11 +184,8 @@ export default defineComponent({
     const router = useRouter();
     const { getAssemblyById, loadAssembliesVsi } = useCatalog();
 
-    // const slide = ref(1);
-    // const autoplay = ref(false);
-
     const assemblie = ref(null);
-    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
+    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : '');
     const videoElementRef = ref(null);
 
     const playVideo = async () => {
@@ -192,6 +205,10 @@ export default defineComponent({
 
     onMounted(async () => {
       await loadAssemblies();
+
+      // Establecer selectedMedia después de cargar assemblie
+      const defaultImage = assemblie.value.media.find(item => item.endsWith('.jpg') || item.endsWith('.jpeg') || item.endsWith('.png'));
+      selectedMedia.value = defaultImage || assemblie.value.media[0];
     });
 
     return {
@@ -199,8 +216,6 @@ export default defineComponent({
       selectedMedia,
       videoElementRef,
       playVideo,
-      // slide,
-      // autoplay,
 
       // METHODS
       goBack: () => {
@@ -313,10 +328,12 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   text-align: center;
+  /* font-size: 8px !important; */
   width: 100%;
   height: 100%; /* Limit the maximum height of the container */
   overflow-y: scroll; /* Enable vertical scrolling when content exceeds the height */
 }
+
 .assembly-card {
   padding: 20px;
   margin-right: 25px;
@@ -326,8 +343,10 @@ export default defineComponent({
   background-color: #fff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  max-width: 100%;
-  max-height: 60vw;
+  width: 100%;
+  height:650px;
+  overflow-y: scroll;
+  
 }
 .assembly-card h3 {
   margin: 0;
@@ -337,6 +356,10 @@ export default defineComponent({
   font-weight: 500;
   color: #333;
 }
+
+/* .assembly-card p {
+  font-size: 8px;
+} */
 .assembly-card .assembly-category {
   /* margin: 0; */
   margin-bottom: 20px;
@@ -359,7 +382,7 @@ export default defineComponent({
 .assembly-info p {
   margin: 0;
   margin-bottom: 10px;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #333;
 }
 .assembly-info p strong {
@@ -457,8 +480,14 @@ export default defineComponent({
   .middle-container,
   .assembly-container__description {
     flex: 1;
-    max-width: 100%; /* Ocupar todo el ancho en tablet */
-    margin: 0; /* Eliminar cualquier margen que pudieran tener */
+    /* Ocupar todo el ancho en tablet */
+    max-width: 100%; 
+    /* Eliminar cualquier margen que pudieran tener */
+    margin: 0;
+  }
+  .assembly-card{
+    max-width: 100%;
+    max-height: 100%;
   }
 }
 
@@ -543,10 +572,17 @@ export default defineComponent({
   .middle-container,
   .assembly-container__description {
     flex: 1;
-    max-width: 100%; /* Ocupar todo el ancho en móviles */
-    margin: 0; /* Eliminar cualquier margen que pudieran tener */
+    /* Ocupar todo el ancho en móviles */
+    max-width: 100%; 
+    /* Eliminar cualquier margen que pudieran tener */
+    margin: 0; 
   }
-  /* Otras adaptaciones específicas para móviles */
+
+  .assembly-card{
+    max-width: 100%;
+    max-height: 100%;
+  }
+
 }
 /* Ends Media Query */
 </style>
