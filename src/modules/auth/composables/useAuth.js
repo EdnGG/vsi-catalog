@@ -12,8 +12,7 @@ export const useAuth = () => {
 
   const googleLogin = async () => {
     try {
-      console.log('auth.currentUser', auth.currentUser)
-      const user = auth.currentUser; // Obtenemos el usuario actualmente autenticado
+      const user = auth.currentUser; 
       if (user) {
         const response = await store.dispatch("authModule/googleLogin", user);
         return response;
@@ -54,13 +53,11 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-
     // Aquí ya no necesitas cerrar sesión nuevamente porque el usuario ya está autenticado
     // Simplemente guardamos el usuario en el state usando la mutation
     localStorage.removeItem("user");
     store.commit("authModule/logout");
     router.push({ name: "IndexPage" });
-    
   }
 
   return {

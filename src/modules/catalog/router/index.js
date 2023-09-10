@@ -1,42 +1,13 @@
+import catalogGuard from "./catalog-guard"
+
 export default {
   name: "catalog",
   component: () => import("../layouts/CatalogLayout.vue"),
   children: [
-    // {
-    //   path: "",
-    //   name: "IndexPage",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "catalog-index" */ "src/modules/catalog/pages/IndexPage.vue" 
-    //     ),
-    // },
-    // {
-    //   path: "typography",
-    //   name: "TypographyPage",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "catalog-typography-page" */ "src/modules/catalog/pages/TypographyPage.vue"
-    //     ),
-    // },
-    // {
-    //   path: "flexbox",
-    //   name: "FlexboxPage",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "catalog-flexbox-page" */ "src/modules/catalog/pages/FlexboxPage.vue"
-    //     ),
-    // },
-    // {
-    //   path: "dialogs",
-    //   name: "DialogsPage",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "catalog-dialogs-page" */ "src/modules/catalog/pages/DialogsPage.vue"
-    //     ),
-    // },
     {
       path: "new-assemblie",
       name: "NewAssembliePage",
+      beforeEnter: catalogGuard,
       component: () =>
         import(
           /* webpackChunkName: "vsi-forms-page" */ "src/modules/catalog/pages/NewAssembliePage.vue"
@@ -45,6 +16,7 @@ export default {
     {
       path: "waterworks-assembly",
       name: "NewWaterWorksAssembly",
+      beforeEnter: catalogGuard,
       component: () =>
         import(
           /* webpackChunkName: "waterworks-forms-page" */ "src/modules/catalog/pages/NewWaterWorksAssembly.vue"

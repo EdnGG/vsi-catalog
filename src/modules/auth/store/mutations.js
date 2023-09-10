@@ -12,7 +12,6 @@ export const login = ( state, user) => {
 }
 
 export const setUser = ( state, user) => {
-    console.log('setUser', user)
     state.user = user
 }
 
