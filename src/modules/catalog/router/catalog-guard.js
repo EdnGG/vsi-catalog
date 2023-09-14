@@ -23,7 +23,7 @@ const catalogGuard = async (to, from, next) => {
 
     if (to.name === 'NewAssembliePage' || to.name === 'NewWaterWorksAssembly') {
         if (!isAuthenticated) {
-            next({ name: 'LoginPage' });
+            next({ name: 'IndexPage' });
         } else {
             next();
         }

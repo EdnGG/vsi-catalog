@@ -19,7 +19,8 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce the assembly name',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the assembly name',
           ]"
         />
 
@@ -31,7 +32,8 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce a description',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce a description',
           ]"
         />
 
@@ -54,7 +56,8 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce a hardware type',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce a hardware type',
           ]"
         />
 
@@ -69,6 +72,18 @@
             (val) => (val && val.length > 0) || 'Please add some notes',
           ]"
         />
+        <q-btn
+          label="Add Steps"
+          color="primary"
+          @click="addSteps"
+          v-model="assembly.steps"
+        />
+
+        <div v-if="assembly.steps.length">
+          <div v-for="(note, index) in assembly.steps" :key="index">
+            Step {{ index + 1 }}: {{ note }}
+          </div>
+        </div>
 
         <q-input
           filled
@@ -141,6 +156,40 @@ export default defineComponent({
           console.log("Dismiss");
         });
     };
+
+    const showStepsDialog = () => {
+      return $q.dialog({
+        title: "Assembly Steps",
+        message: `Step ${assembly.value.notes.length + 1}`,
+        prompt: {
+          model: "",
+          type: "text",
+        },
+        cancel: true,
+        persistent: true,
+      });
+    };
+
+    const addSteps = () => {
+  $q.dialog({
+    title: 'Assembly Steps',
+    message: `Step ${assembly.value.steps.length + 1}`,
+    prompt: {
+      model: '',
+      type: 'text'
+    },
+    cancel: true,
+    persistent: true
+  })
+  .onOk(data => {
+    if (data) {
+      assembly.value.steps.push(data);
+    }
+  })
+  .onCancel(() => {
+    // Usuario canceló, no hacemos nada
+  });
+};
 
     const widget = window.cloudinary.createUploadWidget(
       {
@@ -215,8 +264,10 @@ export default defineComponent({
       hardware: "",
       technical_name: "",
       notes: "",
+      steps: [],
       media: [],
     });
+
     const onReset = () => {
       assembly.value = {
         name: "",
@@ -243,6 +294,7 @@ export default defineComponent({
 
       // METHODS
       onSubmit,
+      addSteps,
     };
   },
 });

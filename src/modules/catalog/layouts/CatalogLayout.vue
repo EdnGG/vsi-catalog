@@ -12,15 +12,8 @@
         />
 
         <q-toolbar-title>
-          <router-link
-            to="/"
-            class="text-primary"
-          >
-            <q-avatar
-              square
-              size="xl"
-              class="q-mr-sm"
-            >
+          <router-link to="/" class="text-primary">
+            <q-avatar square size="xl" class="q-mr-sm">
               <img
                 src="https://lh6.googleusercontent.com/-abnSC9wsKEs/AAAAAAAAAAI/AAAAAAAAAAA/ESxpoblFfb0/s66-p-k-no-ns-nd/photo.jpg"
                 alt="Quasar Logo"
@@ -28,36 +21,31 @@
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
           </router-link>
-           <span>ASSEMBLY CATALOG</span>
+          <span>ASSEMBLY CATALOG</span>
         </q-toolbar-title>
 
-        <div 
-          v-if="isAuthenticated" 
-          class="container-logout"
-          @click="logout"
-        >
+        <div v-if="isAuthenticated" class="container-logout" @click="logout">
           <q-icon name="las la-door-open" />
           <q-toolbar-title> EXIT </q-toolbar-title>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="sideMenuOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label header>
-          VALVE SOLUTIONS INC.
-        </q-item-label>
+    <q-drawer v-model="sideMenuOpen" show-if-above bordered>
+      <q-list v-if="isAuthenticated">
+        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
 
-        <EssentialLink
-          v-for="link in links"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
+      <!--  -->
+      
+      <q-list v-else>
+        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+
+        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+      </q-list>
+
+      <!--  -->
     </q-drawer>
 
     <q-page-container>
@@ -67,32 +55,34 @@
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent, computed } from 'vue'
-import { useCatalog } from '../composables/useCatalog'
-import { useAuth } from '../../auth/composables/useAuth'
-import links from '../router/links'
+import { defineComponent, defineAsyncComponent, computed } from "vue";
+import { useCatalog } from "../composables/useCatalog";
+import { useAuth } from "../../auth/composables/useAuth";
+import links from "../router/links";
 
 export default defineComponent({
-  name: 'CatalogLayout',
+  name: "CatalogLayout",
 
   components: {
-    EssentialLink: defineAsyncComponent(() => import('components/EssentialLink.vue'))
+    EssentialLink: defineAsyncComponent(() =>
+      import("components/EssentialLink.vue")
+    ),
   },
 
-  setup ( props ) {
-    const { isAuthenticated, logout } = useAuth()
-    const catalog = useCatalog()
-    const { sideMenuOpen , toogleLeftDrawer} = catalog
+  setup(props) {
+    const { isAuthenticated, logout } = useAuth();
+    const catalog = useCatalog();
+    const { sideMenuOpen, toogleLeftDrawer } = catalog;
 
     return {
-      links,   
-      sideMenuOpen, 
+      links,
+      sideMenuOpen,
       toogleLeftDrawer,
       isAuthenticated,
-      logout
-    }
-  }
-})
+      logout,
+    };
+  },
+});
 </script>
 
 <style scoped>
