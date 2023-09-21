@@ -68,20 +68,21 @@
           label="Add Notes"
           type="text"
           lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Please add some notes',
-          ]"
+          :rules="[(val) => (val && val.length > 0) || 'Please add some notes']"
         />
-        <q-btn
-          label="Add Steps"
-          color="primary"
-          @click="addSteps"
-          v-model="assembly.steps"
-        />
+        <div class="q-mb-lg row text-center justify-center">
+          <q-btn
+            class=""
+            label="Add Steps"
+            color="primary"
+            @click="addSteps"
+            v-model="assembly.steps"
+          />
+        </div>
 
-        <div v-if="assembly.steps.length">
+        <div class="q-mb-lg text-center" v-if="assembly.steps.length">
           <div v-for="(note, index) in assembly.steps" :key="index">
-            Step {{ index + 1 }}: {{ note }}
+            <strong>{{ index + 1 }}) :</strong> {{ note }}
           </div>
         </div>
 
@@ -171,25 +172,25 @@ export default defineComponent({
     };
 
     const addSteps = () => {
-  $q.dialog({
-    title: 'Assembly Steps',
-    message: `Step ${assembly.value.steps.length + 1}`,
-    prompt: {
-      model: '',
-      type: 'text'
-    },
-    cancel: true,
-    persistent: true
-  })
-  .onOk(data => {
-    if (data) {
-      assembly.value.steps.push(data);
-    }
-  })
-  .onCancel(() => {
-    // Usuario canceló, no hacemos nada
-  });
-};
+      $q.dialog({
+        title: "Assembly Steps",
+        message: `Step ${assembly.value.steps.length + 1}`,
+        prompt: {
+          model: "",
+          type: "text",
+        },
+        cancel: true,
+        persistent: true,
+      })
+        .onOk((data) => {
+          if (data) {
+            assembly.value.steps.push(data);
+          }
+        })
+        .onCancel(() => {
+          // Usuario canceló, no hacemos nada
+        });
+    };
 
     const widget = window.cloudinary.createUploadWidget(
       {

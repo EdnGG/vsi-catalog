@@ -12,10 +12,6 @@ export function toggleSideMenu ( state ) {
     state.isSideMenuOpen = !state.isSideMenuOpen
 }
 
-// export const setAssembliesVsiByCategory = (state, category) => {
-//     state.assembliesVsiByCategoty = category
-// }
-
 export const setAssembliesVsi = (state, assemblies) => {
     state.assemblies = assemblies
 }
@@ -26,6 +22,11 @@ export const setAssembliesWworks = (state, assemblies) => {
 
 export const setAssemblies = (state, assemblies) => {
     state.assemblies = assemblies
+}
+
+export const updateAssemblyVsi = (state, assembly) => {
+    const index = state.assemblies.findIndex((a) => a.id === assembly.id);
+    state.assemblies[index] = assembly;
 }
 
 export const setSearchResults = (state, results) => {

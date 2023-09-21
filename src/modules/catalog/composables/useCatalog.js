@@ -4,26 +4,6 @@ import { useStore } from "vuex";
 export const useCatalog = () => {
   const store = useStore();
 
-  // const loadAssemblies = () => {
-  //   store.dispatch("catalogModule/loadAssemblies");  
-  // };
-
-  // const loadAssemblyVsiByTechnical = (technical) => {
-  //   store.dispatch("catalogModule/loadAssemblyVsiByTechnical", technical);
-  // }
-
-  // const loadAssemblyWwByTechnical = (technical) => {
-  //   store.dispatch("catalogModule/loadAssemblyWwByTechnical", technical);
-  // }
-
-  // const loadAssembliesVsiByCategory = (category) => {
-  //   store.dispatch("catalogModule/loadAssemblyVsiByCategory", category);
-  // }
-
-  // const loadAssembliesWwByCategory = (category) => {
-  //   store.dispatch("catalogModule/loadAssemblyWwByCategory", category);
-  // }
-
   const loadAssembliesVsi = () => {
     store.dispatch("catalogModule/loadAssembliesVsi");
   };
@@ -43,8 +23,6 @@ export const useCatalog = () => {
     return resp;
   };
 
-  // getWworksAssemblyById
-
   const getWworksAssemblyById = async (id) => {
     const assembly = await store.getters["catalogModule/getWworksAssemblyById"](id);
     return assembly;
@@ -54,14 +32,18 @@ export const useCatalog = () => {
     const assembly = await store.getters["catalogModule/getAssemblyById"](id);
     return assembly;
   };
+
+  const updateAssemblyVsi = async (assembly) => {
+    console.log(assembly)
+    const resp = await store.dispatch("catalogModule/updateAssemblyVsi", assembly);
+    return resp;
+  }
   
   return {
     getAssemblyById,
     getWworksAssemblyById,
-    // loadAssembliesVsiByCategory,
-    // loadAssembliesWwByCategory,
-    // loadAssemblyVsiByTechnical,
-    // loadAssemblyWwByTechnical,
+
+    //  COMPUTED
     getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
       get() {
@@ -73,11 +55,11 @@ export const useCatalog = () => {
     }),
   
     // METHODS
-    // loadAssemblies,
     addAssemblyWaterWorks,
     addAssemblyVsi,
     loadAssembliesVsi,
     loadAssembliesWworks,
+    updateAssemblyVsi,
     toogleLeftDrawer: () => store.commit("catalogModule/toggleSideMenu"),
 
     // GETTERS

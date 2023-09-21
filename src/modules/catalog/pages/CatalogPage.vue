@@ -80,10 +80,10 @@ export default defineComponent({
 
     onMounted(async () => {
       isLoading.value = true;
-      console.log(isLoading.value)
+      // console.log(isLoading.value)
       await loadAssembliesVsi();
       isLoading.value = false;
-      console.log(isLoading.value)
+      // console.log(isLoading.value)
     });
 
     const filteredAssemblies = computed(() =>

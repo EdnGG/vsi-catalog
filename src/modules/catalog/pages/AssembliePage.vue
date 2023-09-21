@@ -2,7 +2,6 @@
   <q-page>
     <div v-if="assemblie" class="responsive-main-container flex row">
       <!-- CONTAINER MEDIA -->
-
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
           <div
@@ -46,11 +45,8 @@
         </div>
         <!--  -->
       </div>
-
       <!--  -->
-
       <!-- MIDDLE CONTAINER -->
-
       <div class="middle-container col-6 q-pa-md">
         <div
           v-if="
@@ -72,25 +68,9 @@
             :zoom-out-scale="3"
             :drag-scroll="true"
           >
-        </inner-image-zoom>
-
-        <inner-image-zoom
-            v-else
-            class="single-img"
-            :src="assemblie.media[2]"
-            :zoom-scale="0.9"
-            :zoom-speed="0.1"
-            :move-speed="0.1"
-            :transition-duration="0.3"
-            :min-height="300"
-            :min-width="300"
-            :zoom-out-scale="3"
-            :drag-scroll="true"
-          >
-        </inner-image-zoom>
-
-        <!-- <img class="single-img" :src="selectedMedia" alt="content" /> -->
+          </inner-image-zoom>
         </div>
+
         <div
           v-else-if="
             selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.mov')
@@ -106,9 +86,7 @@
           </video>
         </div>
       </div>
-
       <!--  -->
-
       <!-- descriptions -->
       <div class="assembly-container__description">
         <div class="assembly-card">
@@ -127,15 +105,114 @@
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
+
+            <div class="assembly-info">
+              <strong>Steps:</strong>
+              <p v-for="(step, index) in assemblie.steps" :key="index">
+                {{ step }}
+              </p>
+            </div>
+
+            <!-- <div 
+              v-else
+              class="assembly-info">
+              <strong>Steps:</strong>
+              <p>No steps added for now</p>
+            </div> -->
+
             <div class="assembly-info">
               <strong>Assembled By:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
           </div>
+
+          <q-btn class="col-12 q-ma-lg" @click="editAssembly">
+            <q-icon name="edit" /> EDIT
+          </q-btn>
         </div>
       </div>
       <!-- Ends descriptions -->
+      <!-- Edit modal -->
+      <q-dialog 
+        class="q-dialog-custom"
+        v-model="showEditDialog" 
+        persistent
+      >
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Edit Assembly</div>
+          </q-card-section>
 
+          <q-card-section>
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.name"
+              label="Name"
+              filled
+            />
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.category"
+              label="Category"
+              filled
+            />
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.description"
+              label="Descripción"
+              filled
+              type="textarea"
+            />
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.hardware"
+              label="Hardware"
+              filled
+              type="textarea"
+            />
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.notes"
+              label="Notes"
+              filled
+              type="textarea"
+            />
+
+            <div
+              class="q-ma-sm"
+              v-for="(step, index) in editableAssembly.steps"
+              :key="index"
+            >
+              <q-input
+                v-model="editableAssembly.steps[index]"
+                :label="'Step ' + (index + 1)"
+                filled
+                type="textarea"
+              />
+            </div>
+
+            <q-btn label="Add Step" color="primary" @click="addStep" />
+
+            <q-input
+              class="q-ma-sm"
+              v-model="editableAssembly.technical_name"
+              label="Assembled by"
+              filled
+            />
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn
+              label="Cancel"
+              color="primary"
+              flat
+              @click="showEditDialog = false"
+            />
+            <q-btn label="Save" color="primary" @click="updateAssemblie" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <!-- Ends edit modal  -->
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
@@ -168,6 +245,7 @@ import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
+import { getAssemblies } from "../store/getters";
 
 export default defineComponent({
   name: "AssembliePage",
@@ -182,11 +260,25 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const { getAssemblyById, loadAssembliesVsi } = useCatalog();
+    const { getAssemblyById, loadAssembliesVsi, updateAssemblyVsi } =
+      useCatalog();
 
     const assemblie = ref(null);
-    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : '');
+    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
     const videoElementRef = ref(null);
+    const showEditDialog = ref(false);
+
+    const editableAssembly = ref({
+      id: "",
+      name: "",
+      category: "",
+      description: "",
+      hardware: "",
+      notes: "",
+      media: [],
+      steps: [],
+      technical_name: "",
+    });
 
     const playVideo = async () => {
       await nextTick();
@@ -202,24 +294,58 @@ export default defineComponent({
     };
 
     loadAssemblies();
-
     onMounted(async () => {
       await loadAssemblies();
-
       // Establecer selectedMedia después de cargar assemblie
-      const defaultImage = assemblie.value.media.find(item => item.endsWith('.jpg') || item.endsWith('.jpeg') || item.endsWith('.png'));
+      const defaultImage = assemblie.value.media.find(
+        (item) =>
+          item.endsWith(".jpg") ||
+          item.endsWith(".jpeg") ||
+          item.endsWith(".png")
+      );
       selectedMedia.value = defaultImage || assemblie.value.media[0];
     });
+
+    const editAssembly = () => {
+      if (assemblie.value) {
+        editableAssembly.value.id = props.id;
+        editableAssembly.value.name = assemblie.value.name;
+        editableAssembly.value.category = assemblie.value.category;
+        editableAssembly.value.description = assemblie.value.description;
+        editableAssembly.value.hardware = assemblie.value.hardware;
+        editableAssembly.value.notes = assemblie.value.notes;
+        editableAssembly.value.media = [...assemblie.value.media]; // pasamos las imagenes a el nuevo objeto
+        editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
+        editableAssembly.value.technical_name = assemblie.value.technical_name;
+
+        showEditDialog.value = true;
+      }
+    };
+
+    const updateAssemblie = async () => {
+      console.log(editableAssembly.value);
+      await updateAssemblyVsi(editableAssembly.value);
+      Object.assign(assemblie.value, editableAssembly.value);
+      await loadAssembliesVsi();
+      showEditDialog.value = false;
+    };
 
     return {
       assemblie,
       selectedMedia,
       videoElementRef,
       playVideo,
+      editAssembly,
+      editableAssembly,
+      updateAssemblie,
+      showEditDialog,
 
       // METHODS
       goBack: () => {
         router.push({ name: "CatalogPage" });
+      },
+      addStep: () => {
+        editableAssembly.value.steps.push("");
       },
     };
   },
@@ -227,6 +353,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.q-dialog-custom {
+  max-width: 100%;
+  /* max-height: 100%; */
+  /* width: 100%; */
+  height: 100vh;
+  /* overflow: hidden; */
+}
+.q-card {
+  width: 100%;
+}
 .alert-info {
   height: auto;
   width: auto;
@@ -344,9 +481,8 @@ export default defineComponent({
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
   width: 100%;
-  height:650px;
+  height: 70vh;
   overflow-y: scroll;
-  
 }
 .assembly-card h3 {
   margin: 0;
@@ -481,11 +617,11 @@ export default defineComponent({
   .assembly-container__description {
     flex: 1;
     /* Ocupar todo el ancho en tablet */
-    max-width: 100%; 
+    max-width: 100%;
     /* Eliminar cualquier margen que pudieran tener */
     margin: 0;
   }
-  .assembly-card{
+  .assembly-card {
     max-width: 100%;
     max-height: 100%;
   }
@@ -504,7 +640,7 @@ export default defineComponent({
   }
   .responsive-video video {
     max-width: 60vw;
-    max-height: 60vh; 
+    max-height: 60vh;
     overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
@@ -573,16 +709,15 @@ export default defineComponent({
   .assembly-container__description {
     flex: 1;
     /* Ocupar todo el ancho en móviles */
-    max-width: 100%; 
+    max-width: 100%;
     /* Eliminar cualquier margen que pudieran tener */
-    margin: 0; 
+    margin: 0;
   }
 
-  .assembly-card{
+  .assembly-card {
     max-width: 100%;
     max-height: 100%;
   }
-
 }
 /* Ends Media Query */
 </style>
