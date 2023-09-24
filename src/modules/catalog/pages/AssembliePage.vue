@@ -9,7 +9,7 @@
             v-for="(mediaItem, index) in assemblie.media"
             :key="index"
             @click="
-              selectedMedia = mediaItem;
+              selectedMedia = mediaItem.src;
               playVideo();
             "
             :media="mediaItem"
@@ -17,37 +17,35 @@
             <div
               class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
               v-if="
-                mediaItem.endsWith('.jpg') ||
-                mediaItem.endsWith('.jpeg') ||
-                mediaItem.endsWith('.png')
+                mediaItem.src.endsWith('.jpg') ||
+                mediaItem.src.endsWith('.jpeg') ||
+                mediaItem.src.endsWith('.png')
               "
             >
               <img
-                :src="mediaItem"
+                :src="mediaItem.src"
                 alt="Media item"
                 class="responsive-image__img"
               />
+              <q-tooltip>{{ getCaptionForMediaItem(mediaItem.src) }}</q-tooltip>
             </div>
             <div
               class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
               v-else-if="
-                mediaItem.endsWith('.mp4') || mediaItem.endsWith('.mov')
+                mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov')
               "
             >
-              <video :src="mediaItem">
+              <video :src="mediaItem.src">
                 Your browser does not support the video tag.
               </video>
-            </div>
-            <div v-else>
-              {{ mediaItem }}
+              <q-tooltip>{{ getCaptionForMediaItem(mediaItem.src) }}</q-tooltip>
             </div>
           </div>
         </div>
-        <!--  -->
       </div>
-      <!--  -->
       <!-- MIDDLE CONTAINER -->
       <div class="middle-container col-6 q-pa-md">
+        <!-- selectedMedia = mediaItem.src ya en este punto -->
         <div
           v-if="
             selectedMedia.endsWith('.jpg') ||
@@ -112,14 +110,12 @@
                 {{ step }}
               </p>
             </div>
-
             <!-- <div 
               v-else
               class="assembly-info">
               <strong>Steps:</strong>
               <p>No steps added for now</p>
             </div> -->
-
             <div class="assembly-info">
               <strong>Assembled By:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
@@ -132,12 +128,8 @@
         </div>
       </div>
       <!-- Ends descriptions -->
-      <!-- Edit modal -->
-      <q-dialog 
-        class="q-dialog-custom"
-        v-model="showEditDialog" 
-        persistent
-      >
+      <!-- MODAL EDIT -->
+      <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
         <q-card>
           <q-card-section>
             <div class="text-h6">Edit Assembly</div>
@@ -149,12 +141,14 @@
               v-model="editableAssembly.name"
               label="Name"
               filled
+              type="text"
             />
             <q-input
               class="q-ma-sm"
               v-model="editableAssembly.category"
               label="Category"
               filled
+              type="text"
             />
             <q-input
               class="q-ma-sm"
@@ -177,9 +171,60 @@
               filled
               type="textarea"
             />
-
+            <!--   MODAL  SECCION MEDIA -->
+            <div>
+              <div
+                class="container-media__item"
+                v-for="(mediaItem, index) in editableAssembly.media"
+                :key="index"
+                :media="mediaItem"
+              >
+                <div
+                  class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                  v-if="
+                    mediaItem.src.endsWith('.jpg') ||
+                    mediaItem.src.endsWith('.jpeg') ||
+                    mediaItem.src.endsWith('.png')
+                  "
+                >
+                  <img
+                    :src="mediaItem.src"
+                    :alt="mediaItem.src"
+                    class="responsive-image__img"
+                  />
+                  <div>
+                    <q-input
+                      v-model="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                  v-else-if="
+                    mediaItem.src.endsWith('.mp4') ||
+                    mediaItem.src.endsWith('.mov')
+                  "
+                >
+                  <video :src="mediaItem.src">
+                    Your browser does not support the video tag.
+                  </video>
+                  <div>
+                    <q-input
+                      v-model="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ENDS MODAL  SECCION MEDIA  -->
             <div
-              class="q-ma-sm"
+              class="q-ma-sm q-mb-lg"
               v-for="(step, index) in editableAssembly.steps"
               :key="index"
             >
@@ -187,20 +232,22 @@
                 v-model="editableAssembly.steps[index]"
                 :label="'Step ' + (index + 1)"
                 filled
-                type="textarea"
+                type="text"
               />
             </div>
-
-            <q-btn label="Add Step" color="primary" @click="addStep" />
-
+            <q-btn
+              class="q-mt-lg q-mb-lg"
+              label="Add Step"
+              color="primary"
+              @click="addStep"
+            />
             <q-input
-              class="q-ma-sm"
+              class="q-mt-lg q-mb-lg"
               v-model="editableAssembly.technical_name"
               label="Assembled by"
               filled
             />
           </q-card-section>
-
           <q-card-actions align="right">
             <q-btn
               label="Cancel"
@@ -212,7 +259,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <!-- Ends edit modal  -->
+      <!-- ENDS MODAL EDIT  -->
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
@@ -224,7 +271,6 @@
         </q-btn>
       </div>
     </div>
-
     <!-- LOADING -->
     <div v-else class="row justify-center align-center">
       <div class="col-3 alert-info text-center mt-5">
@@ -245,7 +291,6 @@ import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
-import { getAssemblies } from "../store/getters";
 
 export default defineComponent({
   name: "AssembliePage",
@@ -264,9 +309,10 @@ export default defineComponent({
       useCatalog();
 
     const assemblie = ref(null);
-    const selectedMedia = ref(assemblie.value ? assemblie.value.media[0] : "");
+    const selectedMedia = ref(assemblie.value ? assemblie.value.media.src : "");
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
+    const mediaCaptions = ref([]);
 
     const editableAssembly = ref({
       id: "",
@@ -275,7 +321,12 @@ export default defineComponent({
       description: "",
       hardware: "",
       notes: "",
-      media: [],
+      // media: [],
+      media:
+        assemblie.value?.media.map((mediaItem) => ({
+          src: mediaItem,
+          caption: "",
+        })) || [],
       steps: [],
       technical_name: "",
     });
@@ -287,24 +338,32 @@ export default defineComponent({
         videoElement.play();
       }
     };
-
     const loadAssemblies = async () => {
       await loadAssembliesVsi();
       return (assemblie.value = await getAssemblyById(props.id));
     };
-
     loadAssemblies();
+
     onMounted(async () => {
-      await loadAssemblies();
-      // Establecer selectedMedia después de cargar assemblie
-      const defaultImage = assemblie.value.media.find(
-        (item) =>
-          item.endsWith(".jpg") ||
-          item.endsWith(".jpeg") ||
-          item.endsWith(".png")
-      );
-      selectedMedia.value = defaultImage || assemblie.value.media[0];
-    });
+  await loadAssemblies();
+  
+  if(assemblie.value && assemblie.value.media && assemblie.value.media.length > 0) {
+    // Buscar el primer objeto cuya propiedad src termina en .jpg, .jpeg o .png
+    const defaultImage = assemblie.value.media.find((item) => 
+      typeof item.src === 'string' && (
+        item.src.endsWith(".jpg") ||
+        item.src.endsWith(".jpeg") ||
+        item.src.endsWith(".png")
+      )
+    );
+    
+    // Si defaultImage existe, se usa su propiedad src, en caso contrario, se usa el src del primer elemento de media.
+    selectedMedia.value = defaultImage ? defaultImage.src : assemblie.value.media[0].src;
+  } else {
+    console.error('assemblie.value.media is undefined or empty');
+  }
+});
+
 
     const editAssembly = () => {
       if (assemblie.value) {
@@ -314,7 +373,12 @@ export default defineComponent({
         editableAssembly.value.description = assemblie.value.description;
         editableAssembly.value.hardware = assemblie.value.hardware;
         editableAssembly.value.notes = assemblie.value.notes;
-        editableAssembly.value.media = [...assemblie.value.media]; // pasamos las imagenes a el nuevo objeto
+        editableAssembly.value.media = assemblie.value.media.map(
+          (mediaItem) => ({
+            src: mediaItem,
+            caption: "", // inicialmente está vacío, pero puedes asignar el valor que desees.
+          })
+        );
         editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
         editableAssembly.value.technical_name = assemblie.value.technical_name;
 
@@ -326,8 +390,12 @@ export default defineComponent({
       console.log(editableAssembly.value);
       await updateAssemblyVsi(editableAssembly.value);
       Object.assign(assemblie.value, editableAssembly.value);
-      await loadAssembliesVsi();
       showEditDialog.value = false;
+    };
+
+    // esta funcion se necesita modificar
+    const getCaptionForMediaItem = (mediaItem) => {
+      return mediaCaptions[mediaItem] || ""; // retorna un string vacío si no hay caption para el mediaItem
     };
 
     return {
@@ -339,8 +407,8 @@ export default defineComponent({
       editableAssembly,
       updateAssemblie,
       showEditDialog,
-
-      // METHODS
+      getCaptionForMediaItem,
+      // INLINE METHODS
       goBack: () => {
         router.push({ name: "CatalogPage" });
       },
@@ -353,7 +421,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .q-dialog-custom {
   max-width: 100%;
   /* max-height: 100%; */

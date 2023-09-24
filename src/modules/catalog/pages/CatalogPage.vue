@@ -75,20 +75,16 @@ export default defineComponent({
       getAssemblies,
       getAssemblyByName,
       loadAssembliesVsi,
-      // getAssembliesVsiByCategory,
     } = useCatalog();
 
     onMounted(async () => {
       isLoading.value = true;
-      // console.log(isLoading.value)
       await loadAssembliesVsi();
       isLoading.value = false;
-      // console.log(isLoading.value)
     });
 
     const filteredAssemblies = computed(() =>
       getAssemblyByName(assemblyName.value),
-      // getAssembliesVsiByCategory(assemblie.category)
     );
 
     return {
@@ -101,8 +97,6 @@ export default defineComponent({
       // METHODS
       filteredAssemblies,
       getAssembliePage: (assemblie) => {
-        // console.log(assemblie);
-        // console.log(assemblie.id);
         router.push({
           name: "AssembliePage",
           params: { id: assemblie },

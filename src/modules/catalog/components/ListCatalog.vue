@@ -31,7 +31,7 @@
 <script>
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "CatalogCard",
+  name: "ListCatalog",
   props: {
     id: {
       type: String,
@@ -51,7 +51,6 @@ export default defineComponent({
       default: "",
     },
     description: String,
-    // price: Number,
     category: String,
     hardware: String,
   },
