@@ -27,7 +27,7 @@
                 alt="Media item"
                 class="responsive-image__img"
               />
-              <q-tooltip>{{ getCaptionForMediaItem(mediaItem.src) }}</q-tooltip>
+              <q-tooltip>{{mediaItem.caption}}</q-tooltip>
             </div>
             <div
               class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
@@ -38,7 +38,7 @@
               <video :src="mediaItem.src">
                 Your browser does not support the video tag.
               </video>
-              <q-tooltip>{{ getCaptionForMediaItem(mediaItem.src) }}</q-tooltip>
+              <q-tooltip>{{mediaItem.caption}}</q-tooltip>
             </div>
           </div>
         </div>
@@ -177,14 +177,15 @@
                 class="container-media__item"
                 v-for="(mediaItem, index) in editableAssembly.media"
                 :key="index"
-                :media="mediaItem"
+                :media="mediaItem.src"
               >
                 <div
                   class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-if="
-                    mediaItem.src.endsWith('.jpg') ||
+                    typeof mediaItem.src === 'string' &&
+                    (mediaItem.src.endsWith('.jpg') ||
                     mediaItem.src.endsWith('.jpeg') ||
-                    mediaItem.src.endsWith('.png')
+                    mediaItem.src.endsWith('.png'))
                   "
                 >
                   <img
@@ -193,36 +194,36 @@
                     class="responsive-image__img"
                   />
                   <div>
-                    <q-input
-                      v-model="mediaItem.caption"
-                      label="Add Description"
-                      filled
-                      type="text"
+                    <q-input 
+                      v-model="mediaItem.caption" 
+                      label="Add Description" 
+                      filled 
+                      type="text" 
                     />
                   </div>
                 </div>
                 <div
                   class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-else-if="
-                    mediaItem.src.endsWith('.mp4') ||
-                    mediaItem.src.endsWith('.mov')
+                    typeof mediaItem.src === 'string' &&
+                    (mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov'))
                   "
                 >
                   <video :src="mediaItem.src">
                     Your browser does not support the video tag.
                   </video>
                   <div>
-                    <q-input
-                      v-model="mediaItem.caption"
-                      label="Add Description"
-                      filled
-                      type="text"
+                    <q-input 
+                      v-model="mediaItem.caption" 
+                      label="Add Description" 
+                      filled 
+                      type="text" 
                     />
                   </div>
                 </div>
               </div>
             </div>
-            <!-- ENDS MODAL  SECCION MEDIA  -->
+            <!-- ENDS MODAL SECCION MEDIA  -->
             <div
               class="q-ma-sm q-mb-lg"
               v-for="(step, index) in editableAssembly.steps"
@@ -310,6 +311,7 @@ export default defineComponent({
 
     const assemblie = ref(null);
     const selectedMedia = ref(assemblie.value ? assemblie.value.media.src : "");
+
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
     const mediaCaptions = ref([]);
@@ -321,7 +323,6 @@ export default defineComponent({
       description: "",
       hardware: "",
       notes: "",
-      // media: [],
       media:
         assemblie.value?.media.map((mediaItem) => ({
           src: mediaItem,
@@ -342,29 +343,31 @@ export default defineComponent({
       await loadAssembliesVsi();
       return (assemblie.value = await getAssemblyById(props.id));
     };
-    loadAssemblies();
+    // loadAssemblies();
 
     onMounted(async () => {
-  await loadAssemblies();
-  
-  if(assemblie.value && assemblie.value.media && assemblie.value.media.length > 0) {
-    // Buscar el primer objeto cuya propiedad src termina en .jpg, .jpeg o .png
-    const defaultImage = assemblie.value.media.find((item) => 
-      typeof item.src === 'string' && (
-        item.src.endsWith(".jpg") ||
-        item.src.endsWith(".jpeg") ||
-        item.src.endsWith(".png")
-      )
-    );
-    
-    // Si defaultImage existe, se usa su propiedad src, en caso contrario, se usa el src del primer elemento de media.
-    selectedMedia.value = defaultImage ? defaultImage.src : assemblie.value.media[0].src;
-  } else {
-    console.error('assemblie.value.media is undefined or empty');
-  }
-});
+      await loadAssemblies();
 
-
+      if (
+        assemblie.value &&
+        assemblie.value.media &&
+        assemblie.value.media.length > 0
+      ) {
+        // Buscar el primer objeto cuya propiedad src termina en .jpg, .jpeg o .png
+        const defaultImage = assemblie.value.media.find(
+          (item) =>
+            typeof item.src === "string" &&
+            (item.src.endsWith(".jpg") ||
+              item.src.endsWith(".jpeg") ||
+              item.src.endsWith(".png"))
+        );
+        selectedMedia.value = defaultImage
+          ? defaultImage.src
+          : assemblie.value.media[0].src;
+      } else {
+        console.error("assemblie.value.media is undefined or empty");
+      }
+    });
     const editAssembly = () => {
       if (assemblie.value) {
         editableAssembly.value.id = props.id;
@@ -373,31 +376,19 @@ export default defineComponent({
         editableAssembly.value.description = assemblie.value.description;
         editableAssembly.value.hardware = assemblie.value.hardware;
         editableAssembly.value.notes = assemblie.value.notes;
-        editableAssembly.value.media = assemblie.value.media.map(
-          (mediaItem) => ({
-            src: mediaItem,
-            caption: "", // inicialmente está vacío, pero puedes asignar el valor que desees.
-          })
-        );
+        editableAssembly.value.media = [...assemblie.value.media]; // Usamos spread para copiar el array
         editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
         editableAssembly.value.technical_name = assemblie.value.technical_name;
-
         showEditDialog.value = true;
       }
     };
-
     const updateAssemblie = async () => {
-      console.log(editableAssembly.value);
       await updateAssemblyVsi(editableAssembly.value);
+      await loadAssemblies();
       Object.assign(assemblie.value, editableAssembly.value);
       showEditDialog.value = false;
     };
-
-    // esta funcion se necesita modificar
-    const getCaptionForMediaItem = (mediaItem) => {
-      return mediaCaptions[mediaItem] || ""; // retorna un string vacío si no hay caption para el mediaItem
-    };
-
+   
     return {
       assemblie,
       selectedMedia,
@@ -407,7 +398,6 @@ export default defineComponent({
       editableAssembly,
       updateAssemblie,
       showEditDialog,
-      getCaptionForMediaItem,
       // INLINE METHODS
       goBack: () => {
         router.push({ name: "CatalogPage" });

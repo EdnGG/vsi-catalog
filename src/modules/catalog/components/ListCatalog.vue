@@ -1,5 +1,6 @@
 <template>
   <div clas="main-container">
+    <!-- {{ media[0].src }} -->
     <q-list 
     class="container-qlist"
     >
