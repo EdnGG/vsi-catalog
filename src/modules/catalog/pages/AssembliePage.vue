@@ -1,7 +1,9 @@
 <template>
   <q-page>
+    <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo at ipsa amet maxime neque nostrum cum natus ullam? Ipsam beatae eveniet necessitatibus hic dolorum quaerat quisquam excepturi facilis quasi a! -->
     <div v-if="assemblie" class="responsive-main-container flex row">
       <!-- CONTAINER MEDIA -->
+      <!-- {{ assemblie.media[0].src  }} -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
           <div
@@ -311,10 +313,8 @@ export default defineComponent({
 
     const assemblie = ref(null);
     const selectedMedia = ref(assemblie.value ? assemblie.value.media.src : "");
-
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
-    const mediaCaptions = ref([]);
 
     const editableAssembly = ref({
       id: "",
@@ -347,7 +347,6 @@ export default defineComponent({
 
     onMounted(async () => {
       await loadAssemblies();
-
       if (
         assemblie.value &&
         assemblie.value.media &&

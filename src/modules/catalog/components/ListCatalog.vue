@@ -7,7 +7,7 @@
       <q-item>
         <q-item-section class="q-item-section-img">
           <div class="container-img">
-            <img :src="media[0]" :alt="media[0].name" />
+            <img :src="media[0].src" :alt="media[0].name" />
           </div>
         </q-item-section>
         <q-item-section class="container-description">

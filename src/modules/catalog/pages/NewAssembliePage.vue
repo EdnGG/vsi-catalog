@@ -23,7 +23,6 @@
               (val && val.length > 0) || 'Please introduce the assembly name',
           ]"
         />
-
         <q-input
           filled
           autogrow
@@ -36,7 +35,6 @@
               (val && val.length > 0) || 'Please introduce a description',
           ]"
         />
-
         <q-input
           filled
           v-model="assembly.category"
@@ -47,7 +45,6 @@
             (val) => (val && val.length > 0) || 'Please introduce a categorie',
           ]"
         />
-
         <q-input
           filled
           autogrow
@@ -60,7 +57,6 @@
               (val && val.length > 0) || 'Please introduce a hardware type',
           ]"
         />
-
         <q-input
           filled
           autogrow
@@ -79,13 +75,11 @@
             v-model="assembly.steps"
           />
         </div>
-
         <div class="q-mb-lg text-center" v-if="assembly.steps.length">
           <div v-for="(note, index) in assembly.steps" :key="index">
             <strong>{{ index + 1 }}) :</strong> {{ note }}
           </div>
         </div>
-
         <q-input
           filled
           autogrow
@@ -97,7 +91,6 @@
             (val) => (val && val.length > 0) || 'Please type technical name',
           ]"
         />
-
         <div class="q-pa-md">
           <div class="row justify-center">
             <q-btn
@@ -109,7 +102,6 @@
             />
           </div>
         </div>
-
         <div class="q-pt-lg text-center">
           <q-btn unelevated label="Submit" type="submit" color="primary" />
           <q-btn
@@ -156,19 +148,6 @@ export default defineComponent({
         .onDismiss(() => {
           console.log("Dismiss");
         });
-    };
-
-    const showStepsDialog = () => {
-      return $q.dialog({
-        title: "Assembly Steps",
-        message: `Step ${assembly.value.notes.length + 1}`,
-        prompt: {
-          model: "",
-          type: "text",
-        },
-        cancel: true,
-        persistent: true,
-      });
     };
 
     const addSteps = () => {
@@ -234,10 +213,6 @@ export default defineComponent({
         },
       },
       (error, results) => {
-        // if (!error && results && results.event === "success") {
-        //   const secureUrl = results.info.secure_url;
-        //   assemblyMedia.value.push(secureUrl); // Agregar el secure_url a assemblyMedia
-        // }
         if (!error && results && results.event === "success") {
           const secureUrl = results.info.secure_url;
           assemblyMedia.value.push(secureUrl);
@@ -245,19 +220,17 @@ export default defineComponent({
           // Si assemblyMedia contiene al menos un archivo y la alerta no se ha mostrado, muestra la alerta.
           if (!error && results && results.event === "close") {
             // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
-            if (assemblyMedia.value.length > 0) {
-              alert();
-            }
+            // if (assemblyMedia.value.length > 0) {
+            //   alert();
+            // }
           }
         }
       }
     );
-
     const openUploadWidget = () => {
       widget.open();
       isAlertShown.value = false;
     };
-
     const assembly = ref({
       name: "",
       description: "",
@@ -276,12 +249,22 @@ export default defineComponent({
         category: "",
         hardware: "",
         notes: "",
+        technical_name: "",
+        steps: [],
+        media: [],
       };
     };
 
     const onSubmit = async () => {
-      // console.log("Submitted!", assembly.value);
-      assembly.value.media = assemblyMedia.value;
+      assembly.value.media = [];
+
+      assemblyMedia.value.forEach((secureUrl) => {
+        assembly.value.media.push({
+          src: secureUrl,
+          caption: "",
+        });
+      });
+
       await addAssemblyVsi(assembly.value);
       router.push({ name: "CatalogPage" });
       onReset();
@@ -292,7 +275,6 @@ export default defineComponent({
       openUploadWidget,
       assembly,
       onReset,
-
       // METHODS
       onSubmit,
       addSteps,
