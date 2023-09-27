@@ -17,17 +17,21 @@
           <q-icon name="las la-door-open" />
           <q-toolbar-title> EXIT </q-toolbar-title>
         </div>
-
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="sideMenuOpen" show-if-above bordered>
-      <q-list>
+      <q-list v-if="isAuthenticated">
         <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
-        <EssentialLink 
-          v-for="link in links" 
-          :key="link.title" 
-          v-bind="link" 
+        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+      </q-list>
+      <q-list v-else>
+        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+
+        <EssentialLink
+          v-for="link in regularLinks"
+          :key="link.title"
+          v-bind="link"
         />
       </q-list>
     </q-drawer>
@@ -39,7 +43,7 @@
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent } from "vue";
+import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { useCatalog } from "src/composables/useCatalog";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 import links from "src/router/links";
@@ -54,11 +58,33 @@ export default defineComponent({
   },
 
   setup() {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated } = useAuth();
     const catalog = useCatalog();
     const { sideMenuOpen, toogleLeftDrawer } = catalog;
 
+    const regularLinks = ref([
+      {
+        title: "ASSEMBLIES",
+        caption: "Assemblies Page",
+        icon: "las la-hippo",
+        link: "IndexPage",
+      },
+      {
+        title: "LOGIN",
+        caption: "Login Page",
+        icon: "las la-hippo",
+        link: "LoginPage",
+      },
+      {
+        title: "SIGN UP",
+        caption: "Signup Page",
+        icon: "las la-hippo",
+        link: "SignupPage",
+      },
+    ]);
+
     return {
+      regularLinks,
       links,
       sideMenuOpen,
       toogleLeftDrawer,

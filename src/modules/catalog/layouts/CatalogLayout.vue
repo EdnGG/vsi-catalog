@@ -21,7 +21,7 @@
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
           </router-link>
-          <span>ASSEMBLY CATALOG</span>
+          <span>ASSEMBLY CATALOG</span> 
         </q-toolbar-title>
 
         <div v-if="isAuthenticated" class="container-logout" @click="logout">
@@ -38,11 +38,11 @@
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
       <!--  -->
-      
+
       <q-list v-else>
         <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
 
-        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+        <EssentialLink v-for="link in regularLinks" :key="link.title" v-bind="link" />
       </q-list>
 
       <!--  -->
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent, computed } from "vue";
+import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "../../auth/composables/useAuth";
 import links from "../router/links";
@@ -74,7 +74,23 @@ export default defineComponent({
     const catalog = useCatalog();
     const { sideMenuOpen, toogleLeftDrawer } = catalog;
 
+    const regularLinks = ref([
+      {
+        title: "VSI Catalog",
+        caption: "VSI Catalog assemblies",
+        icon: "las la-list-ul",
+        link: "CatalogPage",
+      },
+      {
+        title: "WATERWORKS catalog",
+        caption: "WATER WORKS Catalog assemblies",
+        icon: "las la-list-ul",
+        link: "CatalogPageWworks",
+      },
+    ]);
+
     return {
+      regularLinks,
       links,
       sideMenuOpen,
       toogleLeftDrawer,

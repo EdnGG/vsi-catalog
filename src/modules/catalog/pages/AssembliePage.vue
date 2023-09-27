@@ -1,9 +1,7 @@
 <template>
   <q-page>
-    <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo at ipsa amet maxime neque nostrum cum natus ullam? Ipsam beatae eveniet necessitatibus hic dolorum quaerat quisquam excepturi facilis quasi a! -->
     <div v-if="assemblie" class="responsive-main-container flex row">
       <!-- CONTAINER MEDIA -->
-      <!-- {{ assemblie.media[0].src  }} -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
           <div
@@ -14,7 +12,7 @@
               selectedMedia = mediaItem.src;
               playVideo();
             "
-            :media="mediaItem"
+            :media="mediaItem" 
           >
             <div
               class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
@@ -106,7 +104,7 @@
               <p>{{ assemblie.notes }}</p>
             </div>
 
-            <div class="assembly-info">
+            <div v-if="isAuthenticated" class="assembly-info">
               <strong>Steps:</strong>
               <p v-for="(step, index) in assemblie.steps" :key="index">
                 {{ step }}
@@ -124,8 +122,11 @@
             </div>
           </div>
 
-          <q-btn class="col-12 q-ma-lg" @click="editAssembly">
-            <q-icon name="edit" /> EDIT
+          <q-btn 
+            v-if="isAuthenticated"
+            class="col-12 q-ma-lg" 
+            @click="editAssembly">
+              <q-icon name="edit" /> EDIT
           </q-btn>
         </div>
       </div>
@@ -176,13 +177,13 @@
             <!--   MODAL  SECCION MEDIA -->
             <div>
               <div
-                class="container-media__item"
+                class="modal-container-media__item"
                 v-for="(mediaItem, index) in editableAssembly.media"
                 :key="index"
                 :media="mediaItem.src"
               >
                 <div
-                  class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                  class="modal-responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-if="
                     typeof mediaItem.src === 'string' &&
                     (mediaItem.src.endsWith('.jpg') ||
@@ -193,7 +194,7 @@
                   <img
                     :src="mediaItem.src"
                     :alt="mediaItem.src"
-                    class="responsive-image__img"
+                    class="modal-responsive__img"
                   />
                   <div>
                     <q-input 
@@ -205,7 +206,7 @@
                   </div>
                 </div>
                 <div
-                  class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                  class="modal-responsive__video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-else-if="
                     typeof mediaItem.src === 'string' &&
                     (mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov'))
@@ -294,6 +295,7 @@ import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
+import { useAuth } from "src/modules/auth/composables/useAuth"
 
 export default defineComponent({
   name: "AssembliePage",
@@ -308,6 +310,8 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
+
+    const { isAuthenticated } = useAuth();
     const { getAssemblyById, loadAssembliesVsi, updateAssemblyVsi } =
       useCatalog();
 
@@ -343,7 +347,6 @@ export default defineComponent({
       await loadAssembliesVsi();
       return (assemblie.value = await getAssemblyById(props.id));
     };
-    // loadAssemblies();
 
     onMounted(async () => {
       await loadAssemblies();
@@ -397,6 +400,8 @@ export default defineComponent({
       editableAssembly,
       updateAssemblie,
       showEditDialog,
+      // GETTERS
+      isAuthenticated,
       // INLINE METHODS
       goBack: () => {
         router.push({ name: "CatalogPage" });
@@ -431,22 +436,19 @@ export default defineComponent({
   background-color: #d9edf7;
   border-color: #bce8f1;
 }
-
 .single-img {
   overflow: hidden;
   width: 100%;
   display: inline-block; /* Esto asegura que el overflow hidden funcione correctamente */
   max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
-  max-height: 100%;
+  height: 50%;
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
-
 .single-video {
   max-width: 100%; /* Utiliza todo el ancho disponible de la columna */
   max-height: 90%; /* Este cambio mantiene el aspecto original de la imagen */
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
-
 .middle-container {
   padding-top: 66px;
   justify-content: center;
@@ -497,18 +499,25 @@ export default defineComponent({
   max-height: 40%;
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
+.modal-responsive__img{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; 
+}
 .responsive-video {
   transition: transform 0.3s; /* Transición suave al hacer zoom */
   display: block; /* Remueve espacios no deseados debajo de la imagen */
-
   width: 100%;
   height: 100%;
 }
-
+.modal-responsive__video video {
+  max-width: 95%;
+  max-height: 100%; 
+  object-fit: cover;
+}
 .responsive-image:hover .responsive-image__img {
   transform: scale(1.5); /* Escala la imagen 1.5 veces su tamaño original */
 }
-
 .responsive-video video {
   max-width: 40%;
   max-height: 40%; /* Ajusta el alto máximo del vídeo */
@@ -526,7 +535,6 @@ export default defineComponent({
   height: 100%; /* Limit the maximum height of the container */
   overflow-y: scroll; /* Enable vertical scrolling when content exceeds the height */
 }
-
 .assembly-card {
   padding: 20px;
   margin-right: 25px;
@@ -549,9 +557,6 @@ export default defineComponent({
   color: #333;
 }
 
-/* .assembly-card p {
-  font-size: 8px;
-} */
 .assembly-card .assembly-category {
   /* margin: 0; */
   margin-bottom: 20px;
@@ -609,9 +614,15 @@ export default defineComponent({
     position: relative;
     /* Esto es necesario para el siguiente paso */
   }
+  .modal-responsive__video video {
+    object-fit: cover;
+    width: 100%;
+    height: 40%;
+    margin: 10px;
+    padding: 10px;
+  }
   .responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
     display: flex;
     flex-direction: row;
     width: 60%;
@@ -621,6 +632,17 @@ export default defineComponent({
     margin-right: 0px;
     padding: 0px;
   }
+  .modal-responsive-image{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    height: 40%;
+    margin: 10px;
+    padding: 10px;
+  }
   .responsive-image__img {
     max-width: 40vw;
     max-height: 40vh;
@@ -628,6 +650,11 @@ export default defineComponent({
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
     /* Esto es necesario para el siguiente paso */
+  }
+  .modal-responsive__img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
   }
   .container-media {
     margin-top: 0px;
@@ -655,7 +682,6 @@ export default defineComponent({
     padding: 0px;
     margin: 0px;
   }
-
   .middle-container {
     padding-top: 0px;
   }
@@ -682,7 +708,6 @@ export default defineComponent({
     max-height: 100%;
   }
 }
-
 /* Media Query para Móviles */
 @media (max-width: 767px) {
   .responsive-video {
@@ -702,9 +727,17 @@ export default defineComponent({
     position: relative;
     /* Esto es necesario para el siguiente paso */
   }
+  .modal-responsive__video video {
+    /* max-width: 95%;
+    max-height: 100%;  */
+    object-fit: cover;
+    width: 100%;
+    height: 40%;
+    margin: 10px;
+    padding: 10px;
+  }
   .responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
-
     display: flex;
     flex-direction: row;
     width: 60%;
@@ -714,6 +747,17 @@ export default defineComponent({
     margin-right: 0px;
     padding: 0px;
   }
+  .modal-responsive-image{
+    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    height: 40%;
+    margin: 10px;
+    padding: 10px;
+  }
   .responsive-image__img {
     max-width: 40vw;
     max-height: 40vh;
@@ -721,6 +765,11 @@ export default defineComponent({
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
     /* Esto es necesario para el siguiente paso */
+  }
+  .modal-responsive__img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
   }
   .container-media {
     margin-top: 0px;
@@ -743,6 +792,12 @@ export default defineComponent({
     /* flex-wrap:nowrap; */
   }
   .container-media__item {
+    max-width: 100%;
+    max-height: 100vh;
+    padding: 0px;
+    margin: 0px;
+  }
+  .modal-container-media__item {
     max-width: 100%;
     max-height: 100vh;
     padding: 0px;
