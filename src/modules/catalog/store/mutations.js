@@ -31,5 +31,10 @@ export const updateAssemblyVsi = (state, assembly) => {
 
 export const setSearchResults = (state, results) => {
     state.asemblies = results;
-  }
+}
+
+export const updateAssemblyVsiSteps = (state, assembly) => {
+    const index = state.assemblies.findIndex((a) => a.id === assembly.id);
+    state.assemblies[index] = assembly;
+}
 

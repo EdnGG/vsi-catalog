@@ -17,7 +17,6 @@ export const useCatalog = () => {
     return resp;
   };
 
-
   const addAssemblyWaterWorks = async (assembly) => {
     const resp = await store.dispatch("catalogModule/addAssemblyWaterWorks", assembly);
     return resp;
@@ -34,8 +33,12 @@ export const useCatalog = () => {
   };
 
   const updateAssemblyVsi = async (assembly) => {
-    console.log(assembly)
     const resp = await store.dispatch("catalogModule/updateAssemblyVsi", assembly);
+    return resp;
+  }
+
+  const updateAssemblyVsiSteps = async (assembly) => {
+    const resp = await store.dispatch("catalogModule/updateAssemblyVsiSteps", assembly);
     return resp;
   }
   
@@ -55,6 +58,7 @@ export const useCatalog = () => {
     }),
   
     // METHODS
+    updateAssemblyVsiSteps,
     addAssemblyWaterWorks,
     addAssemblyVsi,
     loadAssembliesVsi,

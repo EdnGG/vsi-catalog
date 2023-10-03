@@ -1,15 +1,7 @@
 // export function someAction (/* context */) {
 // }
-// import axios from 'axios'
 import { collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../boot/firebase";
-
-// import catalogApi from "../../../api/catalogApi";
-
-// export const loadAssemblies = ({ commit }) => {
-//   const assemblies = catalogApi;
-//   commit("setAssemblies", assemblies);
-// };
 
 export const loadAssembliesVsi = async ({ commit }) => {
   try {
@@ -59,9 +51,8 @@ export const addAssemblyWaterWorks = async ({ commit }, assembly) => {
   commit("addAssemblyWaterWorks", assembly);
 };
 
-
 export const updateAssemblyVsi = async ({ commit }, assembly) => {
-  console.log(assembly)
+  // console.log(assembly)
   const assemblyRef = doc(db, "vsi", assembly.id);
   await updateDoc(assemblyRef, assembly);
   commit("updateAssemblyVsi", assembly);
@@ -70,3 +61,9 @@ export const updateAssemblyVsi = async ({ commit }, assembly) => {
 export const setSearchResults = ({ commit }, results) => {
   commit("setSearchResults", results);
 };
+
+export const updateAssemblyVsiSteps = async ({ commit }, assembly) => {
+  const assemblyRef = doc(db, "vsi", assembly.id);
+  await updateDoc(assemblyRef, assembly);
+  commit("updateAssemblyVsiSteps", assembly);
+}

@@ -12,7 +12,7 @@
               selectedMedia = mediaItem.src;
               playVideo();
             "
-            :media="mediaItem" 
+            :media="mediaItem"
           >
             <div
               class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
@@ -27,7 +27,7 @@
                 alt="Media item"
                 class="responsive-image__img"
               />
-              <q-tooltip>{{mediaItem.caption}}</q-tooltip>
+              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
             </div>
             <div
               class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
@@ -38,14 +38,13 @@
               <video :src="mediaItem.src">
                 Your browser does not support the video tag.
               </video>
-              <q-tooltip>{{mediaItem.caption}}</q-tooltip>
+              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
             </div>
           </div>
         </div>
       </div>
       <!-- MIDDLE CONTAINER -->
       <div class="middle-container col-6 q-pa-md">
-        <!-- selectedMedia = mediaItem.src ya en este punto -->
         <div
           v-if="
             selectedMedia.endsWith('.jpg') ||
@@ -85,7 +84,7 @@
         </div>
       </div>
       <!--  -->
-      <!-- descriptions -->
+      <!-- DESCRIPTION SECCION -->
       <div class="assembly-container__description">
         <div class="assembly-card">
           <h3>{{ assemblie.name }}</h3>
@@ -99,38 +98,52 @@
               <strong>Hardware:</strong>
               <p>{{ assemblie.hardware }}</p>
             </div>
-            <div class="assembly-info">
+            <div v-if="isAuthenticated" class="assembly-info">
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
-
-            <div v-if="isAuthenticated" class="assembly-info">
-              <strong>Steps:</strong>
-              <p v-for="(step, index) in assemblie.steps" :key="index">
-                {{ step }}
-              </p>
+            <div v-if="isAuthenticated" class="q-ma-sm q-mb-lg">
+              <p class="q-mb-lg"><strong>Steps:</strong></p>
+              <draggable
+                v-model="list"
+                :disabled="!sorting"
+                @change="updateSteps($event, sorting)"
+              >
+                <div
+                  v-for="(step, index) in list"
+                  :key="index"
+                  class="flex items-center active-draggable-item"
+                >
+                  <q-icon name="drag_indicator" class="q-mr-sm" />
+                  {{ step }}
+                </div>
+              </draggable>
+              <!-- 
+                Despues de agregar el nuevo orden de "list" actualizar el array de steps de assemblie y despues actualizar el assemblie en Vuex y en Firestore
+               -->
+              <div>
+                <q-btn class="q-ma-sm q-mt-xl" @click="toggleSorting">
+                  {{ sorting ? "Stop Sorting" : "Start Sorting" }}</q-btn
+                >
+              </div>
             </div>
-            <!-- <div 
-              v-else
-              class="assembly-info">
-              <strong>Steps:</strong>
-              <p>No steps added for now</p>
-            </div> -->
+
             <div class="assembly-info">
               <strong>Assembled By:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
           </div>
 
-          <q-btn 
+          <q-btn
             v-if="isAuthenticated"
-            class="col-12 q-ma-lg" 
-            @click="editAssembly">
-              <q-icon name="edit" /> EDIT
+            class="col-12 q-ma-lg"
+            @click="editAssembly"
+          >
+            <q-icon name="edit" /> EDIT
           </q-btn>
         </div>
       </div>
-      <!-- Ends descriptions -->
+      <!-- ENDS DESCRIPTION SECTION -->
       <!-- MODAL EDIT -->
       <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
         <q-card>
@@ -187,8 +200,8 @@
                   v-if="
                     typeof mediaItem.src === 'string' &&
                     (mediaItem.src.endsWith('.jpg') ||
-                    mediaItem.src.endsWith('.jpeg') ||
-                    mediaItem.src.endsWith('.png'))
+                      mediaItem.src.endsWith('.jpeg') ||
+                      mediaItem.src.endsWith('.png'))
                   "
                 >
                   <img
@@ -197,11 +210,11 @@
                     class="modal-responsive__img"
                   />
                   <div>
-                    <q-input 
-                      v-model="mediaItem.caption" 
-                      label="Add Description" 
-                      filled 
-                      type="text" 
+                    <q-input
+                      v-model="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
                     />
                   </div>
                 </div>
@@ -209,18 +222,19 @@
                   class="modal-responsive__video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-else-if="
                     typeof mediaItem.src === 'string' &&
-                    (mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov'))
+                    (mediaItem.src.endsWith('.mp4') ||
+                      mediaItem.src.endsWith('.mov'))
                   "
                 >
                   <video :src="mediaItem.src">
                     Your browser does not support the video tag.
                   </video>
                   <div>
-                    <q-input 
-                      v-model="mediaItem.caption" 
-                      label="Add Description" 
-                      filled 
-                      type="text" 
+                    <q-input
+                      v-model="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
                     />
                   </div>
                 </div>
@@ -284,23 +298,29 @@
         </h3>
       </div>
     </div>
+    <!-- ENDS LOADING -->
+    <AssembliePageFooter />
   </q-page>
 </template>
 
 <script>
 import "vue-inner-image-zoom/lib/vue-inner-image-zoom.css";
 import InnerImageZoom from "vue-inner-image-zoom";
+import { VueDraggableNext } from "vue-draggable-next";
+import AssembliePageFooter from "../components/AssembliePageFooter.vue";
 
 import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 import { useCatalog } from "../composables/useCatalog";
-import { useAuth } from "src/modules/auth/composables/useAuth"
+import { useAuth } from "src/modules/auth/composables/useAuth";
 
 export default defineComponent({
   name: "AssembliePage",
   components: {
     "inner-image-zoom": InnerImageZoom,
+    draggable: VueDraggableNext,
+    AssembliePageFooter,
   },
   props: {
     id: {
@@ -312,13 +332,19 @@ export default defineComponent({
     const router = useRouter();
 
     const { isAuthenticated } = useAuth();
-    const { getAssemblyById, loadAssembliesVsi, updateAssemblyVsi } =
-      useCatalog();
+    const {
+      getAssemblyById,
+      loadAssembliesVsi,
+      updateAssemblyVsi,
+      updateAssemblyVsiSteps,
+    } = useCatalog();
 
     const assemblie = ref(null);
     const selectedMedia = ref(assemblie.value ? assemblie.value.media.src : "");
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
+    const list = ref([]);
+    const sorting = ref(false);
 
     const editableAssembly = ref({
       id: "",
@@ -332,7 +358,9 @@ export default defineComponent({
           src: mediaItem,
           caption: "",
         })) || [],
-      steps: [],
+      // steps: [], 
+      // hacer que steps tenga el valor de assemblie.value.steps
+      steps: assemblie.value?.steps || [],
       technical_name: "",
     });
 
@@ -369,6 +397,8 @@ export default defineComponent({
       } else {
         console.error("assemblie.value.media is undefined or empty");
       }
+      // Cargar los steps en  el list
+      list.value = assemblie.value.steps;
     });
     const editAssembly = () => {
       if (assemblie.value) {
@@ -385,21 +415,38 @@ export default defineComponent({
       }
     };
     const updateAssemblie = async () => {
+      Object.assign(assemblie.value, editableAssembly.value);
+      assemblie.value.steps = list.value;
       await updateAssemblyVsi(editableAssembly.value);
       await loadAssemblies();
-      Object.assign(assemblie.value, editableAssembly.value);
       showEditDialog.value = false;
     };
-   
+    const updateSteps = async ($event, sorting) => {
+      await updateAssemblyVsi(assemblie.value);
+      await loadAssemblies();
+      // Actualizar la propiedad assemblie.value.steps con el valor de list.value
+      // assemblie.value.steps = list.value;
+      // Esperar a que se actualice el DOM
+      // await nextTick();
+    };
+    const toggleSorting = () => {
+      sorting.value = !sorting.value;
+    };
+
     return {
+      sorting,
+      toggleSorting,
+      list,
       assemblie,
       selectedMedia,
       videoElementRef,
       playVideo,
+      updateSteps,
       editAssembly,
       editableAssembly,
       updateAssemblie,
       showEditDialog,
+      updateAssemblyVsiSteps,
       // GETTERS
       isAuthenticated,
       // INLINE METHODS
@@ -415,6 +462,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.active-draggable-item {
+  cursor: pointer !important;
+  border-radius: 5px;
+  border: 5px; /* Color de borde azul */
+  background-color: #b2c2ce !important; /* Color de fondo azul claro */
+  transition: all 0.5s ease-in-out !important; /* Transición suave */
+  padding: 10px; /* Espaciado interno */
+  margin: 10px 0; /* Espaciado externo */
+}
 .q-dialog-custom {
   max-width: 100%;
   /* max-height: 100%; */
@@ -499,10 +555,10 @@ export default defineComponent({
   max-height: 40%;
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
-.modal-responsive__img{
+.modal-responsive__img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
 }
 .responsive-video {
   transition: transform 0.3s; /* Transición suave al hacer zoom */
@@ -512,7 +568,7 @@ export default defineComponent({
 }
 .modal-responsive__video video {
   max-width: 95%;
-  max-height: 100%; 
+  max-height: 100%;
   object-fit: cover;
 }
 .responsive-image:hover .responsive-image__img {
@@ -632,7 +688,7 @@ export default defineComponent({
     margin-right: 0px;
     padding: 0px;
   }
-  .modal-responsive-image{
+  .modal-responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     justify-content: center;
@@ -651,7 +707,7 @@ export default defineComponent({
     position: relative;
     /* Esto es necesario para el siguiente paso */
   }
-  .modal-responsive__img{
+  .modal-responsive__img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
@@ -747,7 +803,7 @@ export default defineComponent({
     margin-right: 0px;
     padding: 0px;
   }
-  .modal-responsive-image{
+  .modal-responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     justify-content: center;
@@ -766,7 +822,7 @@ export default defineComponent({
     position: relative;
     /* Esto es necesario para el siguiente paso */
   }
-  .modal-responsive__img{
+  .modal-responsive__img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
