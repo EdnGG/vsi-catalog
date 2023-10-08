@@ -1,8 +1,8 @@
 {
   "name": "vsi-catalogue",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "Vsi Assemblies Catalog",
+  "productName": "Assemblie's Catalog",
   "author": "Eden Gomez <gresseden@gmail.com>",
   "private": true,
   "scripts": {

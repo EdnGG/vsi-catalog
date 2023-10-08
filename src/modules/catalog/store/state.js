@@ -2,10 +2,11 @@ export default function () {
   return {
     isLoading: true,
     isSideMenuOpen: true,
-    assemblies: [],
+    assemblies: [], // Este es el que se esta usando
     assembliesVsi: [],
     assembliesWaterWorks: [], 
-    // assembliesVsiByCategoty: [],
-
+    currentVisibleAssemblies: [],
+    lastVisibleAssemblies: null,
+    limit: 8,
   }
 }

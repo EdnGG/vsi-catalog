@@ -299,7 +299,10 @@
       </div>
     </div>
     <!-- ENDS LOADING -->
-    <AssembliePageFooter />
+    <div class="foote-container">
+
+      <AssembliePageFooter />
+    </div>
   </q-page>
 </template>
 
@@ -422,10 +425,14 @@ export default defineComponent({
       showEditDialog.value = false;
     };
     const updateSteps = async ($event, sorting) => {
+      const newList = list.value.slice()
+      // newList.splice($event.newIndex, 0, newList.splice($event.oldIndex, 1)[0])
+      assemblie.value.steps = newList;
+      
+      assemblie.value.steps = list.value;
       await updateAssemblyVsi(assemblie.value);
       await loadAssemblies();
       // Actualizar la propiedad assemblie.value.steps con el valor de list.value
-      // assemblie.value.steps = list.value;
       // Esperar a que se actualice el DOM
       // await nextTick();
     };
@@ -462,6 +469,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.footer-container{
+  max-height: 10%;
+  width: 100%;
+  color: aqua;
+}
 .active-draggable-item {
   cursor: pointer !important;
   border-radius: 5px;

@@ -24,8 +24,11 @@
         </q-item-section>
       </q-item>
 
-      <q-separator spaced inset />
     </q-list>
+    <q-separator 
+      class="q-separator-custom" 
+      spaced inset 
+    />
   </div>
 </template>
 
@@ -62,7 +65,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.q-separator-custom{
 
+  margin: 0;
+  padding: 0;
+
+}
 .main-container {
   max-width: 100%;
   max-height: 800px;
@@ -72,6 +80,7 @@ export default defineComponent({
   height: 250px;
   max-width: 80vw;
   margin: 0 auto;
+  padding: 1rem 0;
   align-items: center;
   justify-content: center;
 }

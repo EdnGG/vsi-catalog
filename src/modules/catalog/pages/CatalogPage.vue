@@ -6,7 +6,7 @@
           class="search-input"
           rounded
           outlined
-          v-model="assemblyName" 
+          v-model="assemblyName"
           label="Search for Assemblie, Category or Technical Name"
         />
       </div>
@@ -19,27 +19,50 @@
 
       <!--  ***************** -->
 
-      <!-- <div v-if="isLoading" class="row justify-center align-center">
-        <div class="col-3  text-center q-mt-md">
-          Please wait...   technical_name
-`
+      <div v-if="isLoading" class="row justify-center align-center">
+        <div class="col-3 alert-info text-center mt-5">
+          Please wait...
           <h3 class="mt-2">
-            <i class="fa fa-spin fa-sync"></i>
+            <i class="las la-spinner"></i>
           </h3>
         </div>
-      </div> -->
+      </div>
 
       <!-- *****************-->
-      <div class="container-listcatalog col-12 justify-center items-center text-center">
+      <div
+        class="container-listcatalog col-12 justify-center items-center text-center"
+      >
+      <!-- v-for="assemblie in filteredAssemblies" -->
         <ListCatalog
           class="container-listcatalog__item"
-          v-for="assemblie in filteredAssemblies"
+          v-for="assemblie in paginatedAssemblies"
           :key="assemblie.id"
           v-bind="assemblie"
           @click="getAssembliePage(assemblie.id)"
         />
       </div>
+    </div>
+    
+    <span class="flex row q-ma-md justify-center align-center">{{ currentPage }} / {{ totalPages }}</span>
+    <div>
 
+    </div>
+    <div class="flex row  q-ma-md justify-center align-center">
+
+      <q-btn
+        class="q-ma-md"
+        color="primary"
+        label="Previous"
+        @click="previousPage"
+        :disabled="currentPage === 1"
+      />
+      <q-btn
+        class="q-ma-md"
+        color="primary"
+        label="Next"
+        @click="nextPage"
+        :disabled="currentPage === totalPages"
+      />
     </div>
   </q-page>
 </template> 
@@ -62,40 +85,66 @@ export default defineComponent({
     ListCatalog: defineAsyncComponent(() =>
       import("../components/ListCatalog.vue")
     ),
-    // LoadingSpinner: defineAsyncComponent(() => import("../components/LoadingSpinner.vue")),
   },
   setup() {
-    const assemblyName = ref("");
     const router = useRouter();
-
-    const isLoading = ref(true);
-
     const {
-      loadAssemblies,
-      getAssemblies,
       getAssemblyByName,
       loadAssembliesVsi,
     } = useCatalog();
 
-    onMounted(async () => {
-      isLoading.value = true;
-      await loadAssembliesVsi();
-      isLoading.value = false;
+    const assemblyName = ref("");
+    const isLoading = ref(true);
+    const getPaginationLength = ref([]);
+
+    const itemsPerPage = ref(7); 
+    const currentPage = ref(1);
+
+    const nextPage = () => {
+      if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+      }
+    };
+
+    const previousPage = () => {
+      if (currentPage.value > 1) {
+        currentPage.value--;
+      }
+    };
+
+    const paginatedAssemblies = computed(() => {
+      const start = (currentPage.value - 1) * itemsPerPage.value;
+      const end = start + itemsPerPage.value;
+      return filteredAssemblies.value.slice(start, end);
     });
 
     const filteredAssemblies = computed(() =>
-      getAssemblyByName(assemblyName.value),
+      getAssemblyByName(assemblyName.value)
     );
 
+    const totalPages = computed(() => {
+      const totalItems = getPaginationLength.value?.length || 0;
+      return Math.ceil(totalItems / itemsPerPage.value);
+    });
+
+    onMounted( async () => {
+      const data = await loadAssembliesVsi();
+      // console.log('data: ',  data)
+      getPaginationLength.value = data || [];
+      isLoading.value = false;
+    });
+
     return {
+      currentPage,
       isLoading,
       assemblyName,
       getAssemblyByName,
-      loadAssemblies,
-      getAssemblies,
 
       // METHODS
-      filteredAssemblies,
+      totalPages,
+      paginatedAssemblies,
+      previousPage,
+      nextPage,
       getAssembliePage: (assemblie) => {
         router.push({
           name: "AssembliePage",
@@ -108,6 +157,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.alert-info {
+  height: auto;
+  width: auto;
+  padding: 200px;
+  margin: 100px 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
 .search-input {
   width: 100%;
   border-radius: 4px;
@@ -136,18 +196,15 @@ export default defineComponent({
   .list-catalog-container {
     width: 100%;
   }
-  .container-listcatalog{
+  .container-listcatalog {
     width: 100%;
-
   }
-  .container-listcatalog__item{
+  .container-listcatalog__item {
     width: 100%;
   }
 }
 
 /* Media Query para Móviles */
 @media (max-width: 767px) {
- 
 }
-
 </style>

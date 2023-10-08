@@ -1,15 +1,17 @@
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 export const useCatalog = () => {
-  const store = useStore();
+  const store = useStore(); 
 
-  const loadAssembliesVsi = () => {
-    store.dispatch("catalogModule/loadAssembliesVsi");
+  const loadAssembliesVsi = async () => {
+    const resp = await store.dispatch("catalogModule/loadAssembliesVsi");
+    return resp;
   };
 
-  const loadAssembliesWworks = () => {
-    store.dispatch("catalogModule/loadAssembliesWworks");
+  const loadAssembliesWworks = async () => {
+    const resp = store.dispatch("catalogModule/loadAssembliesWworks");
+    return resp;
   };
 
   const addAssemblyVsi = async (assembly) => {
@@ -41,13 +43,12 @@ export const useCatalog = () => {
     const resp = await store.dispatch("catalogModule/updateAssemblyVsiSteps", assembly);
     return resp;
   }
-  
+
   return {
     getAssemblyById,
     getWworksAssemblyById,
 
     //  COMPUTED
-    getAssemblies: computed(() => store.getters["catalogModule/getAssemblies"]),
     sideMenuOpen: computed({
       get() {
         return store.getters["catalogModule/sideMenuOpen"];

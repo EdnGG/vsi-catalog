@@ -29,7 +29,7 @@ export default store(function (/* { ssrContext } */) {
     strict: process.env.DEBUGGING
   })
 
-  console.log("Store state:", Store.state);
+  // console.log("Store state:", Store.state);
 
 
   return Store

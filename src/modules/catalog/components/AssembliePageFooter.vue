@@ -1,7 +1,5 @@
 <template>
-  <q-page>
-    <footer class="footer">Footer</footer>
-  </q-page>
+  <footer class="footer">FOOTER</footer>
 </template>
 
 <script>
@@ -14,10 +12,13 @@ export default defineComponent({
 
 <style scoped>
 .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #0c0303;
   padding: 20px;
   text-align: center;
-  height: 50vh;
+  height: 200px;
   width: 100%;
   color: aqua;
 }

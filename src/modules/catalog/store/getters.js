@@ -5,9 +5,9 @@ export const sideMenuOpen = (state) => {
   return state.isSideMenuOpen;
 };
 
-export const getAssemblies = (state) => {
-  return state.assemblies;
-};
+// export const getAssemblies = (state) => {
+//   return state.assemblies;
+// };
 // loadAssembly
 export const getAssemblyByName =
   (state) =>
