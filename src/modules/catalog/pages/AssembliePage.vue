@@ -102,7 +102,7 @@
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
-            <div v-if="isAuthenticated" class="q-ma-sm q-mb-lg">
+            <div  class="q-ma-sm q-mb-lg">
               <p class="q-mb-lg"><strong>Steps:</strong></p>
               <draggable
                 v-model="list"
@@ -121,7 +121,7 @@
               <!-- 
                 Despues de agregar el nuevo orden de "list" actualizar el array de steps de assemblie y despues actualizar el assemblie en Vuex y en Firestore
                -->
-              <div>
+              <div v-if="isAuthenticated">
                 <q-btn class="q-ma-sm q-mt-xl" @click="toggleSorting">
                   {{ sorting ? "Stop Sorting" : "Start Sorting" }}</q-btn
                 >

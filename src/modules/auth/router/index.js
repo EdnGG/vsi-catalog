@@ -20,5 +20,13 @@ export default {
           /* webpackChunkName: "auth-index" */ "src/modules/auth/pages/SignupPage.vue" 
         ),
     },
+    {
+      path: "create-account",
+      name: "CreateNewUserPage",
+      component: () =>
+        import(
+          /* webpackChunkName: "auth-index" */ "src/modules/auth/pages/CreateNewUserPage.vue" 
+        ),
+    },
   ],
 };

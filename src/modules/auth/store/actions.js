@@ -21,7 +21,7 @@ export const googleLogin = async ({ commit }, user) => {
 
 export const login = async ({ commit }, { email, password }) => {
   try {
-    console.log("Payload Object: ", email, password);
+    // console.log("Payload Object: ", email, password);
     const user = await signInWithEmailAndPassword(auth, email, password);
     localStorage.setItem("user", JSON.stringify(user));
     commit("setUser", user);

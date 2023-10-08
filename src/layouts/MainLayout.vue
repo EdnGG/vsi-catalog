@@ -23,8 +23,14 @@
     <q-drawer v-model="sideMenuOpen" show-if-above bordered>
       <q-list v-if="isAuthenticated">
         <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
-        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+
+        <EssentialLink 
+          v-for="link in links" 
+          :key="link.title" 
+          v-bind="link" 
+        />
       </q-list>
+
       <q-list v-else>
         <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
 
@@ -75,12 +81,12 @@ export default defineComponent({
         icon: "las la-hippo",
         link: "LoginPage",
       },
-      {
-        title: "SIGN UP",
-        caption: "Signup Page",
-        icon: "las la-hippo",
-        link: "SignupPage",
-      },
+      // {
+      //   title: "SIGN UP",
+      //   caption: "Signup Page",
+      //   icon: "las la-hippo",
+      //   link: "SignupPage",
+      // },
     ]);
 
     return {

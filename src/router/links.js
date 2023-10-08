@@ -10,7 +10,13 @@ const links = [
   //   caption: "Login Page",
   //   icon: "las la-hippo",
   //   link: "LoginPage",
-  // },
+  // }, 
+  {
+    title: "CREATE NEW USER",
+    caption: "New user",
+    icon: "las la-cogs",
+    link: "CreateNewUserPage",
+  },
   // {
   //   title: "SIGN UP",
   //   caption: "Signup Page",

@@ -1,16 +1,16 @@
 const links = [
   {
-    title: "LOGIN",
-    caption: "Add VSI Assembly",
+    title: "CREATE NEW USER",
+    caption: "New user",
     icon: "las la-cogs",
-    link: "LoginPage",
+    link: "CreateNewUserPage",
   },
-  {
-    title: "SIGNUP",
-    caption: "Add Waterworks Assembly",
-    icon: "las la-cogs",
-    link: "SignupPage",
-  },
+  // {
+  //   title: "SIGNUP",
+  //   caption: "Add Waterworks Assembly",
+  //   icon: "las la-cogs",
+  //   link: "SignupPage",
+  // },
 ];
 
 export default links;
