@@ -102,7 +102,7 @@
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
-            <div  class="q-ma-sm q-mb-lg">
+            <div class="q-ma-sm q-mb-lg">
               <p class="q-mb-lg"><strong>Steps:</strong></p>
               <draggable
                 v-model="list"
@@ -300,7 +300,6 @@
     </div>
     <!-- ENDS LOADING -->
     <div class="foote-container">
-
       <AssembliePageFooter />
     </div>
   </q-page>
@@ -310,11 +309,12 @@
 import "vue-inner-image-zoom/lib/vue-inner-image-zoom.css";
 import InnerImageZoom from "vue-inner-image-zoom";
 import { VueDraggableNext } from "vue-draggable-next";
-import AssembliePageFooter from "../components/AssembliePageFooter.vue";
 
 import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
+import AssembliePageFooter from "../components/AssembliePageFooter.vue";
 import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 
@@ -333,6 +333,7 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
+    const $q = useQuasar();
 
     const { isAuthenticated } = useAuth();
     const {
@@ -361,7 +362,7 @@ export default defineComponent({
           src: mediaItem,
           caption: "",
         })) || [],
-      // steps: [], 
+      // steps: [],
       // hacer que steps tenga el valor de assemblie.value.steps
       steps: assemblie.value?.steps || [],
       technical_name: "",
@@ -418,23 +419,31 @@ export default defineComponent({
       }
     };
     const updateAssemblie = async () => {
-      Object.assign(assemblie.value, editableAssembly.value);
-      assemblie.value.steps = list.value;
-      await updateAssemblyVsi(editableAssembly.value);
-      await loadAssemblies();
-      showEditDialog.value = false;
+      /*Necesito checar este error:
+      do not mutate vuex store state outside mutation handlers
+
+       */
+      try {
+        Object.assign(assemblie.value, editableAssembly.value);
+        assemblie.value.steps = list.value;
+        await updateAssemblyVsi(editableAssembly.value);
+        await loadAssemblies();
+        showEditDialog.value = false;
+        $q.dialog({
+          title: "Succesfully Updated",
+          ok: "OK",
+          color: "primary",
+        });
+      } catch (err) {
+        console.log(err.message);
+      }
     };
     const updateSteps = async ($event, sorting) => {
-      const newList = list.value.slice()
-      // newList.splice($event.newIndex, 0, newList.splice($event.oldIndex, 1)[0])
+      const newList = list.value.slice();
       assemblie.value.steps = newList;
-      
       assemblie.value.steps = list.value;
       await updateAssemblyVsi(assemblie.value);
       await loadAssemblies();
-      // Actualizar la propiedad assemblie.value.steps con el valor de list.value
-      // Esperar a que se actualice el DOM
-      // await nextTick();
     };
     const toggleSorting = () => {
       sorting.value = !sorting.value;
@@ -469,7 +478,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.footer-container{
+.footer-container {
   max-height: 10%;
   width: 100%;
   color: aqua;

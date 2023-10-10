@@ -1,4 +1,4 @@
-import  authGuard  from "./auth-guard";
+import authGuard from "./auth-guard.js";
 
 export default {
   name: "auth",
@@ -24,9 +24,7 @@ export default {
     {
       path: "create-account",
       name: "CreateNewUserPage",
-      // Falta implementar el guard
-      beforeEnter: authGuard,
-
+      beforeEnter: authGuard, 
       component: () =>
         import(
           /* webpackChunkName: "auth-index" */ "src/modules/auth/pages/CreateNewUserPage.vue" 

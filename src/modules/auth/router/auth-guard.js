@@ -1,24 +1,14 @@
-import store from '../store/index.js'
-
-
-// console.log(store);  // Deberías ver la instancia de tu Vuex store.
-console.log(store.getters['auth/isAuthenticated']);  // Deberías ver el valor del getter.
-
-
-
 const authGuard = (to, from, next) => {
-    console.log("Guard is being called!");
+  // Using local storage
+  const userFromLocalStorage = localStorage.getItem("user");
+  const isAuthenticated = userFromLocalStorage !== null;
 
-    const isAuthenticated = store.getters['auth/isAuthenticated']
-    console.log('isAuthenticated : ', isAuthenticated)
-    if (!isAuthenticated) {
-        next({ name: 'IndexPage' })
-    } else {
-        next()
-    }
-}
+  if (isAuthenticated) {
+    next();
+  } else {
+    next({ name: "IndexPage" });
+  }
 
-export default authGuard
+};
 
-
-
+export default authGuard;

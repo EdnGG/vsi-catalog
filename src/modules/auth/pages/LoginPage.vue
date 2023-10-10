@@ -53,7 +53,7 @@
           type="button"
           color="primary"
         />
-        <google-sign-in />
+        <!-- <google-sign-in /> -->
       </div>
     </div>
   </q-page>
@@ -62,40 +62,22 @@
 <script>
 import { defineAsyncComponent ,defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 import { useAuth } from "../composables/useAuth";
 
 export default defineComponent({
   name: "LoginPage",
   components:{
-    GoogleSignIn: defineAsyncComponent(() =>
-      import("../components/GoogleSignIn.vue")
-    ),
+    // GoogleSignIn: defineAsyncComponent(() =>
+    //   import("../components/GoogleSignIn.vue")
+    // ),
   },
   setup() {
     const router = useRouter();
     const { login, backToHome } = useAuth();
-    // const $q = useQuasar();
-    // const { login } = useAuth();
-    // const isAlertShown = ref(false);
-
-    // const alert = () => {
-    //   $q.dialog({
-    //     title: "Media Uploaded Successfully",
-    //     ok: "OK",
-    //     color: "primary",
-    //   })
-    //     .onOk(() => {
-    //       console.log("OK");
-    //     })
-    //     .onCancel(() => {
-    //       console.log("Cancel");
-    //     })
-    //     .onDismiss(() => {
-    //       console.log("Dismiss");
-    //     });
-    // };
-
+    const $q = useQuasar();
+    
     const user = ref({
       email: "",
       password: "",
@@ -107,11 +89,23 @@ export default defineComponent({
       };
     };
 
-    const onSubmit = async () => {
-      console.log("Login");
-      await login(user.value);
-      router.push({ name: "CatalogPage" });
-      onReset();
+    const onSubmit = async (event) => {
+      try {
+        event.preventDefault(); 
+        await login(user.value);
+        $q.dialog({
+          title: "Login Succesful",
+          ok: "OK",
+          color: "primary",
+        })
+        .onOk(() => {
+          onReset();
+          router.push({ name: "CatalogPage" });
+          console.log("Login succesful");
+        })
+      } catch (err) {
+        console.log(err.message);
+      }
     };
 
     return {

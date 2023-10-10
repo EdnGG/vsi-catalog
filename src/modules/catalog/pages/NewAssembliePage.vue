@@ -217,18 +217,29 @@ export default defineComponent({
           const secureUrl = results.info.secure_url;
           assemblyMedia.value.push(secureUrl);
 
+          $q.dialog({
+            title: "Media Uploaded Successfully",
+            ok: "OK",
+            color: "primary",
+          });
+
           // Si assemblyMedia contiene al menos un archivo y la alerta no se ha mostrado, muestra la alerta.
-          if (!error && results && results.event === "close") {
-            // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
-            // if (assemblyMedia.value.length > 0) {
-            //   alert();
-            // }
-          }
+          // if (!error && results && results.event === "close") {
+          // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
+          // if (assemblyMedia.value.length > 0) {
+          //   alert();
+          // }
+          // }
         }
       }
     );
     const openUploadWidget = () => {
       widget.open();
+      // $q.dialog({
+      //     title: "Media Uploaded Successfully",
+      //     ok: "OK",
+      //     color: "primary",
+      //   })
       isAlertShown.value = false;
     };
     const assembly = ref({
@@ -256,18 +267,25 @@ export default defineComponent({
     };
 
     const onSubmit = async () => {
-      assembly.value.media = [];
-
-      assemblyMedia.value.forEach((secureUrl) => {
-        assembly.value.media.push({
-          src: secureUrl,
-          caption: "",
+      try {
+        assembly.value.media = [];
+        assemblyMedia.value.forEach((secureUrl) => {
+          assembly.value.media.push({
+            src: secureUrl,
+            caption: "",
+          });
         });
-      });
-
-      await addAssemblyVsi(assembly.value);
-      router.push({ name: "CatalogPage" });
-      onReset();
+        await addAssemblyVsi(assembly.value);
+        $q.dialog({
+          title: "Assembly Added Successfully",
+          ok: "OK",
+          color: "primary",
+        });
+        router.push({ name: "CatalogPage" });
+        onReset();
+      } catch (err) {
+        console.log(err.message);
+      }
     };
 
     return {

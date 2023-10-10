@@ -1,8 +1,8 @@
 import { useRouter } from 'vue-router'
-import { computed, ref } from "vue";
-import { createLogger, useStore } from "vuex";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
-import { getRedirectResult } from "firebase/auth";
+// import { getRedirectResult } from "firebase/auth";
 import { auth, provider } from "src/boot/firebase.js";
 
 
@@ -33,6 +33,20 @@ export const useAuth = () => {
       return response;
     } catch (error) {
       console.log(error.message)
+      return error;
+    }
+  };
+
+  const createNewUser = async ({name, email, password}) => {
+    try {
+      const response = await store.dispatch("authModule/createNewUser", {
+        name,
+        email,
+        password,
+      });
+      return response;
+    } catch (error) {
+      console.log(error.message);
       return error;
     }
   };
@@ -76,6 +90,7 @@ export const useAuth = () => {
     login,
     googleLogin,
     register,
+    createNewUser,
     logout,
 
     // GETTERS

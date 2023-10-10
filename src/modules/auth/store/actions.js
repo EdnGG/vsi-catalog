@@ -31,6 +31,8 @@ export const login = async ({ commit }, { email, password }) => {
     return error;
   }
 };
+
+
 export const register = async ({ commit }, { name, email, password }) => {
   try {
     console.log("Payload Object: ", name, email, password);
@@ -55,6 +57,37 @@ export const register = async ({ commit }, { name, email, password }) => {
 
     localStorage.setItem("user", JSON.stringify(user));
     commit("setUser", user);
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+};
+
+export const createNewUser = async ({ commit }, { name, email, password }) => {
+  try {
+    console.log("Create new user from actions : ", name, email, password);
+    // Registra al usuario en Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    console.log("userCredential: ", userCredential);
+
+    const user = userCredential.user;
+
+    console.log("user: ", user);
+
+    // Opcional: Guarda datos adicionales del usuario en Firestore
+    //   await addDoc(collection(db, "users"), {
+    //     uid: user.uid,
+    //     name: payload.name,
+    //   });
+
+    // localStorage.setItem("user", JSON.stringify(user));
+    // commit("setUser", user);
     return user;
   } catch (error) {
     console.log(error.message);
