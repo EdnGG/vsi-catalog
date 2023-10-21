@@ -429,10 +429,11 @@ export default defineComponent({
         await updateAssemblyVsi(editableAssembly.value);
         await loadAssemblies();
         showEditDialog.value = false;
-        $q.dialog({
-          title: "Succesfully Updated",
-          ok: "OK",
+        $q.notify({
           color: "primary",
+          textColor: "white",
+          icon: "las la-check-circle",
+          message: "Assembly updated successfully",
         });
       } catch (err) {
         console.log(err.message);

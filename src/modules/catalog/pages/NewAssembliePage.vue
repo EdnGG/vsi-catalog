@@ -133,22 +133,22 @@ export default defineComponent({
     const { addAssemblyVsi } = useCatalog();
     const isAlertShown = ref(false);
 
-    const alert = () => {
-      $q.dialog({
-        title: "Media Uploaded Successfully",
-        ok: "OK",
-        color: "primary",
-      })
-        .onOk(() => {
-          console.log("OK");
-        })
-        .onCancel(() => {
-          console.log("Cancel");
-        })
-        .onDismiss(() => {
-          console.log("Dismiss");
-        });
-    };
+    // const alert = () => {
+    //   $q.dialog({
+    //     title: "Media Uploaded Successfully",
+    //     ok: "OK",
+    //     color: "primary",
+    //   })
+    //     .onOk(() => {
+    //       console.log("OK");
+    //     })
+    //     .onCancel(() => {
+    //       console.log("Cancel");
+    //     })
+    //     .onDismiss(() => {
+    //       console.log("Dismiss");
+    //     });
+    // };
 
     const addSteps = () => {
       $q.dialog({
@@ -216,30 +216,19 @@ export default defineComponent({
         if (!error && results && results.event === "success") {
           const secureUrl = results.info.secure_url;
           assemblyMedia.value.push(secureUrl);
-
-          $q.dialog({
-            title: "Media Uploaded Successfully",
-            ok: "OK",
-            color: "primary",
-          });
-
-          // Si assemblyMedia contiene al menos un archivo y la alerta no se ha mostrado, muestra la alerta.
-          // if (!error && results && results.event === "close") {
-          // Si assemblyMedia contiene al menos un archivo, muestra la alerta.
-          // if (assemblyMedia.value.length > 0) {
-          //   alert();
-          // }
-          // }
         }
       }
+      // ,
+      // $q.notify({
+      //   color: "primary",
+      //   textColor: "white",
+      //   icon: "info",
+      //   message: "Media uploaded Successfully",
+      // })
     );
     const openUploadWidget = () => {
       widget.open();
-      // $q.dialog({
-      //     title: "Media Uploaded Successfully",
-      //     ok: "OK",
-      //     color: "primary",
-      //   })
+
       isAlertShown.value = false;
     };
     const assembly = ref({
@@ -276,10 +265,11 @@ export default defineComponent({
           });
         });
         await addAssemblyVsi(assembly.value);
-        $q.dialog({
-          title: "Assembly Added Successfully",
-          ok: "OK",
+        $q.notify({
           color: "primary",
+          textColor: "white",
+          icon: "info",
+          message: "Assembly added succesfully",
         });
         router.push({ name: "CatalogPage" });
         onReset();

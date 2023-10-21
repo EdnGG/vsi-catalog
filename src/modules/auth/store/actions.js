@@ -28,7 +28,8 @@ export const login = async ({ commit }, { email, password }) => {
     return user;
   } catch (error) {
     console.log(error.message);
-    return error;
+    console.log('error: ', error)
+    // return error;
   }
 };
 

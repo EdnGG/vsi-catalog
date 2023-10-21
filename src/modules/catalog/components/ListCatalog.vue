@@ -7,7 +7,19 @@
       <q-item>
         <q-item-section class="q-item-section-img">
           <div class="container-img">
-            <img :src="media[0].src" :alt="media[0].name" />
+
+            <q-spinner-pie v-if="!isImageLoaded" color="primary" size="4em" />
+            <img 
+              :src="media[0].src" 
+              :alt="media[0].name" 
+              @load="isImageLoaded = true"
+            />
+            <!-- <img 
+              :src="media[0].src" 
+              :alt="media[0].name" 
+              @load="onImageLoad"
+              :class="{'loading': !isImageLoaded}"
+            /> -->
           </div>
         </q-item-section>
         <q-item-section class="container-description">
@@ -33,7 +45,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   name: "ListCatalog",
   props: {
@@ -59,12 +71,26 @@ export default defineComponent({
     hardware: String,
   },
   setup() {
-    return {};
+    const isImageLoaded = ref(false)
+    
+    const onImageLoad = () => {
+      isImageLoaded.value = true
+    }
+    return {
+      isImageLoaded,
+      onImageLoad
+    };
   },
 });
 </script>
 
 <style scoped>
+
+.loading {
+  opacity: 0.7;               /* Hace la imagen semi-transparente */
+  filter: grayscale(100%);    /* Convierte la imagen a escala de grises */
+}
+
 .q-separator-custom{
 
   margin: 0;

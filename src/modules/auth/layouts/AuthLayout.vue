@@ -23,7 +23,7 @@
           </router-link>
         </q-toolbar-title>
         <!-- <div>Quasar v{{ $q.version }}</div> -->
-        <div v-if="isAuthenticated" class="container-logout" @click="logout">
+        <div v-if="isAuthenticated" class="container-logout" @click="onLogout">
           <q-icon name="las la-door-open" />
           <q-toolbar-title> EXIT </q-toolbar-title>
         </div>
@@ -57,6 +57,8 @@
 <script>
 import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { useAuth } from "../composables/useAuth";
+import { useQuasar } from "quasar";
+
 import links from "../router/links";
 
 export default defineComponent({
@@ -70,6 +72,8 @@ export default defineComponent({
 
   setup(props) {
     const auth = useAuth();
+    const $q = useQuasar();
+
     const { sideMenuOpen, toogleLeftDrawer, isAuthenticated, logout } = auth;
 
     const customLinks = ref([
@@ -88,13 +92,24 @@ export default defineComponent({
       // },
     ]);
 
+    const onLogout = () => {
+      console.log('logout')
+      $q.notify({
+        color: "primary",
+          textColor: "white",
+          icon: "info",
+          message: "Logout Succesfully",
+      });
+      logout()
+    }
+
     return {
       links,
       sideMenuOpen,
       toogleLeftDrawer,
       customLinks,
       isAuthenticated,
-      logout,
+      onLogout,
     };
   },
 });

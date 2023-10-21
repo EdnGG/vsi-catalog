@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent ,defineComponent, ref } from "vue";
+import { defineAsyncComponent, defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -68,7 +68,7 @@ import { useAuth } from "../composables/useAuth";
 
 export default defineComponent({
   name: "LoginPage",
-  components:{
+  components: {
     // GoogleSignIn: defineAsyncComponent(() =>
     //   import("../components/GoogleSignIn.vue")
     // ),
@@ -77,7 +77,7 @@ export default defineComponent({
     const router = useRouter();
     const { login, backToHome } = useAuth();
     const $q = useQuasar();
-    
+
     const user = ref({
       email: "",
       password: "",
@@ -90,21 +90,49 @@ export default defineComponent({
     };
 
     const onSubmit = async (event) => {
+      event.preventDefault();
+      if(user.value.email === "" || user.value.password === ""){
+          $q.dialog({
+            title: "Error",
+            message: "Please fill all the fields",
+            persistent: true,
+          })
+          return
+        }
       try {
-        event.preventDefault(); 
-        await login(user.value);
-        $q.dialog({
-          title: "Login Succesful",
-          ok: "OK",
+        const res = await login(user.value);
+        
+       if(!res){
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
+        // onReset();
+        return
+       }
+        $q.notify({
           color: "primary",
-        })
-        .onOk(() => {
-          onReset();
-          router.push({ name: "CatalogPage" });
-          console.log("Login succesful");
-        })
+          textColor: "white",
+          icon: "info",
+          message: "Login Succesfull",
+        });
+
+        onReset();
+        router.push({ name: "CatalogPage" });
+        console.log("Login succesfull");
+
       } catch (err) {
-        console.log(err.message);
+
+        console.log(err);
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
+
       }
     };
 

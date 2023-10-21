@@ -103,21 +103,45 @@ export default defineComponent({
     };
 
     const onSubmit = async (event) => {
+      event.preventDefault();
+      if(user.value.email === "" || user.value.password === ""){
+          $q.dialog({
+            title: "Error",
+            message: "Please fill all the fields",
+            persistent: true,
+          })
+          return
+        }
       try {
-        event.preventDefault(); 
-        await register(user.value);
-        $q.dialog({
-          title: "User Register Succesful",
-          ok: "OK",
+        const res = await register(user.value);
+        
+       if(!res){
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
+        return
+       }
+        $q.notify({
           color: "primary",
-        })
-        .onOk(() => {
-          onReset();
-          router.push({ name: "CatalogPage" });
-          console.log("Register succesful");
-        })
+          textColor: "white",
+          icon: "info",
+          message: "Register Succesfull",
+        });
+
+        onReset();
+        router.push({ name: "CatalogPage" });
+        console.log("Register succesfull");
       } catch (err) {
-        console.log(err.message);
+        console.log(err);
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
       }
     };
 

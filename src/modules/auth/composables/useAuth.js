@@ -1,10 +1,10 @@
 import { useRouter } from 'vue-router'
 import { computed } from "vue";
 import { useStore } from "vuex";
+// import { useQuasar } from "quasar"
 
 // import { getRedirectResult } from "firebase/auth";
 import { auth, provider } from "src/boot/firebase.js";
-
 
 export const useAuth = () => {
   const store = useStore();
@@ -70,6 +70,12 @@ export const useAuth = () => {
     // Aquí ya no necesitas cerrar sesión nuevamente porque el usuario ya está autenticado
     // Simplemente guardamos el usuario en el state usando la mutation
     localStorage.removeItem("user");
+    // const $q = useQuasar();
+    // $q.notify({
+    //   message: "Logout Successfully.",
+    //   color: "positive",
+    //   icon: "check",
+    // });
     store.commit("authModule/logout");
     router.push({ name: "IndexPage" });
   }

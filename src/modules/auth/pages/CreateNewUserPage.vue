@@ -103,23 +103,47 @@ export default defineComponent({
         password: "",
       };
     }; 
-
+    createNewUser
     const onSubmit = async (event) => {
+      event.preventDefault();
+      if(user.value.email === "" || user.value.password === ""){
+          $q.dialog({
+            title: "Error",
+            message: "Please fill all the fields",
+            persistent: true,
+          })
+          return
+        }
       try {
-        event.preventDefault(); 
-        await createNewUser(user.value);
-        $q.dialog({
-          title: "User created succesfully",
-          ok: "OK",
+        const res = await createNewUser(user.value);
+        
+       if(!res){
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
+        return
+       }
+        $q.notify({
           color: "primary",
-        })
-        .onOk(() => {
-          onReset();
-          router.push({ name: "CatalogPage" });
-          console.log("User created succesfully");
-        })
+          textColor: "white",
+          icon: "info",
+          message: "User Created Succesfully",
+        });
+
+        onReset();
+        router.push({ name: "CatalogPage" });
+        console.log("Register succesfull");
       } catch (err) {
-        console.log(err.message);
+        console.log(err);
+        $q.notify({
+          color: "red",
+          textColor: "white",
+          icon: "error",
+          message: 'Invalid credentials',
+        });
       }
     };
 
