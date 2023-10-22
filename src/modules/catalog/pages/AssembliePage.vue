@@ -4,12 +4,11 @@
       <!-- CONTAINER MEDIA -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
-          <!-- New Feature -->
-          <!-- v-model="list"
-              :disabled="!sorting"
-              @change="updateSteps($event, sorting)" 
-          -->
-          <draggable>
+    
+          <!-- <draggable 
+            class="container-media__item"
+          > -->
+          <!-- <draggableWrapper :list="mediaList" @end="ondragend"> -->
             <div
               class="container-media__item"
               v-for="(mediaItem, index) in assemblie.media"
@@ -48,7 +47,9 @@
                 <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
               </div>
             </div>
-          </draggable>
+          <!-- </draggableWrapper> -->
+          <!-- </draggable> -->
+        <!-- </div> -->
         </div>
       </div>
       <!-- MIDDLE CONTAINER -->
@@ -318,7 +319,7 @@ import "vue-inner-image-zoom/lib/vue-inner-image-zoom.css";
 import InnerImageZoom from "vue-inner-image-zoom";
 import { VueDraggableNext } from "vue-draggable-next";
 
-import { defineComponent, ref, onMounted, nextTick } from "vue";
+import { defineComponent, defineAsyncComponent, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -332,6 +333,8 @@ export default defineComponent({
     "inner-image-zoom": InnerImageZoom,
     draggable: VueDraggableNext,
     AssembliePageFooter,
+    // draggableWrapper: defineAsyncComponent(()=> import("src/modules/catalog/components/DraggableWrapper.vue")),
+    
   },
   props: {
     id: {
@@ -356,6 +359,7 @@ export default defineComponent({
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
     const list = ref([]);
+    const mediaList = ref([])
     const sorting = ref(false);
 
     const editableAssembly = ref({
@@ -429,7 +433,6 @@ export default defineComponent({
     const updateAssemblie = async () => {
       /*Necesito checar este error:
       do not mutate vuex store state outside mutation handlers
-
        */
       try {
         Object.assign(assemblie.value, editableAssembly.value);
@@ -454,6 +457,23 @@ export default defineComponent({
       await updateAssemblyVsi(assemblie.value);
       await loadAssemblies();
     };
+
+    // const updateMediaSteps = async ($event, sorting) => {
+    //   console.log('update media steps', $event, sorting)
+    //   const newList = mediaList.value.slice();
+    //   assemblie.value.media = newList;
+    //   await updateAssemblyVsi(assemblie.value);
+    //   await loadAssemblies();
+    // };
+
+    // const onDragEnd = (evt) => {
+    //   console.log('on drag end', evt)
+    //   const { newIndex, oldIndex } = evt;
+    //   const movedItem = mediaList.value.splice(oldIndex, 1)[0];
+    //   mediaList.value.splice(newIndex, 0, movedItem);
+    //   updateMediaSteps();
+    // };
+
     const toggleSorting = () => {
       sorting.value = !sorting.value;
     };
@@ -462,16 +482,19 @@ export default defineComponent({
       sorting,
       toggleSorting,
       list,
+      mediaList,
       assemblie,
       selectedMedia,
       videoElementRef,
       playVideo,
       updateSteps,
+      // updateMediaSteps,
       editAssembly,
       editableAssembly,
       updateAssemblie,
       showEditDialog,
       updateAssemblyVsiSteps,
+      // onDragEnd,
       // GETTERS
       isAuthenticated,
       // INLINE METHODS
@@ -763,10 +786,10 @@ export default defineComponent({
     /* flex-wrap:nowrap; */
   }
   .container-media__item {
-    max-width: 50%;
-    max-height: 100%;
-    padding: 0px;
-    margin: 0px;
+    max-width: 50% !important;
+    max-height: 100% !important;
+    padding: 0px !important;
+    margin: 0px !important;
   }
   .middle-container {
     padding-top: 0px;
@@ -878,10 +901,10 @@ export default defineComponent({
     /* flex-wrap:nowrap; */
   }
   .container-media__item {
-    max-width: 100%;
-    max-height: 100vh;
-    padding: 0px;
-    margin: 0px;
+    max-width: 100% !important;
+    max-height: 100vh !important;
+    padding: 0px !important;
+    margin: 0px !important;
   }
   .modal-container-media__item {
     max-width: 100%;

@@ -28,9 +28,9 @@
         <q-select
           v-else
           v-model="selectedCategory"
+          :options="categoryOptions"
           transition-show="flip-up"
           transition-hide="flip-down"
-          :options="categoryOptions"
           label="Filter by Category"
           emit-value
           map-options
