@@ -2,13 +2,43 @@
   <q-page class="q-pa-md">
     <div class="container_search row q-pa-sm justify-center">
       <div class="col-12 col-md-4 col-sm-6">
+        <!-- <h3 class="justify-center align-center text-h6 text-dark q-py-sm">Search by Assemblie Name or Category</h3> -->
+        <q-toggle
+          class="q-ma-md q-pa-md col-12 col-md-4 col-sm-6 justify-center align-center"
+          v-model="showInput"
+          color="primary"
+          keep-color
+          readonly
+          size="lg"
+          val="lg"
+          checked-icon="check"
+          unchecked-icon="clear"
+          left-label
+          label="Search by Assemblie Name or Category"
+          />
         <q-input
+          v-if="showInput"
           class="search-input"
           rounded
           outlined
           v-model="assemblyName"
-          label="Search for Assemblie, Category or Technical Name"
+          label="Search for Assemblie Name or Technical Name"
         />
+        
+        <q-select
+          v-else
+          v-model="selectedCategory"
+          transition-show="flip-up"
+          transition-hide="flip-down"
+          :options="categoryOptions"
+          label="Filter by Category"
+          emit-value
+          map-options
+          outlined
+          rounded
+          class="q-mt-md"
+        />
+        
       </div>
     </div>
 
@@ -16,23 +46,12 @@
       <div class="col-12 justify-center items-center text-center">
         <h1 class="text-h4 text-dark q-py-sm">VSI Assemblies</h1>
       </div>
-
-      <!--  ***************** -->
-
-      <div v-if="isLoading" class="row justify-center align-center">
-        <div class="col-3 alert-info text-center mt-5">
-          Please wait...
-          <h3 class="mt-2">
-            <i class="las la-spinner"></i>
-          </h3>
-        </div>
-      </div>
-
-      <!-- *****************-->
+      <!--  LOADING -->
+      <LoadingSpinner v-if="isLoading" />
       <div
         class="container-listcatalog col-12 justify-center items-center text-center"
       >
-      <!-- v-for="assemblie in filteredAssemblies" -->
+        <!-- v-for="assemblie in filteredAssemblies" -->
         <ListCatalog
           class="container-listcatalog__item"
           v-for="assemblie in paginatedAssemblies"
@@ -42,13 +61,12 @@
         />
       </div>
     </div>
-    
-    <span class="flex row q-ma-md justify-center align-center">{{ currentPage }} / {{ totalPages }}</span>
-    <div>
 
-    </div>
-    <div class="flex row  q-ma-md justify-center align-center">
+    <span class="flex row q-ma-md justify-center align-center"
+      >{{ currentPage }} / {{ totalPages }}</span
+    >
 
+    <div class="flex row q-ma-md justify-center align-center">
       <q-btn
         class="q-ma-md"
         color="primary"
@@ -85,20 +103,25 @@ export default defineComponent({
     ListCatalog: defineAsyncComponent(() =>
       import("../components/ListCatalog.vue")
     ),
+    LoadingSpinner: defineAsyncComponent(() =>
+      import("../components/LoadingSpinner.vue")
+    ),
   },
   setup() {
     const router = useRouter();
-    const {
-      getAssemblyByName,
-      loadAssembliesVsi,
-    } = useCatalog();
+    const { getAssemblyByName, loadAssembliesVsi } = useCatalog();
 
     const assemblyName = ref("");
     const isLoading = ref(true);
     const getPaginationLength = ref([]);
 
-    const itemsPerPage = ref(7); 
+    const itemsPerPage = ref(7);
     const currentPage = ref(1);
+
+    const categories = ref([]);
+    const selectedCategory = ref("");
+
+    const showInput = ref(true);
 
     const nextPage = () => {
       if (currentPage.value < totalPages.value) {
@@ -118,19 +141,37 @@ export default defineComponent({
       return filteredAssemblies.value.slice(start, end);
     });
 
-    const filteredAssemblies = computed(() =>
-      getAssemblyByName(assemblyName.value)
-    );
+    const categoryOptions = computed(() => {
+      return [
+        { label: "All", value: "" },
+        ...categories.value.map((category) => ({
+          label: category,
+          value: category,
+        })),
+      ];
+    });
+
+    const filteredAssemblies = computed(() => {
+      let assemblies = getAssemblyByName(assemblyName.value);
+      if (selectedCategory.value) {
+        assemblies = assemblies.filter(
+          (item) => item.category === selectedCategory.value
+        );
+      }
+      return assemblies;
+    });
 
     const totalPages = computed(() => {
       const totalItems = getPaginationLength.value?.length || 0;
       return Math.ceil(totalItems / itemsPerPage.value);
     });
 
-    onMounted( async () => {
+    onMounted(async () => {
       const data = await loadAssembliesVsi();
-      // console.log('data: ',  data)
       getPaginationLength.value = data || [];
+
+      categories.value = [...new Set(data.map((item) => item.category))];
+
       isLoading.value = false;
     });
 
@@ -139,9 +180,15 @@ export default defineComponent({
       isLoading,
       assemblyName,
       getAssemblyByName,
+      categoryOptions,
+      selectedCategory,
+      showInput,
+
+      //COMPUTED
+      totalPages,
+      // categoryOptions =  computed
 
       // METHODS
-      totalPages,
       paginatedAssemblies,
       previousPage,
       nextPage,
@@ -157,17 +204,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.alert-info {
-  height: auto;
-  width: auto;
-  padding: 200px;
-  margin: 100px 0;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
 .search-input {
   width: 100%;
   border-radius: 4px;

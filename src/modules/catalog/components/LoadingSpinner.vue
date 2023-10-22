@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading" class="row justify-content-md-center">
+  <div class="row justify-center align-center">
     <div class="col-3 alert-info text-center mt-5">
       Please wait...
       <h3 class="mt-2">
@@ -12,20 +12,16 @@
 <script>
 export default {
   name: "LoadingSpinner",
-  props: {
-    isLoading: {
-      type: Boolean,
-      required: true,
-    },
-  },
 };
 </script>
  
 
 <style scoped>
 .alert-info {
-  padding: 20px;
-  margin: 10px 0;
+  height: auto;
+  width: auto;
+  padding: 200px;
+  margin: 100px 0;
   border: 1px solid transparent;
   border-radius: 4px;
   color: #31708f;

@@ -1,6 +1,12 @@
 // app global css in SCSS form
 /* Estilo global en tu archivo .css o .scss */
 
+// BEGIN: bg-global-style
+body {
+  background-color: #f2f2f2;
+}
+// END: bg-global-style
+
 .q-dialog__inner {
     display: flex; 
     flex-direction: column;
