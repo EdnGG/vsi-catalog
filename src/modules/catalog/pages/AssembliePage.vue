@@ -299,14 +299,16 @@
       </div>
     </div>
     <!-- LOADING -->
-    <div v-else class="row justify-center align-center">
+      
+    <LoadingSpinner v-else/>
+    <!-- <div v-else class="row justify-center align-center"> 
       <div class="col-3 alert-info text-center mt-5">
         Please wait...
         <h3 class="mt-2">
           <i class="las la-spinner"></i>
         </h3>
       </div>
-    </div>
+     </div> -->
     <!-- ENDS LOADING -->
     <div class="foote-container">
       <AssembliePageFooter />
@@ -333,6 +335,9 @@ export default defineComponent({
     "inner-image-zoom": InnerImageZoom,
     draggable: VueDraggableNext,
     AssembliePageFooter,
+    LoadingSpinner: defineAsyncComponent(() =>
+      import("src/modules/catalog/components/LoadingSpinner.vue")
+    ),
     // draggableWrapper: defineAsyncComponent(()=> import("src/modules/catalog/components/DraggableWrapper.vue")),
     
   },
