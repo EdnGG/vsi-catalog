@@ -133,23 +133,6 @@ export default defineComponent({
     const { addAssemblyVsi } = useCatalog();
     const isAlertShown = ref(false);
 
-    // const alert = () => {
-    //   $q.dialog({
-    //     title: "Media Uploaded Successfully",
-    //     ok: "OK",
-    //     color: "primary",
-    //   })
-    //     .onOk(() => {
-    //       console.log("OK");
-    //     })
-    //     .onCancel(() => {
-    //       console.log("Cancel");
-    //     })
-    //     .onDismiss(() => {
-    //       console.log("Dismiss");
-    //     });
-    // };
-
     const addSteps = () => {
       $q.dialog({
         title: "Assembly Steps",

@@ -1,19 +1,25 @@
 <template>
   <div clas="main-container">
     <!-- {{ media[0].src }} -->
-    <q-list 
-    class="container-qlist"
-    >
+    <q-list class="container-qlist">
       <q-item>
         <q-item-section class="q-item-section-img">
           <div class="container-img">
-
+            <!-- {{
+              console.log(
+                "Media: ",
+                media,
+                "ID :", id,
+                "NAME: ", name,
+                "IMAGE :", image,
+                "DESCRIPTION :", description,
+                "CATEGORY :", category,
+                "HARDWARE :", hardware
+              )
+            }} -->
             <q-spinner-pie v-if="!isImageLoaded" color="primary" size="4em" />
-            <img 
-              :src="media[0].src" 
-              :alt="media[0].name" 
-              @load="isImageLoaded = true"
-            />
+            <img :src="media[0].src" :alt="media[0].name" @load="onImageLoad" />
+            <!-- @load="isImageLoaded = true" -->
             <!-- <img 
               :src="media[0].src" 
               :alt="media[0].name" 
@@ -35,12 +41,8 @@
           <q-item-label caption lines="2">{{ description }}</q-item-label>
         </q-item-section>
       </q-item>
-
     </q-list>
-    <q-separator 
-      class="q-separator-custom" 
-      spaced inset 
-    />
+    <q-separator class="q-separator-custom" spaced inset />
   </div>
 </template>
 
@@ -71,31 +73,28 @@ export default defineComponent({
     hardware: String,
   },
   setup() {
-    const isImageLoaded = ref(false)
-    
+    const isImageLoaded = ref(false);
+
     const onImageLoad = () => {
-      isImageLoaded.value = true
-    }
+      isImageLoaded.value = true;
+    };
     return {
       isImageLoaded,
-      onImageLoad
+      onImageLoad,
     };
   },
 });
 </script>
 
 <style scoped>
-
 .loading {
-  opacity: 0.7;               /* Hace la imagen semi-transparente */
-  filter: grayscale(100%);    /* Convierte la imagen a escala de grises */
+  opacity: 0.7; /* Hace la imagen semi-transparente */
+  filter: grayscale(100%); /* Convierte la imagen a escala de grises */
 }
 
-.q-separator-custom{
-
+.q-separator-custom {
   margin: 0;
   padding: 0;
-
 }
 .main-container {
   max-width: 100%;

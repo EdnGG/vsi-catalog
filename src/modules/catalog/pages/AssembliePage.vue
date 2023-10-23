@@ -19,6 +19,7 @@
               "
               :media="mediaItem"
             >
+            {{ mediaItem }}
               <div
                 class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-if="

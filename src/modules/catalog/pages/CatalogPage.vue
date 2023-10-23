@@ -15,7 +15,7 @@
           unchecked-icon="clear"
           left-label
           label="Search by Assemblie Name or Category"
-          />
+        />
         <q-input
           v-if="showInput"
           class="search-input"
@@ -24,7 +24,7 @@
           v-model="assemblyName"
           label="Search for Assemblie Name or Technical Name"
         />
-        
+
         <q-select
           v-else
           v-model="selectedCategory"
@@ -38,7 +38,6 @@
           rounded
           class="q-mt-md"
         />
-        
       </div>
     </div>
 
@@ -53,8 +52,8 @@
       >
         <!-- v-for="assemblie in filteredAssemblies" -->
         <ListCatalog
-          class="container-listcatalog__item"
           v-for="assemblie in paginatedAssemblies"
+          class="container-listcatalog__item"
           :key="assemblie.id"
           v-bind="assemblie"
           @click="getAssembliePage(assemblie.id)"
@@ -159,6 +158,7 @@ export default defineComponent({
         );
       }
       return assemblies;
+      // return getAssemblyByName(assemblyName.value);
     });
 
     const totalPages = computed(() => {
@@ -186,10 +186,12 @@ export default defineComponent({
 
       //COMPUTED
       totalPages,
+      paginatedAssemblies,
+      filteredAssemblies,
       // categoryOptions =  computed
 
       // METHODS
-      paginatedAssemblies,
+
       previousPage,
       nextPage,
       getAssembliePage: (assemblie) => {
