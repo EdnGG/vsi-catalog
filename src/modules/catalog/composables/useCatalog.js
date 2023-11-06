@@ -39,8 +39,17 @@ export const useCatalog = () => {
     return resp;
   }
 
-  const updateAssemblyVsiSteps = async (assembly) => {
-    const resp = await store.dispatch("catalogModule/updateAssemblyVsiSteps", assembly);
+  const updateAssemblyVsiSteps = async (id, newSteps) => {
+    console.log('id', id)
+    console.log('newSteps', newSteps)
+    const resp = await store.dispatch("catalogModule/updateAssemblyVsiSteps", {id, newSteps});
+    return resp;
+  }
+
+  const updateAssemblyMediaSteps = async (id, newSteps) => {
+    console.log('id', id)
+    console.log('newSteps', newSteps)
+    const resp = await store.dispatch("catalogModule/updateAssemblyMediaSteps", {id, newSteps});
     return resp;
   }
 
@@ -60,6 +69,7 @@ export const useCatalog = () => {
   
     // METHODS
     updateAssemblyVsiSteps,
+    updateAssemblyMediaSteps,
     addAssemblyWaterWorks,
     addAssemblyVsi,
     loadAssembliesVsi,

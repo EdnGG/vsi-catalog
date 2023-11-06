@@ -84,8 +84,20 @@ export const setSearchResults = ({ commit }, results) => {
   commit("setSearchResults", results);
 };
 
-// export const updateAssemblyVsiSteps = async ({ commit }, assembly) => {
-//   const assemblyRef = doc(db, "vsi", assembly.id);
-//   await updateDoc(assemblyRef, assembly);
-//   commit("updateAssemblyVsiSteps", assembly);
-// }
+export const updateAssemblyVsiSteps = async ({ commit }, payload) => {
+  console.log('id actions', payload.id)
+  console.log('newSteps actions', payload.newSteps)
+  const assemblyRef = doc(db, "vsi", payload.id);
+  await updateDoc(assemblyRef, {
+    steps: payload.newSteps,
+  });
+}
+
+export const updateAssemblyMediaSteps = async ({ commit }, payload) => {
+  console.log('id actions', payload.id)
+  console.log('newSteps actions', payload.newSteps)
+  const assemblyRef = doc(db, "vsi", payload.id);
+  await updateDoc(assemblyRef, {
+    ["media.src"]: payload.newSteps,
+  });
+}

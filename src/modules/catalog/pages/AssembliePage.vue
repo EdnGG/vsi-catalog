@@ -4,53 +4,51 @@
       <!-- CONTAINER MEDIA -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
-    
-          <!-- <draggable 
+          <draggable
+                class="draggable--steps__container"
+                v-model="mediaList"
+                @end="updateMediaSteps()"
+                >
+                <!-- :disabled="!sorting" -->
+          <div
             class="container-media__item"
-          > -->
-          <!-- <draggableWrapper :list="mediaList" @end="ondragend"> -->
+            v-for="(mediaItem, index) in assemblie.media"
+            :key="index"
+            @click="
+              selectedMedia = mediaItem.src;
+              playVideo();
+            "
+            :media="mediaItem"
+          >
+            <!-- {{ mediaItem }} -->
             <div
-              class="container-media__item"
-              v-for="(mediaItem, index) in assemblie.media"
-              :key="index"
-              @click="
-                selectedMedia = mediaItem.src;
-                playVideo();
+              class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+              v-if="
+                mediaItem.src.endsWith('.jpg') ||
+                mediaItem.src.endsWith('.jpeg') ||
+                mediaItem.src.endsWith('.png')
               "
-              :media="mediaItem"
             >
-            {{ mediaItem }}
-              <div
-                class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-if="
-                  mediaItem.src.endsWith('.jpg') ||
-                  mediaItem.src.endsWith('.jpeg') ||
-                  mediaItem.src.endsWith('.png')
-                "
-              >
-                <img
-                  :src="mediaItem.src"
-                  alt="Media item"
-                  class="responsive-image__img"
-                />
-                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
-              </div>
-              <div
-                class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-                v-else-if="
-                  mediaItem.src.endsWith('.mp4') ||
-                  mediaItem.src.endsWith('.mov')
-                "
-              >
-                <video :src="mediaItem.src">
-                  Your browser does not support the video tag.
-                </video>
-                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
-              </div>
+              <img
+                :src="mediaItem.src"
+                alt="Media item"
+                class="responsive-image__img"
+              />
+              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
             </div>
-          <!-- </draggableWrapper> -->
-          <!-- </draggable> -->
-        <!-- </div> -->
+            <div
+              class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+              v-else-if="
+                mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov')
+              "
+            >
+              <video :src="mediaItem.src">
+                Your browser does not support the video tag.
+              </video>
+              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+            </div>
+          </div>
+          </draggable>
         </div>
       </div>
       <!-- MIDDLE CONTAINER -->
@@ -112,12 +110,14 @@
               <strong>Notes:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
-            <div class="q-ma-sm q-mb-lg">
-              <p class="q-mb-lg"><strong>Steps:</strong></p>
+            <p class="q-ma-lg"><strong>Steps:</strong></p>
+            <div class="card--steps__container">
+              <!-- class="draggable--steps__container" -->
               <draggable
+                class="draggable--steps__container"
                 v-model="list"
                 :disabled="!sorting"
-                @change="updateSteps($event, sorting)"
+                @end="updateSteps()"
               >
                 <div
                   v-for="(step, index) in list"
@@ -129,28 +129,27 @@
                 </div>
               </draggable>
               <!-- 
-                Despues de agregar el nuevo orden de "list" actualizar el array de steps de assemblie y despues actualizar el assemblie en Vuex y en Firestore
+Despues de agregar el nuevo orden de "list" actualizar el array de steps de assemblie y despues actualizar el assemblie en Vuex y en Firestore
                -->
-              <div v-if="isAuthenticated">
-                <q-btn class="q-ma-sm q-mt-xl" @click="toggleSorting">
-                  {{ sorting ? "Stop Sorting" : "Start Sorting" }}</q-btn
-                >
-              </div>
             </div>
+            <template v-if="isAuthenticated">
+              <q-btn
+                class="card--steps__button"
+                v-if="isAuthenticated"
+                @click="toggleSorting"
+              >
+                {{ sorting ? "Stop Sorting" : "Start Sorting" }}</q-btn
+              >
+            </template>
 
             <div class="assembly-info">
               <strong>Assembled By:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
+            <q-btn v-if="isAuthenticated" @click="editAssembly">
+              <q-icon name="edit" /> EDIT
+            </q-btn>
           </div>
-
-          <q-btn
-            v-if="isAuthenticated"
-            class="col-12 q-ma-lg"
-            @click="editAssembly"
-          >
-            <q-icon name="edit" /> EDIT
-          </q-btn>
         </div>
       </div>
       <!-- ENDS DESCRIPTION SECTION -->
@@ -300,8 +299,8 @@
       </div>
     </div>
     <!-- LOADING -->
-      
-    <LoadingSpinner v-else/>
+
+    <LoadingSpinner v-else />
     <!-- <div v-else class="row justify-center align-center"> 
       <div class="col-3 alert-info text-center mt-5">
         Please wait...
@@ -322,7 +321,13 @@ import "vue-inner-image-zoom/lib/vue-inner-image-zoom.css";
 import InnerImageZoom from "vue-inner-image-zoom";
 import { VueDraggableNext } from "vue-draggable-next";
 
-import { defineComponent, defineAsyncComponent, ref, onMounted, nextTick } from "vue";
+import {
+  defineComponent,
+  defineAsyncComponent,
+  ref,
+  onMounted,
+  nextTick,
+} from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -340,7 +345,6 @@ export default defineComponent({
       import("src/modules/catalog/components/LoadingSpinner.vue")
     ),
     // draggableWrapper: defineAsyncComponent(()=> import("src/modules/catalog/components/DraggableWrapper.vue")),
-    
   },
   props: {
     id: {
@@ -358,6 +362,7 @@ export default defineComponent({
       loadAssembliesVsi,
       updateAssemblyVsi,
       updateAssemblyVsiSteps,
+      updateAssemblyMediaSteps,
     } = useCatalog();
 
     const assemblie = ref(null);
@@ -365,7 +370,7 @@ export default defineComponent({
     const videoElementRef = ref(null);
     const showEditDialog = ref(false);
     const list = ref([]);
-    const mediaList = ref([])
+    const mediaList = ref([]);
     const sorting = ref(false);
 
     const editableAssembly = ref({
@@ -380,8 +385,6 @@ export default defineComponent({
           src: mediaItem,
           caption: "",
         })) || [],
-      // steps: [],
-      // hacer que steps tenga el valor de assemblie.value.steps
       steps: assemblie.value?.steps || [],
       technical_name: "",
     });
@@ -421,6 +424,8 @@ export default defineComponent({
       }
       // Cargar los steps en  el list
       list.value = assemblie.value.steps;
+      mediaList.value = assemblie.value.media;
+      console.log('media List: ', mediaList.value )
     });
     const editAssembly = () => {
       if (assemblie.value) {
@@ -456,29 +461,42 @@ export default defineComponent({
         console.log(err.message);
       }
     };
-    const updateSteps = async ($event, sorting) => {
+    // ...
+    const updateSteps = async () => {
       const newList = list.value.slice();
-      assemblie.value.steps = newList;
-      assemblie.value.steps = list.value;
-      await updateAssemblyVsi(assemblie.value);
-      await loadAssemblies();
+        try {
+          console.log('newList :', newList)
+          await updateAssemblyVsiSteps(props.id, newList);
+          $q.notify({
+            type: "positive",
+            message: "Steps updated successfully!",
+          });
+        } catch (error) {
+          console.error("Error updating steps:", error);
+          $q.notify({
+            type: "negative",
+            message: "Error updating steps",
+          });
+        }
     };
 
-    // const updateMediaSteps = async ($event, sorting) => {
-    //   console.log('update media steps', $event, sorting)
-    //   const newList = mediaList.value.slice();
-    //   assemblie.value.media = newList;
-    //   await updateAssemblyVsi(assemblie.value);
-    //   await loadAssemblies();
-    // };
-
-    // const onDragEnd = (evt) => {
-    //   console.log('on drag end', evt)
-    //   const { newIndex, oldIndex } = evt;
-    //   const movedItem = mediaList.value.splice(oldIndex, 1)[0];
-    //   mediaList.value.splice(newIndex, 0, movedItem);
-    //   updateMediaSteps();
-    // };
+    const updateMediaSteps = async ($event, sorting) => {
+      const newList = mediaList.value.slice();
+        try {
+          console.log('newList :', newList)
+          await updateAssemblyMediaSteps(props.id, newList);
+          $q.notify({
+            type: "positive",
+            message: "Steps updated successfully!",
+          });
+        } catch (error) {
+          console.error("Error updating steps:", error);
+          $q.notify({
+            type: "negative",
+            message: "Error updating steps",
+          });
+        }
+    };
 
     const toggleSorting = () => {
       sorting.value = !sorting.value;
@@ -494,7 +512,7 @@ export default defineComponent({
       videoElementRef,
       playVideo,
       updateSteps,
-      // updateMediaSteps,
+      updateMediaSteps,
       editAssembly,
       editableAssembly,
       updateAssemblie,
@@ -678,10 +696,30 @@ export default defineComponent({
   font-size: 1rem;
   color: #666;
 }
+
+.draggable--steps__container {
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 80%;
+  /* box-sizing: border-box; */
+}
+
+.card--steps__container {
+  max-height: 70vh; /* Dejarlo asi para que respete tamano de steps-contenedor*/
+  padding: 0px !important;
+  margin: 0px !important;
+  overflow-y: auto;
+}
+.card--steps__button {
+  height: 100%;
+  padding: 0px !important;
+  margin: 0px !important;
+}
 .assembly-info-block {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr;
+  /* height: 100hv;  */
 }
 .assembly-info {
   display: flex;
