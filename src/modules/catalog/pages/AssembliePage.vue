@@ -5,49 +5,48 @@
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
           <draggable
-                class="draggable--steps__container"
-                v-model="mediaList"
-                @end="updateMediaSteps()"
-                >
-                <!-- :disabled="!sorting" -->
-          <div
-            class="container-media__item"
-            v-for="(mediaItem, index) in assemblie.media"
-            :key="index"
-            @click="
-              selectedMedia = mediaItem.src;
-              playVideo();
-            "
-            :media="mediaItem"
+            class="draggable--steps__container"
+            v-model="mediaList"
+            @end="updateMediaSteps()"
           >
-            <!-- {{ mediaItem }} -->
             <div
-              class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-              v-if="
-                mediaItem.src.endsWith('.jpg') ||
-                mediaItem.src.endsWith('.jpeg') ||
-                mediaItem.src.endsWith('.png')
+              class="container-media__item"
+              v-for="(mediaItem, index) in assemblie.media"
+              :key="index"
+              @click="
+                selectedMedia = mediaItem.src;
+                playVideo();
               "
+              :media="mediaItem"
             >
-              <img
-                :src="mediaItem.src"
-                alt="Media item"
-                class="responsive-image__img"
-              />
-              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              <div
+                class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                v-if="
+                  mediaItem.src.endsWith('.jpg') ||
+                  mediaItem.src.endsWith('.jpeg') ||
+                  mediaItem.src.endsWith('.png')
+                "
+              >
+                <img
+                  :src="mediaItem.src"
+                  alt="Media item"
+                  class="responsive-image__img"
+                />
+                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              </div>
+              <div
+                class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                v-else-if="
+                  mediaItem.src.endsWith('.mp4') ||
+                  mediaItem.src.endsWith('.mov')
+                "
+              >
+                <video :src="mediaItem.src">
+                  Your browser does not support the video tag.
+                </video>
+                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              </div>
             </div>
-            <div
-              class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-              v-else-if="
-                mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov')
-              "
-            >
-              <video :src="mediaItem.src">
-                Your browser does not support the video tag.
-              </video>
-              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
-            </div>
-          </div>
           </draggable>
         </div>
       </div>
@@ -75,7 +74,6 @@
           >
           </inner-image-zoom>
         </div>
-
         <div
           v-else-if="
             selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.mov')
@@ -91,7 +89,6 @@
           </video>
         </div>
       </div>
-      <!--  -->
       <!-- DESCRIPTION SECCION -->
       <div class="assembly-container__description">
         <div class="assembly-card">
@@ -112,7 +109,6 @@
             </div>
             <p class="q-ma-lg"><strong>Steps:</strong></p>
             <div class="card--steps__container">
-              <!-- class="draggable--steps__container" -->
               <draggable
                 class="draggable--steps__container"
                 v-model="list"
@@ -298,18 +294,7 @@ Despues de agregar el nuevo orden de "list" actualizar el array de steps de asse
         </q-btn>
       </div>
     </div>
-    <!-- LOADING -->
-
     <LoadingSpinner v-else />
-    <!-- <div v-else class="row justify-center align-center"> 
-      <div class="col-3 alert-info text-center mt-5">
-        Please wait...
-        <h3 class="mt-2">
-          <i class="las la-spinner"></i>
-        </h3>
-      </div>
-     </div> -->
-    <!-- ENDS LOADING -->
     <div class="foote-container">
       <AssembliePageFooter />
     </div>
@@ -425,7 +410,7 @@ export default defineComponent({
       // Cargar los Steps y Media en  el list
       list.value = assemblie.value.steps;
       mediaList.value = assemblie.value.media;
-      console.log('media List: ', mediaList.value )
+      console.log("media List: ", mediaList.value);
     });
     const editAssembly = () => {
       if (assemblie.value) {
@@ -442,9 +427,6 @@ export default defineComponent({
       }
     };
     const updateAssemblie = async () => {
-      /*Necesito checar este error:
-      do not mutate vuex store state outside mutation handlers
-       */
       try {
         // assemblie.value.steps = list.value;
         // Object.assign(assemblie.value, editableAssembly.value);
@@ -461,43 +443,40 @@ export default defineComponent({
         console.log(err.message);
       }
     };
-    // ...
     const updateSteps = async () => {
       const newList = list.value.slice();
-        try {
-          // console.log('newList :', newList)
-          await updateAssemblyVsiSteps(props.id, newList);
-          await loadAssemblies();
-          $q.notify({
-            type: "positive",
-            message: "Steps updated successfully!",
-          });
-        } catch (error) {
-          console.error("Error updating Steps:", error);
-          $q.notify({
-            type: "negative",
-            message: "Error updating Steps",
-          });
-        }
+      try {
+        await updateAssemblyVsiSteps(props.id, newList);
+        await loadAssemblies();
+        $q.notify({
+          type: "positive",
+          message: "Steps updated successfully!",
+        });
+      } catch (error) {
+        console.error("Error updating Steps:", error);
+        $q.notify({
+          type: "negative",
+          message: "Error updating Steps",
+        });
+      }
     };
 
     const updateMediaSteps = async ($event, sorting) => {
       const newList = mediaList.value.slice();
-        try {
-          // console.log('newList :', newList)
-          await updateAssemblyMediaSteps(props.id, newList);
-          await loadAssemblies();
-          $q.notify({
-            type: "positive",
-            message: "Media updated successfully!",
-          });
-        } catch (error) {
-          console.error("Error updating Media:", error);
-          $q.notify({
-            type: "negative",
-            message: "Error updating Media",
-          });
-        }
+      try {
+        await updateAssemblyMediaSteps(props.id, newList);
+        await loadAssemblies();
+        $q.notify({
+          type: "positive",
+          message: "Media updated successfully!",
+        });
+      } catch (error) {
+        console.error("Error updating Media:", error);
+        $q.notify({
+          type: "negative",
+          message: "Error updating Media",
+        });
+      }
     };
 
     const toggleSorting = () => {
@@ -520,7 +499,6 @@ export default defineComponent({
       updateAssemblie,
       showEditDialog,
       updateAssemblyVsiSteps,
-      // onDragEnd,
       // GETTERS
       isAuthenticated,
       // INLINE METHODS
@@ -552,10 +530,7 @@ export default defineComponent({
 }
 .q-dialog-custom {
   max-width: 100%;
-  /* max-height: 100%; */
-  /* width: 100%; */
   height: 100vh;
-  /* overflow: hidden; */
 }
 .q-card {
   width: 100%;
@@ -665,7 +640,6 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* font-size: 8px !important; */
   width: 100%;
   height: 100%; /* Limit the maximum height of the container */
   overflow-y: scroll; /* Enable vertical scrolling when content exceeds the height */
@@ -702,8 +676,7 @@ export default defineComponent({
 .draggable--steps__container {
   padding: 0px !important;
   margin: 0px !important;
-  height: 80%;
-  /* box-sizing: border-box; */
+  /* height: 80%; */
 }
 
 .card--steps__container {
@@ -804,7 +777,6 @@ export default defineComponent({
     overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
-    /* Esto es necesario para el siguiente paso */
   }
   .modal-responsive__img {
     max-width: 100%;
@@ -824,7 +796,7 @@ export default defineComponent({
   }
   .subcontainer-media {
     max-width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
