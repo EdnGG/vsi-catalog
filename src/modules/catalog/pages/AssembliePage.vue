@@ -422,7 +422,7 @@ export default defineComponent({
       } else {
         console.error("assemblie.value.media is undefined or empty");
       }
-      // Cargar los steps en  el list
+      // Cargar los Steps y Media en  el list
       list.value = assemblie.value.steps;
       mediaList.value = assemblie.value.media;
       console.log('media List: ', mediaList.value )
@@ -446,8 +446,8 @@ export default defineComponent({
       do not mutate vuex store state outside mutation handlers
        */
       try {
-        Object.assign(assemblie.value, editableAssembly.value);
-        assemblie.value.steps = list.value;
+        // assemblie.value.steps = list.value;
+        // Object.assign(assemblie.value, editableAssembly.value);
         await updateAssemblyVsi(editableAssembly.value);
         await loadAssemblies();
         showEditDialog.value = false;
@@ -465,17 +465,18 @@ export default defineComponent({
     const updateSteps = async () => {
       const newList = list.value.slice();
         try {
-          console.log('newList :', newList)
+          // console.log('newList :', newList)
           await updateAssemblyVsiSteps(props.id, newList);
+          await loadAssemblies();
           $q.notify({
             type: "positive",
             message: "Steps updated successfully!",
           });
         } catch (error) {
-          console.error("Error updating steps:", error);
+          console.error("Error updating Steps:", error);
           $q.notify({
             type: "negative",
-            message: "Error updating steps",
+            message: "Error updating Steps",
           });
         }
     };
@@ -483,17 +484,18 @@ export default defineComponent({
     const updateMediaSteps = async ($event, sorting) => {
       const newList = mediaList.value.slice();
         try {
-          console.log('newList :', newList)
+          // console.log('newList :', newList)
           await updateAssemblyMediaSteps(props.id, newList);
+          await loadAssemblies();
           $q.notify({
             type: "positive",
-            message: "Steps updated successfully!",
+            message: "Media updated successfully!",
           });
         } catch (error) {
-          console.error("Error updating steps:", error);
+          console.error("Error updating Media:", error);
           $q.notify({
             type: "negative",
-            message: "Error updating steps",
+            message: "Error updating Media",
           });
         }
     };

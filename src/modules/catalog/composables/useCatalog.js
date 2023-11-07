@@ -35,6 +35,7 @@ export const useCatalog = () => {
   };
 
   const updateAssemblyVsi = async (assembly) => {
+    console.log('assembly', assembly)
     const resp = await store.dispatch("catalogModule/updateAssemblyVsi", assembly);
     return resp;
   }
@@ -47,8 +48,6 @@ export const useCatalog = () => {
   }
 
   const updateAssemblyMediaSteps = async (id, newSteps) => {
-    console.log('id', id)
-    console.log('newSteps', newSteps)
     const resp = await store.dispatch("catalogModule/updateAssemblyMediaSteps", {id, newSteps});
     return resp;
   }

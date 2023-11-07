@@ -75,9 +75,14 @@ export const addAssemblyWaterWorks = async ({ commit }, assembly) => {
 };
 
 export const updateAssemblyVsi = async ({ commit }, assembly) => {
-  const assemblyRef = doc(db, "vsi", assembly.id);
-  await updateDoc(assemblyRef, assembly);
-  commit("updateAssemblyVsi", assembly);
+  try{
+    const assemblyRef = doc(db, "vsi", assembly.id);
+    await updateDoc(assemblyRef, assembly);
+    commit("updateAssemblyVsi", assembly);
+
+  }catch(error){
+    console.log('Error updating assembly', error.message)
+  }
 };
 
 export const setSearchResults = ({ commit }, results) => {
@@ -85,8 +90,8 @@ export const setSearchResults = ({ commit }, results) => {
 };
 
 export const updateAssemblyVsiSteps = async ({ commit }, payload) => {
-  console.log('id actions', payload.id)
-  console.log('newSteps actions', payload.newSteps)
+  // console.log('id actions', payload.id)
+  // console.log('newSteps actions', payload.newSteps)
   const assemblyRef = doc(db, "vsi", payload.id);
   await updateDoc(assemblyRef, {
     steps: payload.newSteps,
@@ -94,10 +99,16 @@ export const updateAssemblyVsiSteps = async ({ commit }, payload) => {
 }
 
 export const updateAssemblyMediaSteps = async ({ commit }, payload) => {
-  console.log('id actions', payload.id)
-  console.log('newSteps actions', payload.newSteps)
-  const assemblyRef = doc(db, "vsi", payload.id);
-  await updateDoc(assemblyRef, {
-    ["media.src"]: payload.newSteps,
-  });
+  // console.log('id actions', payload.id)
+  // console.log('newSteps actions', payload.newSteps)
+  try{
+    const assemblyRef = doc(db, "vsi", payload.id);
+    await updateDoc(assemblyRef, {
+      media : payload.newSteps,
+    });
+    commit("updateAssemblyMediaSteps", payload)
+
+  }catch(error){
+    console.log('Error updating media steps', error.message)
+  }
 }
