@@ -110,7 +110,6 @@
             <p class="q-ma-lg"><strong>Steps:</strong></p>
             <div class="card--steps__container">
               <draggable
-                class="draggable--steps__container"
                 v-model="list"
                 :disabled="!sorting"
                 @end="updateSteps()"
@@ -676,6 +675,13 @@ export default defineComponent({
 .draggable--steps__container {
   padding: 0px !important;
   margin: 0px !important;
+  /* max-width: 60%;
+    max-height: 60%;
+    
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: scroll; */
   /* height: 80%; */
 }
 
@@ -784,10 +790,12 @@ export default defineComponent({
     object-fit: cover;
   }
   .container-media {
-    margin-top: 0px;
-    margin-left: 0px;
+    /* padding-top: 20px;
+    margin-left: 0px; */
+    padding-top: 120px;
+    margin: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     /* Cambia a 'column' para mostrar los elementos en filas */
     width: 100%;
     height: 100%;
@@ -797,11 +805,26 @@ export default defineComponent({
   .subcontainer-media {
     max-width: 100%;
     max-height: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
+    overflow-y: hidden;
     /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
+  }
+  .draggable--steps__container {
+    
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    /* overflow-y: scroll; */
+    /* height: 80%; */
   }
   .container-media__item {
     max-width: 50% !important;
@@ -899,10 +922,10 @@ export default defineComponent({
     object-fit: cover;
   }
   .container-media {
-    margin-top: 0px;
-    margin-left: 0px;
+    padding-top: 120px;
+    margin: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     /* Cambia a 'column' para mostrar los elementos en filas */
     width: 100%;
     height: 100%;
@@ -911,12 +934,27 @@ export default defineComponent({
   }
   .subcontainer-media {
     max-width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
+    overflow-y: hidden;
     /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
+  }
+  .draggable--steps__container {
+    
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    /* overflow-y: scroll; */
+    /* height: 80%; */
   }
   .container-media__item {
     max-width: 100% !important;
