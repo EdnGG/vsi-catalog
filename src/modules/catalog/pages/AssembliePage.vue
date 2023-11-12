@@ -735,14 +735,13 @@ export default defineComponent({
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
+    width: 90%;
+    height: 90%;
+    margin: 10px;
   }
   .responsive-video video {
-    max-width: 60vw;
-    max-height: 60vh;
+    max-width: 50vw;
+    max-height: 40vh;
     overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
@@ -759,12 +758,11 @@ export default defineComponent({
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding: 0px;
+    width: 100%;
+    height: 100%;
+    margin-bottom:0;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .modal-responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
@@ -781,6 +779,8 @@ export default defineComponent({
     max-width: 40vw;
     max-height: 40vh;
     overflow: hidden;
+    /* padding: 0; */
+    /* margin: 0; */
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
   }
@@ -790,10 +790,9 @@ export default defineComponent({
     object-fit: cover;
   }
   .container-media {
-    /* padding-top: 20px;
-    margin-left: 0px; */
-    padding-top: 120px;
-    margin: 30px;
+    margin-left: 0px;
+    padding: 0px;
+    /* margin: 30px; */
     display: flex;
     flex-direction: column;
     /* Cambia a 'column' para mostrar los elementos en filas */
@@ -804,31 +803,30 @@ export default defineComponent({
   }
   .subcontainer-media {
     max-width: 100%;
-    max-height: 100%;
-    padding: 0px !important;
-    margin: 0px !important;
+    max-height: 100vh;
+    padding: 0 !important;
+    margin: 0 !important;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
-    overflow-y: hidden;
-    /* Cambia a 'column' para mostrar los elementos en filas */
+    overflow-y: hidden;    /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
   }
   .draggable--steps__container {
-    
-    max-width: 100%;
-    max-height: 100%;
-    padding: 0px !important;
-    margin: 0px !important;
+    /* width: 100%; */
+    height: 100%;
+    padding: 0;
+    margin-top: 100px !important;
+    margin-bottom: 100px !important;
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
     /* overflow-y: scroll; */
     /* height: 80%; */
   }
   .container-media__item {
-    max-width: 50% !important;
-    max-height: 100% !important;
+    /* max-width: 100% !important;  */
+    /* max-height: 100vh !important; */
     padding: 0px !important;
     margin: 0px !important;
   }
@@ -864,14 +862,13 @@ export default defineComponent({
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
+    width: 90%;
+    height: 90%;
+    margin: 10px;
   }
   .responsive-video video {
-    max-width: 60vw;
-    max-height: 60vh;
+    max-width: 50vw;
+    max-height: 40vh;
     overflow: hidden;
     /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
@@ -890,12 +887,11 @@ export default defineComponent({
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
     display: flex;
     flex-direction: row;
-    width: 60%;
-    height: 60%;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding: 0px;
+    width: 100%;
+    height: 100%;
+    margin-bottom:0;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .modal-responsive-image {
     flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
@@ -922,8 +918,10 @@ export default defineComponent({
     object-fit: cover;
   }
   .container-media {
-    padding-top: 120px;
-    margin: 30px;
+    /* box-sizing: border-box; */
+    margin-left: 0px;
+    padding: 0px;
+    /* margin: 30px; */
     display: flex;
     flex-direction: column;
     /* Cambia a 'column' para mostrar los elementos en filas */
@@ -931,36 +929,38 @@ export default defineComponent({
     height: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
+
   }
   .subcontainer-media {
     max-width: 100%;
-    max-height: 100%;
-    padding: 0px !important;
-    margin: 0px !important;
+    max-height: 100vh;
+    padding: 0 !important;
+    margin: 0 !important;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
     overflow-y: hidden;
+    /* overflow-y: hidden; */
     /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
   }
   .draggable--steps__container {
-    
-    max-width: 100%;
-    max-height: 100%;
-    padding: 0px !important;
-    margin: 0px !important;
+    height: 100%;
+    padding: 0;
+    margin-top: 70px !important;
+    margin-bottom: 70px !important;
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
     /* overflow-y: scroll; */
     /* height: 80%; */
   }
   .container-media__item {
     max-width: 100% !important;
-    max-height: 100vh !important;
-    padding: 0px !important;
-    margin: 0px !important;
+    max-height: 80vh !important;
+    /* padding: 0px !important;
+    margin: 0px !important; */
+    /* overflow-x: scroll; */
   }
   .modal-container-media__item {
     max-width: 100%;
