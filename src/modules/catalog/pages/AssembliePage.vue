@@ -19,7 +19,8 @@
               "
               :media="mediaItem"
             >
-              <div
+            <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
+              <div 
                 class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-if="
                   mediaItem.src.endsWith('.jpg') ||
@@ -295,7 +296,7 @@ Despues de agregar el nuevo orden de "list" actualizar el array de steps de asse
     </div>
     <LoadingSpinner v-else />
     <div class="foote-container">
-      <AssembliePageFooter />
+      <AssembliePageFooter :category="category" />
     </div>
   </q-page>
 </template>
@@ -309,6 +310,7 @@ import {
   defineComponent,
   defineAsyncComponent,
   ref,
+  computed,
   onMounted,
   nextTick,
 } from "vue";
@@ -328,7 +330,6 @@ export default defineComponent({
     LoadingSpinner: defineAsyncComponent(() =>
       import("src/modules/catalog/components/LoadingSpinner.vue")
     ),
-    // draggableWrapper: defineAsyncComponent(()=> import("src/modules/catalog/components/DraggableWrapper.vue")),
   },
   props: {
     id: {
@@ -356,6 +357,12 @@ export default defineComponent({
     const list = ref([]);
     const mediaList = ref([]);
     const sorting = ref(false);
+    const isMediaLoaded = ref(false)
+    const category = ref()
+    // const categoryList = ref([{
+    //   butterflyValves: "https://valvesolutions.com/product-category/valves/butterfly-valves/",
+    //   vBallValves: "https://valvesolutions.com/product-category/valves/butterfly-valves/"
+    // }])
 
     const editableAssembly = ref({
       id: "",
@@ -387,6 +394,8 @@ export default defineComponent({
 
     onMounted(async () => {
       await loadAssemblies();
+      assemblie.value.media ? isMediaLoaded.value = true : isMediaLoaded.value = false;
+      
       if (
         assemblie.value &&
         assemblie.value.media &&
@@ -404,12 +413,15 @@ export default defineComponent({
           ? defaultImage.src
           : assemblie.value.media[0].src;
       } else {
-        console.error("assemblie.value.media is undefined or empty");
+        $q.notify({
+          type: "negative",
+          message: "Error: Media is undefined or empty",
+        });
       }
       // Cargar los Steps y Media en  el list
       list.value = assemblie.value.steps;
       mediaList.value = assemblie.value.media;
-      console.log("media List: ", mediaList.value);
+      category.value = assemblie.value.category
     });
     const editAssembly = () => {
       if (assemblie.value) {
@@ -483,6 +495,8 @@ export default defineComponent({
     };
 
     return {
+      // category,
+      isMediaLoaded,
       sorting,
       toggleSorting,
       list,
@@ -498,6 +512,11 @@ export default defineComponent({
       updateAssemblie,
       showEditDialog,
       updateAssemblyVsiSteps,
+      //COMPUTED
+      category: computed(() => {
+        return assemblie.value?.category;
+      }),
+      
       // GETTERS
       isAuthenticated,
       // INLINE METHODS

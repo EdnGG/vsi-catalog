@@ -5,18 +5,6 @@
       <q-item>
         <q-item-section class="q-item-section-img">
           <div class="container-img">
-            <!-- {{
-              console.log(
-                "Media: ",
-                media,
-                "ID :", id,
-                "NAME: ", name,
-                "IMAGE :", image,
-                "DESCRIPTION :", description,
-                "CATEGORY :", category,
-                "HARDWARE :", hardware
-              )
-            }} -->
             <q-spinner-pie v-if="!isImageLoaded" color="primary" size="4em" />
             <img :src="media[0].src" :alt="media[0].name" @load="onImageLoad" />
             <!-- @load="isImageLoaded = true" -->

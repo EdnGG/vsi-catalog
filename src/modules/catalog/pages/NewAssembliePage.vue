@@ -66,7 +66,8 @@
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please add some notes']"
         />
-        <div class="q-mb-lg row text-center justify-center">
+
+        <!-- <div class="q-mb-lg row text-center justify-center">
           <q-btn
             class=""
             label="Add Steps"
@@ -79,7 +80,8 @@
           <div v-for="(note, index) in assembly.steps" :key="index">
             <strong>{{ index + 1 }}) :</strong> {{ note }}
           </div>
-        </div>
+        </div> -->
+
         <q-input
           filled
           autogrow
