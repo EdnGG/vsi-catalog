@@ -1,14 +1,31 @@
 <template>
-  <footer class="footer--container">
-    <div>
-      <p>Literature</p>
-      <span><a :href="categories" target="_blank"> Go! </a></span>
+  <footer>
+    <div class="container">
+      <div>
+        <p>Category</p>
+        <span
+          ><a :href="categories" target="_blank"> {{ category }}</a></span
+        >
+      </div>
+      <div class="vertical-separator"></div>
+      <div>
+        <p>Website</p>
+        <span
+          ><a :href="website" target="_blank">
+            <img :src="logo" alt="Valve Solutions Inc" /></a
+        ></span>
+      </div>
     </div>
-    <div>
-      <p>Category</p>
-      <span>{{ categories }}</span>
+    <div class="horizontal-separator"></div>
+    <div class="subcontainer">
+      <div>
+        <p>
+        1205 Alpha Drive Alpharetta, GA 30004 770-740-0800
+        sales@valvesolutions.com
+      </p>
+      </div>
+      
     </div>
-    <div>Website</div>
   </footer>
 </template>
 
@@ -24,12 +41,22 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const logo = ref(
+      "https://valvesolutions.com/wp-content/uploads/2020/12/Valve-Solutions-Logo-1-150x72-1.png"
+    );
+    const website = ref("https://valvesolutions.com/");
     const categoryList = ref({
-      'BUTTERFLY VALVE':
+      "BUTTERFLY VALVE":
         "https://valvesolutions.com/product-category/valves/butterfly-valves/",
-      'V-BALL':
+      "V-BALL":
         "https://valvesolutions.com/product-category/valves/ball-valves/",
-      'PNEUMATIC ACTUATOR': "https://valvesolutions.com/product-category/actuators/pneumatic-actuators/",
+      "PNEUMATIC ACTUATOR":
+        "https://valvesolutions.com/product-category/actuators/pneumatic-actuators/",
+      "GLOBE VALVES":
+        "https://valvesolutions.com/product-category/valves/globe-valves/",
+      BRACKET: "https://valvesolutions.com/product-category/accessories/",
+      "ELECTRIC ACTUATOR":
+        "https://valvesolutions.com/product-category/actuators/electric-actuators/",
     });
 
     const categories = computed(() => {
@@ -37,33 +64,91 @@ export default defineComponent({
     });
     return {
       categories,
+      website,
+      logo,
     };
   },
 });
 </script>
 
 <style scoped>
-.footer--container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #0c0303;
-  padding: 20px;
-  text-align: center;
-  height: 200px;
-  width: 100%;
-  color: aqua;
-}
 footer {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   background-color: #0c0303;
   padding: 20px;
   text-align: center;
-  height: 200px;
+  height: 250px;
+  width: 100vw;
+  color: aqua;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #0c0303;
+  /* padding: 80px; */
+  text-align: center;
+  height: 100px;
   width: 100%;
   color: aqua;
+}
+.subcontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #0c0303;
+  /* padding: 20px; */
+  text-align: center;
+  height: 100px;
+  width: 100%;
+  color: aqua;
+}
+.vertical-separator{
+  border-left: 1px solid aqua;
+  height: 100%;
+  margin: 0 20px;
+}
+.horizontal-separator{
+  border-top: 1px solid aqua;
+  /* height: 100%; */
+  margin: 0 20px;
+}
+
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+  
+  .container div {
+    margin-bottom: 20px;
+    /* padding-bottom: 20px; */
+  }
+  .subcontainer div {
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+  }
+  .vertical-separator {
+    display: none; /* O ajusta según tus necesidades */
+  }
+}
+
+/* Estilos para tabletas */
+@media (min-width: 768px) and (max-width: 1023px) {
+ 
+  .container div {
+    margin-bottom: 20px;
+  }
+  .subcontainer div {
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+  }
+  .vertical-separator {
+    display: none; /* O ajusta según tus necesidades */
+  }
 }
 </style>

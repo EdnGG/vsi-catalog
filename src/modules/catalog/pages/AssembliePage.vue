@@ -124,9 +124,7 @@
                   {{ step }}
                 </div>
               </draggable>
-              <!-- 
-Despues de agregar el nuevo orden de "list" actualizar el array de steps de assemblie y despues actualizar el assemblie en Vuex y en Firestore
-               -->
+             
             </div>
             <template v-if="isAuthenticated">
               <q-btn
@@ -694,14 +692,6 @@ export default defineComponent({
 .draggable--steps__container {
   padding: 0px !important;
   margin: 0px !important;
-  /* max-width: 60%;
-    max-height: 60%;
-    
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    overflow-y: scroll; */
-  /* height: 80%; */
 }
 
 .card--steps__container {
@@ -866,7 +856,7 @@ export default defineComponent({
   .assembly-container__description {
     flex: 1;
     /* Ocupar todo el ancho en tablet */
-    max-width: 100%;
+    max-width: 90%;
     /* Eliminar cualquier margen que pudieran tener */
     margin: 0;
   }
@@ -1004,7 +994,7 @@ export default defineComponent({
   .assembly-container__description {
     flex: 1;
     /* Ocupar todo el ancho en móviles */
-    max-width: 100%;
+    max-width: 90%;
     /* Eliminar cualquier margen que pudieran tener */
     margin: 0;
   }
