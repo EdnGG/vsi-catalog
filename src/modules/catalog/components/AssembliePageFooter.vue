@@ -18,6 +18,7 @@
     </div>
     <div class="horizontal-separator"></div>
     <div class="subcontainer">
+      <!-- <h3> new category {{ categoriesVsi }}</h3> -->
       <div>
         <p>
         1205 Alpha Drive Alpharetta, GA 30004 770-740-0800
@@ -30,7 +31,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, defineProps, computed } from "vue";
+import { defineComponent, ref, defineProps, computed, onMounted } from "vue";
+import getCategoriesVsi from "src/modules/catalog/utils/categoriesVsi.js";
 
 export default defineComponent({
   name: "AssembliePageFooter",
@@ -41,31 +43,24 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const categoriesVsi = ref([]);
     const logo = ref(
       "https://valvesolutions.com/wp-content/uploads/2020/12/Valve-Solutions-Logo-1-150x72-1.png"
     );
     const website = ref("https://valvesolutions.com/");
-    const categoryList = ref({
-      "BUTTERFLY VALVE":
-        "https://valvesolutions.com/product-category/valves/butterfly-valves/",
-      "V-BALL":
-        "https://valvesolutions.com/product-category/valves/ball-valves/",
-      "PNEUMATIC ACTUATOR":
-        "https://valvesolutions.com/product-category/actuators/pneumatic-actuators/",
-      "GLOBE VALVES":
-        "https://valvesolutions.com/product-category/valves/globe-valves/",
-      BRACKET: "https://valvesolutions.com/product-category/accessories/",
-      "ELECTRIC ACTUATOR":
-        "https://valvesolutions.com/product-category/actuators/electric-actuators/",
+
+    onMounted(() => {
+      categoriesVsi.value = getCategoriesVsi;
     });
 
     const categories = computed(() => {
-      return categoryList.value[props.category];
+      return categoriesVsi.value[props.category]
     });
     return {
       categories,
       website,
       logo,
+      categoriesVsi
     };
   },
 });

@@ -290,7 +290,11 @@
         >
           Back
         </q-btn>
+        
       </div>
+      <div class="">
+          <ChatBotVsi />
+        </div>
     </div>
     <LoadingSpinner v-else />
     <div class="foote-container">
@@ -315,7 +319,6 @@ import {
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
-import AssembliePageFooter from "../components/AssembliePageFooter.vue";
 import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 
@@ -324,10 +327,11 @@ export default defineComponent({
   components: {
     "inner-image-zoom": InnerImageZoom,
     draggable: VueDraggableNext,
-    AssembliePageFooter,
+    AssembliePageFooter: defineAsyncComponent(()=> import("../components/AssembliePageFooter.vue")),
     LoadingSpinner: defineAsyncComponent(() =>
       import("src/modules/catalog/components/LoadingSpinner.vue")
     ),
+    ChatBotVsi: defineAsyncComponent(()=> import("src/modules/catalog/components/ChatBotVsi.vue")),
   },
   props: {
     id: {
