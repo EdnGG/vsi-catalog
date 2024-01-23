@@ -44,14 +44,15 @@
     const userMessage = {
       text: userInput.value,
       sent: true,
-      time: new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString(), 
     };
   
     messages.value.push(userMessage);
   
     // Aquí se envía la solicitud al servidor/ChatGPT
     try {
-      const response = await fetch('/tu-endpoint-chatgpt', {
+      //  Endpoint de cloud functions: https://us-central1-vsi-catalog.cloudfunctions.net/chatGPT
+      const response = await fetch('https://us-central1-vsi-catalog.cloudfunctions.net/chatGPT', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +70,7 @@
         time: new Date().toLocaleTimeString(),
       });
     } catch (error) {
-      console.error('Error al enviar el mensaje:', error);
+      console.error('Error al enviar el mensaje:', error.message);
     }
   
     userInput.value = '';
