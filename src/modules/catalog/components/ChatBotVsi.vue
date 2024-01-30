@@ -53,10 +53,14 @@
     try {
       //  Endpoint de cloud functions: https://us-central1-vsi-catalog.cloudfunctions.net/chatGPT
       const response = await fetch('https://us-central1-vsi-catalog.cloudfunctions.net/chatGPT', {
+        // https://us-central1-vsi-catalog.cloudfunctions.net/chatGPT
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+        
+
         },
+        credentials: 'same-origin',
         body: JSON.stringify({ message: userInput.value }),
       });
   
