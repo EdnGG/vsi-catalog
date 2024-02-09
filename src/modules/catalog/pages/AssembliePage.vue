@@ -361,10 +361,7 @@ export default defineComponent({
     const sorting = ref(false);
     const isMediaLoaded = ref(false)
     const category = ref()
-    // const categoryList = ref([{
-    //   butterflyValves: "https://valvesolutions.com/product-category/valves/butterfly-valves/",
-    //   vBallValves: "https://valvesolutions.com/product-category/valves/butterfly-valves/"
-    // }])
+   
 
     const editableAssembly = ref({
       id: "",

@@ -160,7 +160,7 @@ export default defineComponent({
       {
         cloudName: process.env.CLOUDINARY_CLOUD_NAME,
         uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
-        sources: ["local", "url", "camera", "image_search"],
+        sources: ["local", "url", "camera", "image_search"], 
         multiple: true,
         maxFileSize: 100000000000,
         maxImageFileSize: 100000000000,
