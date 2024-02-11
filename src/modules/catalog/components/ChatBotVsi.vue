@@ -2,7 +2,7 @@
   <q-page padding>
     <q-card>
       <q-card-section>
-        <div class="text-h6">Chat con ChatGPT</div>
+        <div class="text-h6">Questions about this assembly?</div>
       </q-card-section>
 
       <q-card-section class="chat-window">
@@ -11,7 +11,7 @@
             <q-chat-message
               :text="[message.text]"
               :sent="message.sent"
-              :name="message.sent ? 'Tú' : 'ChatGPT'"
+              :name="message.sent ? 'Me' : 'VSI-Chatbot'"
               :stamp="message.time"
             ></q-chat-message>
           </q-item>
@@ -23,7 +23,7 @@
           v-model="userInput"
           filled
           type="textarea"
-          hint="Escribe tu mensaje aquí"
+          hint="Type your question here"
           @keyup.enter="sendMessage"
         />
       </q-card-section>
@@ -33,8 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-// import openAI from "openai";
-import { OpenAI } from "openai";
+import axios from "axios";
 
 const messages = ref([]);
 const userInput = ref("");
@@ -51,46 +50,28 @@ const sendMessage = async () => {
     time: new Date().toLocaleTimeString(),
   };
   messages.value.push(userMessage);
-
-  const configuration = {
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
-  };
-
-  const openai = new OpenAI(configuration);
-
   try {
-    const prompt = userInput.value;
-    const chatGPTResponse = await openai.chat.completions.create({
-        // model: "tu_model_id_personalizado", // Cambia esto por tu ID de modelo personalizado
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: "You are a helpful assistant.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
+
+    // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
+    const response = await axios.post(`${process.env.SERVER_VSI}/assistant/chatbot-vsi`, {
+      message: userInput.value
     });
+    // const response = await axios.post('http://localhost:3000/assistant/chatbot-vsi', {
+    //   message: userInput.value
+    // });
 
-    console.log(chatGPTResponse.choices[0].message.content); // Verificar la estructura de la respuesta
-
+    // console.log(response.data.response);
 
     const botMessage = {
-      text: chatGPTResponse.choices[0].message.content,
+      text: response.data.response,
       sent: false,
       time: new Date().toLocaleTimeString(),
     };
+
     messages.value.push(botMessage);
-
-
   } catch (error) {
     console.log(error);
   }
-
   userInput.value = "";
 };
 </script>

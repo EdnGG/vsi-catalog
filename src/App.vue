@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
+import { defineComponent, onMounted, provide, ref } from 'vue'
 import { auth, db } from './boot/firebase'
 
-import { onAuthStateChanged } from 'firebase/auth';
+// import { onAuthStateChanged } from 'firebase/auth';
 
 // Importar la tienda Vuex
 import { useStore } from 'vuex';
