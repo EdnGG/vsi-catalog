@@ -29,6 +29,7 @@
                 "
               >
                 <img
+                  loading="lazy"
                   :src="mediaItem.src"
                   alt="Media item"
                   class="responsive-image__img"

@@ -53,14 +53,16 @@ const sendMessage = async () => {
   try {
 
     // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
-    const response = await axios.post(`${process.env.SERVER_VSI}/assistant/chatbot-vsi`, {
+    
+    const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
       message: userInput.value
     });
-    // const response = await axios.post('http://localhost:3000/assistant/chatbot-vsi', {
+    // const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
     //   message: userInput.value
     // });
-
-    // console.log(response.data.response);
+    // const response = await axios.post('https://chat.openai.com/g/g-Ws85tPLN5-valve-solutions-assistant', {
+    //   message: userInput.value
+    // })
 
     const botMessage = {
       text: response.data.response,
