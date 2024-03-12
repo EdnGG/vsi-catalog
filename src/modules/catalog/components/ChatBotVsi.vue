@@ -2,7 +2,7 @@
   <q-page padding>
     <q-card>
       <q-card-section>
-        <div class="text-h6">Questions about this assembly?</div>
+        <div class="text-h6">Hi I'm a VSI Chatbot How can I help you?</div>
       </q-card-section>
 
       <q-card-section class="chat-window">
@@ -54,15 +54,12 @@ const sendMessage = async () => {
 
     // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
     
-    const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
-      message: userInput.value
-    });
-    // const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
+    // const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
     //   message: userInput.value
     // });
-    // const response = await axios.post('https://chat.openai.com/g/g-Ws85tPLN5-valve-solutions-assistant', {
-    //   message: userInput.value
-    // })
+    const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
+      message: userInput.value
+    });
 
     const botMessage = {
       text: response.data.response,
