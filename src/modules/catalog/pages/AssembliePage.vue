@@ -19,8 +19,8 @@
               "
               :media="mediaItem"
             >
-            <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
-              <div 
+              <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
+              <div
                 class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-if="
                   mediaItem.src.endsWith('.jpg') ||
@@ -125,7 +125,6 @@
                   {{ step }}
                 </div>
               </draggable>
-             
             </div>
             <template v-if="isAuthenticated">
               <q-btn
@@ -291,11 +290,10 @@
         >
           Back
         </q-btn>
-        
       </div>
       <div class="">
-          <ChatBotVsi />
-        </div>
+        <ChatBotVsi />
+      </div>
     </div>
     <LoadingSpinner v-else />
     <div class="foote-container">
@@ -328,11 +326,15 @@ export default defineComponent({
   components: {
     "inner-image-zoom": InnerImageZoom,
     draggable: VueDraggableNext,
-    AssembliePageFooter: defineAsyncComponent(()=> import("../components/AssembliePageFooter.vue")),
+    AssembliePageFooter: defineAsyncComponent(() =>
+      import("../components/AssembliePageFooter.vue")
+    ),
     LoadingSpinner: defineAsyncComponent(() =>
       import("src/modules/catalog/components/LoadingSpinner.vue")
     ),
-    ChatBotVsi: defineAsyncComponent(()=> import("src/modules/catalog/components/ChatBotVsi.vue")),
+    ChatBotVsi: defineAsyncComponent(() =>
+      import("src/modules/catalog/components/ChatBotVsi.vue")
+    ),
   },
   props: {
     id: {
@@ -360,9 +362,8 @@ export default defineComponent({
     const list = ref([]);
     const mediaList = ref([]);
     const sorting = ref(false);
-    const isMediaLoaded = ref(false)
-    const category = ref()
-   
+    const isMediaLoaded = ref(false);
+    const category = ref();
 
     const editableAssembly = ref({
       id: "",
@@ -394,8 +395,10 @@ export default defineComponent({
 
     onMounted(async () => {
       await loadAssemblies();
-      assemblie.value.media ? isMediaLoaded.value = true : isMediaLoaded.value = false;
-      
+      assemblie.value.media
+        ? (isMediaLoaded.value = true)
+        : (isMediaLoaded.value = false);
+
       if (
         assemblie.value &&
         assemblie.value.media &&
@@ -421,7 +424,7 @@ export default defineComponent({
       // Cargar los Steps y Media en  el list
       list.value = assemblie.value.steps;
       mediaList.value = assemblie.value.media;
-      category.value = assemblie.value.category
+      category.value = assemblie.value.category;
     });
     const editAssembly = () => {
       if (assemblie.value) {
@@ -516,7 +519,7 @@ export default defineComponent({
       category: computed(() => {
         return assemblie.value?.category;
       }),
-      
+
       // GETTERS
       isAuthenticated,
       // INLINE METHODS
@@ -771,7 +774,7 @@ export default defineComponent({
     flex-direction: row;
     width: 100%;
     height: 100%;
-    margin-bottom:0;
+    margin-bottom: 0;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -820,7 +823,7 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
-    overflow-y: hidden;    /* Cambia a 'column' para mostrar los elementos en filas */
+    overflow-y: hidden; /* Cambia a 'column' para mostrar los elementos en filas */
     /* flex-wrap:nowrap; */
   }
   .draggable--steps__container {
@@ -900,7 +903,7 @@ export default defineComponent({
     flex-direction: row;
     width: 100%;
     height: 100%;
-    margin-bottom:0;
+    margin-bottom: 0;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -940,7 +943,6 @@ export default defineComponent({
     height: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
-
   }
   .subcontainer-media {
     max-width: 100%;

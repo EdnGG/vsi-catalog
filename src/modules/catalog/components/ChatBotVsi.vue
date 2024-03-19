@@ -11,10 +11,12 @@
             <q-chat-message
               :text="[message.text]"
               :sent="message.sent"
+
               :name="message.sent ? 'Me' : 'VSI-Chatbot'"
               :stamp="message.time"
             ></q-chat-message>
           </q-item>
+          <q-spinner-dots v-if="loading" size="2rem" />
         </q-list>
       </q-card-section>
 
@@ -37,11 +39,14 @@ import axios from "axios";
 
 const messages = ref([]);
 const userInput = ref("");
+const loading = ref(false)
 
 onMounted(() => {});
 
 const sendMessage = async () => {
   if (!userInput.value.trim()) return;
+
+  loading.value = true
 
    // Agregar mensaje del usuario a messages
   const userMessage = {
@@ -54,9 +59,10 @@ const sendMessage = async () => {
 
     // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
     
-    // const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
-    //   message: userInput.value
-    // });
+    //const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
+     //  message: userInput.value
+     //});
+
     const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
       message: userInput.value
     });
@@ -71,6 +77,7 @@ const sendMessage = async () => {
   } catch (error) {
     console.log(error);
   }
+  loading.value = false
   userInput.value = "";
 };
 </script>
