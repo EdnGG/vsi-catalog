@@ -60,12 +60,12 @@ const sendMessage = async () => {
     // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
     
     //const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
-     //  message: userInput.value
+      //message: userInput.value
      //});
 
-    const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
-      message: userInput.value
-    });
+     const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
+       message: userInput.value
+     });
 
     const botMessage = {
       text: response.data.response,
