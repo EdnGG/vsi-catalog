@@ -744,23 +744,140 @@ export default defineComponent({
 /* Media Query */
 
 /* Media Query para Tablets */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* Necesito esta media para la tablet samsung galaxi S8 (earlier 2019)*/
+/* PORTRAIT*/
+@media (min-width: 600px) and (max-width: 840px) and (orientation: portrait) {
   .responsive-video {
-    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column; /* Cambia a columna para modo vertical */
+    width: 90%;
+    height: auto;
+    margin: 10px;
+  }
+  .responsive-video video {
+    max-width: 100%;
+    max-height: auto;
+    overflow: hidden;
+    position: relative;
+  }
+  .modal-responsive__video video {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+  }
+  .responsive-image {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column; /* Cambia a columna para modo vertical */
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .modal-responsive-image {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+  }
+  /*.responsive-image__img {
+    max-width: 100%;
+    max-height: auto;
+    overflow: hidden;
+    position: relative;
+  }
+    */
+  .responsive-image__img,
+  .responsive-video video {
+    max-width: 100%;
+    height: auto;
+  }
+  .modal-responsive__img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  .container-media {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .subcontainer-media {
+    flex-direction: row;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .container-media__item {
+    flex: 0 0 auto;
+    width: 50%; /* Ajusta según necesites */
+    margin: 5px;
+  }
+  .draggable--steps__container {
+    height: 100%;
+    padding: 0;
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .middle-container {
+    padding-top: 0px;
+  }
+  .responsive-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .container-media,
+  .middle-container,
+  .assembly-container__description {
+    flex: 1;
+    max-width: 90%;
+    margin: 0;
+  }
+  .assembly-card {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+/* Media Query para Tablets */
+/* Necesito esta media para la tablet samsung galaxi S8 (earlier 2019)*/
+/* LANDSCAPE*/
+@media (min-width: 800px) and (max-width: 1366px) and (orientation: landscape) {
+  .responsive-video {
+    flex-shrink: 0;
     display: flex;
     flex-direction: row;
     width: 90%;
     height: 90%;
     margin: 10px;
   }
+  /*
   .responsive-video video {
     max-width: 50vw;
     max-height: 40vh;
     overflow: hidden;
-    /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
-    /* Esto es necesario para el siguiente paso */
   }
+    */
   .modal-responsive__video video {
     object-fit: cover;
     width: 100%;
@@ -769,7 +886,7 @@ export default defineComponent({
     padding: 10px;
   }
   .responsive-image {
-    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+    flex-shrink: 0;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -779,7 +896,7 @@ export default defineComponent({
     padding-right: 10px;
   }
   .modal-responsive-image {
-    flex-shrink: 0; /* Asegúrate de que los elementos no se reduzcan */
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -789,32 +906,25 @@ export default defineComponent({
     margin: 10px;
     padding: 10px;
   }
+  /*
   .responsive-image__img {
     max-width: 40vw;
     max-height: 40vh;
     overflow: hidden;
-    /* padding: 0; */
-    /* margin: 0; */
-    /* Asegúrate de que la imagen no se desborde del contenedor */
     position: relative;
+  }
+  */
+  .responsive-image__img,
+  .responsive-video video {
+    max-width: 100%;
+    height: auto;
   }
   .modal-responsive__img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
   }
-  .container-media {
-    margin-left: 0px;
-    padding: 0px;
-    /* margin: 30px; */
-    display: flex;
-    flex-direction: column;
-    /* Cambia a 'column' para mostrar los elementos en filas */
-    width: 100%;
-    height: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
-  }
+  /*
   .subcontainer-media {
     max-width: 100%;
     max-height: 100vh;
@@ -823,26 +933,37 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
-    overflow-y: hidden; /* Cambia a 'column' para mostrar los elementos en filas */
-    /* flex-wrap:nowrap; */
+    overflow-y: hidden;
+  }
+  */
+  .subcontainer-media {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .container-media {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
   .draggable--steps__container {
-    /* width: 100%; */
     height: 100%;
     padding: 0;
     margin-top: 100px !important;
     margin-bottom: 100px !important;
     display: flex;
     flex-direction: row;
-    /* overflow-x: scroll; */
-    /* overflow-y: scroll; */
-    /* height: 80%; */
   }
+  /*
   .container-media__item {
-    /* max-width: 100% !important;  */
-    /* max-height: 100vh !important; */
     padding: 0px !important;
     margin: 0px !important;
+  }
+  */
+  .container-media__item {
+    flex: 0 0 auto;
+    width: 25%; /* Ajusta según necesites */
+    margin: 5px;
   }
   .middle-container {
     padding-top: 0px;
@@ -860,9 +981,7 @@ export default defineComponent({
   .middle-container,
   .assembly-container__description {
     flex: 1;
-    /* Ocupar todo el ancho en tablet */
     max-width: 90%;
-    /* Eliminar cualquier margen que pudieran tener */
     margin: 0;
   }
   .assembly-card {
@@ -870,6 +989,7 @@ export default defineComponent({
     max-height: 100%;
   }
 }
+
 /* Media Query para Móviles */
 @media (max-width: 767px) {
   .responsive-video {
