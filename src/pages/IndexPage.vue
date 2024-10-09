@@ -1,39 +1,40 @@
 <template>
   <q-page class="full-height flex flex-center">
     <div class="flex row">
-    <div
-      class="vsi-container flex flex-center column q-gutter-md cursor-pointer" 
-      @click="goToVsiCatalog">
-      <!-- <div>
+      <div
+        class="vsi-container flex flex-center column q-gutter-md cursor-pointer"
+        @click="goToVsiCatalog"
+      >
+        <!-- <div>
         <h4 class="text-h4 q-my-md ">VALVE SOLUTIONS </h4>
       </div> -->
-      <div>
-        <img
-        alt="Valve Solutions Inc"
-        src="~assets/vsi.png"
-        style="width: 200px; height: 200px"
-        />
+        <div>
+          <img
+            alt="Valve Solutions Inc"
+            src="~assets/vsi.png"
+            style="width: 200px; height: 200px"
+          />
+        </div>
       </div>
-    </div>
-    <br>
-    <div
-      class="waterworks-container flex flex-center column q-gutter-md cursor-pointer" 
-      @click="goToWaterWorksCatalog">
+      <br />
+      <!-- <div
+        class="waterworks-container flex flex-center column q-gutter-md cursor-pointer"
+        @click="goToWaterWorksCatalog"
+      > -->
       <!-- <div>
         <h4 class="text-h4 q-my-md ">WATERWORKS</h4>
       </div> -->
-      <div>
-        <img
-        alt="Valve Solutions Inc"
-        src="~assets/waterworks.png"
-        style="width: 200px; height: 200px"
-        />
-      </div>
+      <!-- <div>
+          <img
+            alt="Valve Solutions Inc"
+            src="~assets/waterworks.png"
+            style="width: 200px; height: 200px"
+          />
+        </div> -->
+      <!-- </div> -->
     </div>
-  </div>
   </q-page>
 </template>
-
 
 <script>
 import { defineComponent } from "vue";
@@ -55,28 +56,27 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.vsi-container{
+.vsi-container {
   background-color: #f2f2f2;
   border-radius: 10px;
   padding: 20px;
   margin: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
-.waterworks-container{
+.waterworks-container {
   background-color: #f2f2f2;
   border-radius: 10px;
   padding: 20px;
   margin: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 600px) {
-  .vsi-container{
+  .vsi-container {
     width: 100%;
   }
-  .waterworks-container{
+  .waterworks-container {
     width: 100%;
   }
-  
 }
 </style>
