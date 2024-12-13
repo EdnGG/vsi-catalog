@@ -11,7 +11,6 @@
             <q-chat-message
               :text="[message.text]"
               :sent="message.sent"
-
               :name="message.sent ? 'Me' : 'VSI-Chatbot'"
               :stamp="message.time"
             ></q-chat-message>
@@ -39,16 +38,16 @@ import axios from "axios";
 
 const messages = ref([]);
 const userInput = ref("");
-const loading = ref(false)
+const loading = ref(false);
 
 onMounted(() => {});
 
 const sendMessage = async () => {
   if (!userInput.value.trim()) return;
 
-  loading.value = true
+  loading.value = true;
 
-   // Agregar mensaje del usuario a messages
+  // Agregar mensaje del usuario a messages
   const userMessage = {
     text: userInput.value,
     sent: true,
@@ -56,16 +55,18 @@ const sendMessage = async () => {
   };
   messages.value.push(userMessage);
   try {
-
     // Cambia la URL por la ruta de tu backend donde se procesarán las solicitudes
-    
-    //const response = await axios.post(`${process.env.SERVER_VSI}/assistant/vsi-bot`, {
-      //message: userInput.value
-     //});
 
-     const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
-       message: userInput.value
-     });
+    const response = await axios.post(
+      `${process.env.SERVER_VSI}/assistant/vsi-bot`,
+      {
+        message: userInput.value,
+      }
+    );
+
+    //  const response = await axios.post('http://localhost:3000/assistant/vsi-bot', {
+    //    message: userInput.value
+    //  });
 
     const botMessage = {
       text: response.data.response,
@@ -77,7 +78,7 @@ const sendMessage = async () => {
   } catch (error) {
     console.log(error);
   }
-  loading.value = false
+  loading.value = false;
   userInput.value = "";
 };
 </script>

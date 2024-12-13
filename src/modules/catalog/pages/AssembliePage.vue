@@ -160,6 +160,9 @@
               label="Name"
               filled
               type="text"
+              @update:model-value="
+                (val) => (editableAssembly.name = val.toUpperCase())
+              "
             />
             <q-input
               class="q-ma-sm"
@@ -167,6 +170,9 @@
               label="Category"
               filled
               type="text"
+              @update:model-value="
+                (val) => (editableAssembly.category = val.toUpperCase())
+              "
             />
             <q-input
               class="q-ma-sm"
@@ -174,6 +180,9 @@
               label="Descripción"
               filled
               type="textarea"
+              @update:model-value="
+                (val) => (editableAssembly.description = val.toUpperCase())
+              "
             />
             <q-input
               class="q-ma-sm"
@@ -181,6 +190,9 @@
               label="Hardware"
               filled
               type="textarea"
+              @update:model-value="
+                (val) => (editableAssembly.hardware = val.toUpperCase())
+              "
             />
             <q-input
               class="q-ma-sm"
@@ -188,6 +200,9 @@
               label="Notes"
               filled
               type="textarea"
+              @update:model-value="
+                (val) => (editableAssembly.notes = val.toUpperCase())
+              "
             />
             <!--   MODAL  SECCION MEDIA -->
             <div>
@@ -217,6 +232,9 @@
                       label="Add Description"
                       filled
                       type="text"
+                      @update:model-value="
+                        (val) => (mediaItem.caption = val.toUpperCase())
+                      "
                     />
                   </div>
                 </div>
@@ -237,6 +255,9 @@
                       label="Add Description"
                       filled
                       type="text"
+                      @update:model-value="
+                        (val) => (mediaItem.caption = val.toUpperCase())
+                      "
                     />
                   </div>
                 </div>
@@ -253,6 +274,9 @@
                 :label="'Step ' + (index + 1)"
                 filled
                 type="text"
+                @update:model-value="
+                  (val) => (editableAssembly.steps = val.toUpperCase())
+                "
               />
             </div>
             <q-btn
@@ -266,6 +290,9 @@
               v-model="editableAssembly.technical_name"
               label="Assembled by"
               filled
+              @update:model-value="
+                (val) => (editableAssembly.technical_name = val.toUpperCase())
+              "
             />
           </q-card-section>
           <q-card-actions align="right">

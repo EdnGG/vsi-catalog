@@ -22,6 +22,7 @@
             (val) =>
               (val && val.length > 0) || 'Please introduce the assembly name',
           ]"
+          @update:model-value="(val) => (assembly.name = val.toUpperCase())"
         />
         <q-input
           filled
@@ -34,6 +35,9 @@
             (val) =>
               (val && val.length > 0) || 'Please introduce a description',
           ]"
+          @update:model-value="
+            (val) => (assembly.description = val.toUpperCase())
+          "
         />
         <q-input
           filled
@@ -44,6 +48,7 @@
           :rules="[
             (val) => (val && val.length > 0) || 'Please introduce a categorie',
           ]"
+          @update:model-value="(val) => (assembly.category = val.toUpperCase())"
         />
         <q-input
           filled
@@ -56,6 +61,7 @@
             (val) =>
               (val && val.length > 0) || 'Please introduce a hardware type',
           ]"
+          @update:model-value="(val) => (assembly.hardware = val.toUpperCase())"
         />
         <q-input
           filled
@@ -65,6 +71,7 @@
           type="text"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please add some notes']"
+          @update:model-value="(val) => (assembly.notes = val.toUpperCase())"
         />
 
         <!-- <div class="q-mb-lg row text-center justify-center">
@@ -92,6 +99,9 @@
           :rules="[
             (val) => (val && val.length > 0) || 'Please type technical name',
           ]"
+          @update:model-value="
+            (val) => (assembly.technical_name = val.toUpperCase())
+          "
         />
         <div class="q-pa-md">
           <div class="row justify-center">
@@ -160,7 +170,7 @@ export default defineComponent({
       {
         cloudName: process.env.CLOUDINARY_CLOUD_NAME,
         uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
-        sources: ["local", "url", "camera", "image_search"], 
+        sources: ["local", "url", "camera", "image_search"],
         multiple: true,
         maxFileSize: 100000000000,
         maxImageFileSize: 100000000000,
