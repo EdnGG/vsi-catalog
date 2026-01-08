@@ -1,6 +1,8 @@
 {
   "projects": {
-    "default": "gallery-app",
+    "default": "gallery-app-a6274",
     "gallery-app": "gallery-app-a6274"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
