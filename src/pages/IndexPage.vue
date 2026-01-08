@@ -17,21 +17,23 @@
         </div>
       </div>
       <br />
-      <!-- <div
+      <!-- PENDING -->
+      <div
         class="waterworks-container flex flex-center column q-gutter-md cursor-pointer"
         @click="goToWaterWorksCatalog"
-      > -->
-      <!-- <div>
-        <h4 class="text-h4 q-my-md ">WATERWORKS</h4>
-      </div> -->
-      <!-- <div>
+      >
+        <div>
+          <h4 class="text-h4 q-my-md">WATERWORKS</h4>
+        </div>
+        <div>
           <img
             alt="Valve Solutions Inc"
             src="~assets/waterworks.png"
             style="width: 200px; height: 200px"
           />
-        </div> -->
-      <!-- </div> -->
+        </div>
+      </div>
+      <!-- PENDING -->
     </div>
   </q-page>
 </template>

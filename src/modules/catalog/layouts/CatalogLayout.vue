@@ -21,7 +21,7 @@
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
           </router-link>
-          <span>ASSEMBLY CATALOG</span> 
+          <span>ASSEMBLY CATALOG</span>
         </q-toolbar-title>
 
         <div v-if="isAuthenticated" class="container-logout" @click="onLogout">
@@ -42,7 +42,11 @@
       <q-list v-else>
         <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
 
-        <EssentialLink v-for="link in regularLinks" :key="link.title" v-bind="link" />
+        <EssentialLink
+          v-for="link in regularLinks"
+          :key="link.title"
+          v-bind="link"
+        />
       </q-list>
 
       <!--  -->
@@ -59,7 +63,6 @@ import { defineComponent, defineAsyncComponent, ref } from "vue";
 import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "../../auth/composables/useAuth";
 import { useQuasar } from "quasar";
-
 
 import links from "../router/links";
 
@@ -94,15 +97,15 @@ export default defineComponent({
     ]);
 
     const onLogout = () => {
-      console.log('logout')
+      console.log("logout");
       $q.notify({
         color: "primary",
-          textColor: "white",
-          icon: "info",
-          message: "Logout Succesfully",
+        textColor: "white",
+        icon: "info",
+        message: "Logout Succesfully",
       });
-      logout()
-    }
+      logout();
+    };
 
     return {
       regularLinks,
