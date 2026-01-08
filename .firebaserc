@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "vsi-catalog"
+    "default": "gallery-app",
+    "gallery-app": "gallery-app-a6274"
   }
 }
