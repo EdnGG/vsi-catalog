@@ -97,18 +97,22 @@
           <p class="assembly-category">{{ assemblie.category }}</p>
           <div class="assembly-info-block">
             <div class="assembly-info">
-              <strong>Description:</strong>
+              <strong>DESCRIPTION:</strong>
               <p>{{ assemblie.description }}</p>
             </div>
             <div class="assembly-info">
-              <strong>Hardware:</strong>
+              <strong>HARDWARE:</strong>
               <p>{{ assemblie.hardware }}</p>
             </div>
             <div v-if="isAuthenticated" class="assembly-info">
-              <strong>Notes:</strong>
+              <strong>NOTES:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
-            <p class="q-ma-lg"><strong>Steps:</strong></p>
+            <div class="assembly-info">
+              <strong>ASSEMBLED BY:</strong>
+              <p>{{ assemblie.technical_name || "EDEN G" }}</p>
+            </div>
+            <p class="q-ma-lg"><strong>STEPS:</strong></p>
             <div class="card--steps__container">
               <draggable
                 v-model="list"
@@ -125,6 +129,7 @@
                 </div>
               </draggable>
             </div>
+
             <template v-if="isAuthenticated">
               <q-btn
                 class="card--steps__button"
@@ -135,22 +140,23 @@
               >
             </template>
 
-            <div class="assembly-info">
-              <strong>Assembled By:</strong>
-              <p>{{ assemblie.technical_name || "EDEN G" }}</p>
-            </div>
             <q-btn v-if="isAuthenticated" @click="editAssembly">
-              <q-icon name="edit" /> EDIT
+              <q-icon name="edit" /> EDIT ASSEMBLIE
             </q-btn>
+            <!-- PENDING... -->
+            <!-- <q-btn v-if="isAuthenticated" class="q-mt-md">
+              <q-icon name="add" /> ADD MEDIA
+            </q-btn> -->
+            <!-- PENDING... -->
           </div>
         </div>
       </div>
       <!-- ENDS DESCRIPTION SECTION -->
-      <!-- MODAL EDIT -->
+      <!-- START MODAL EDIT SECTION -->
       <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
         <q-card>
           <q-card-section>
-            <div class="text-h6">Edit Assembly</div>
+            <div class="text-h6">EDIT ASSEMBLY</div>
           </q-card-section>
 
           <q-card-section>
@@ -306,7 +312,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <!-- ENDS MODAL EDIT  -->
+      <!-- ENDS MODAL EDIT SECTION  -->
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
