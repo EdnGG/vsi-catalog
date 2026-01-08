@@ -4,51 +4,55 @@
       <!-- CONTAINER MEDIA -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
-          <!-- <draggable
+          <!-- STARTS DRAGGABLE SECCION -->
+          <draggable
+            v-if="sorting"
             class="draggable--steps__container"
             v-model="mediaList"
             @end="updateMediaSteps()"
-          > -->
-          <div
-            class="container-media__item"
-            v-for="(mediaItem, index) in assemblie.media"
-            :key="index"
-            @click="
-              selectedMedia = mediaItem.src;
-              playVideo();
-            "
-            :media="mediaItem"
           >
-            <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
             <div
-              class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-              v-if="
-                mediaItem.src.endsWith('.jpg') ||
-                mediaItem.src.endsWith('.jpeg') ||
-                mediaItem.src.endsWith('.png')
+              class="container-media__item"
+              v-for="(mediaItem, index) in assemblie.media"
+              :key="index"
+              @click="
+                selectedMedia = mediaItem.src;
+                playVideo();
               "
+              :media="mediaItem"
             >
-              <img
-                loading="lazy"
-                :src="mediaItem.src"
-                alt="Media item"
-                class="responsive-image__img"
-              />
-              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
+              <div
+                class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                v-if="
+                  mediaItem.src.endsWith('.jpg') ||
+                  mediaItem.src.endsWith('.jpeg') ||
+                  mediaItem.src.endsWith('.png')
+                "
+              >
+                <img
+                  loading="lazy"
+                  :src="mediaItem.src"
+                  alt="Media item"
+                  class="responsive-image__img"
+                />
+                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              </div>
+              <div
+                class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
+                v-else-if="
+                  mediaItem.src.endsWith('.mp4') ||
+                  mediaItem.src.endsWith('.mov')
+                "
+              >
+                <video :src="mediaItem.src">
+                  Your browser does not support the video tag.
+                </video>
+                <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
+              </div>
             </div>
-            <div
-              class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
-              v-else-if="
-                mediaItem.src.endsWith('.mp4') || mediaItem.src.endsWith('.mov')
-              "
-            >
-              <video :src="mediaItem.src">
-                Your browser does not support the video tag.
-              </video>
-              <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
-            </div>
-          </div>
-          <!-- </draggable> -->
+          </draggable>
+          <!-- ENDS DRAGGABLE SECCION -->
         </div>
       </div>
       <!-- MIDDLE CONTAINER -->
