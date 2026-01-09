@@ -4,30 +4,38 @@
       <!-- CONTAINER MEDIA -->
       <div class="container-media col-2 q-pa-md">
         <div class="subcontainer-media">
-          <!-- STARTS DRAGGABLE SECCION -->
+          <!-- STARTS DRAGGABLE SECTION (MEDIA) -->
+          <!-- <div class="q-pa-xs text-caption">
+            mediaList: {{ mediaList.length }}
+          </div> -->
+
           <draggable
-            v-if="sorting"
             class="draggable--steps__container"
             v-model="mediaList"
-            @end="updateMediaSteps()"
+            item-key="src"
+            :disabled="!sorting"
+            :animation="150"
+            @end="updateMediaSteps"
           >
             <div
               class="container-media__item"
-              v-for="(mediaItem, index) in assemblie.media"
-              :key="index"
-              @click="
-                selectedMedia = mediaItem.src;
-                playVideo();
-              "
-              :media="mediaItem"
+              v-for="(mediaItem, index) in mediaList"
+              :key="mediaItem?.src || index"
+              @click="onMediaClick(mediaItem)"
             >
+              <div v-if="sorting" class="drag-handle">
+                <q-icon name="drag_indicator" size="18px" />
+              </div>
+
               <q-spinner-pie v-if="!isMediaLoaded" color="primary" size="4em" />
+
               <div
                 class="responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-if="
-                  mediaItem.src.endsWith('.jpg') ||
-                  mediaItem.src.endsWith('.jpeg') ||
-                  mediaItem.src.endsWith('.png')
+                  typeof mediaItem?.src === 'string' &&
+                  (mediaItem.src.endsWith('.jpg') ||
+                    mediaItem.src.endsWith('.jpeg') ||
+                    mediaItem.src.endsWith('.png'))
                 "
               >
                 <img
@@ -38,21 +46,22 @@
                 />
                 <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
               </div>
+
               <div
                 class="responsive-video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                 v-else-if="
-                  mediaItem.src.endsWith('.mp4') ||
-                  mediaItem.src.endsWith('.mov')
+                  typeof mediaItem?.src === 'string' &&
+                  (mediaItem.src.endsWith('.mp4') ||
+                    mediaItem.src.endsWith('.mov'))
                 "
               >
-                <video :src="mediaItem.src">
-                  Your browser does not support the video tag.
-                </video>
+                <video :src="mediaItem.src"></video>
                 <q-tooltip>{{ mediaItem.caption }}</q-tooltip>
               </div>
             </div>
           </draggable>
-          <!-- ENDS DRAGGABLE SECCION -->
+
+          <!-- ENDS DRAGGABLE SECTION (MEDIA) -->
         </div>
       </div>
       <!-- MIDDLE CONTAINER -->
@@ -116,7 +125,9 @@
               <strong>ASSEMBLED BY:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
-            <p class="q-ma-lg"><strong>STEPS:</strong></p>
+            <p v-if="isAuthenticated" class="q-ma-lg">
+              <strong>STEPS:</strong>
+            </p>
             <div class="card--steps__container">
               <draggable
                 v-model="list"
@@ -140,7 +151,7 @@
                 v-if="isAuthenticated"
                 @click="toggleSorting"
               >
-                {{ sorting ? "Stop Sorting" : "Start Sorting" }}</q-btn
+                {{ sorting ? "Stop Sorting Media" : "Sorting Media" }}</q-btn
               >
             </template>
 
@@ -350,6 +361,7 @@ import {
   computed,
   onMounted,
   nextTick,
+  watch,
 } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
@@ -400,6 +412,42 @@ export default defineComponent({
     const sorting = ref(false);
     const isMediaLoaded = ref(false);
     const category = ref();
+
+    const normalizeMedia = (arr) => {
+      if (!Array.isArray(arr)) return [];
+
+      return arr
+        .map((m, i) => {
+          if (typeof m === "string") {
+            return { src: m, caption: "", _key: `${m}__${i}` };
+          }
+
+          if (m && typeof m === "object") {
+            const src = typeof m.src === "string" ? m.src : "";
+            const caption = typeof m.caption === "string" ? m.caption : "";
+            return src ? { ...m, src, caption, _key: `${src}__${i}` } : null;
+          }
+
+          return null;
+        })
+        .filter(Boolean);
+    };
+
+    watch(
+      () => assemblie.value?.media,
+      (val) => {
+        mediaList.value = normalizeMedia(val);
+      },
+      { immediate: true }
+    );
+
+    const onMediaClick = (mediaItem) => {
+      if (sorting.value) return;
+      if (!mediaItem || typeof mediaItem.src !== "string") return;
+
+      selectedMedia.value = mediaItem.src;
+      playVideo();
+    };
 
     const editableAssembly = ref({
       id: "",
@@ -459,9 +507,12 @@ export default defineComponent({
       }
       // Cargar los Steps y Media en  el list
       list.value = assemblie.value.steps;
-      mediaList.value = assemblie.value.media;
+      mediaList.value = normalizeMedia(assemblie.value.media);
       category.value = assemblie.value.category;
+
+      console.log("mediaList:", mediaList.value);
     });
+
     const editAssembly = () => {
       if (assemblie.value) {
         editableAssembly.value.id = props.id;
@@ -511,21 +562,21 @@ export default defineComponent({
       }
     };
 
-    const updateMediaSteps = async ($event, sorting) => {
-      const newList = mediaList.value.slice();
+    const updateMediaSteps = async (evt) => {
+      if (evt?.oldIndex === evt?.newIndex) return;
+
+      const newList = mediaList.value.map((m) => ({
+        src: m.src,
+        caption: m.caption || "",
+      }));
+
       try {
         await updateAssemblyMediaSteps(props.id, newList);
         await loadAssemblies();
-        $q.notify({
-          type: "positive",
-          message: "Media updated successfully!",
-        });
+        $q.notify({ type: "positive", message: "Media updated successfully!" });
       } catch (error) {
         console.error("Error updating Media:", error);
-        $q.notify({
-          type: "negative",
-          message: "Error updating Media",
-        });
+        $q.notify({ type: "negative", message: "Error updating Media" });
       }
     };
 
@@ -551,6 +602,7 @@ export default defineComponent({
       updateAssemblie,
       showEditDialog,
       updateAssemblyVsiSteps,
+      onMediaClick,
       //COMPUTED
       category: computed(() => {
         return assemblie.value?.category;
