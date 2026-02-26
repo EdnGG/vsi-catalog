@@ -32,7 +32,7 @@ export const loadAssembliesVsi = async ({ commit }) => {
 //     startAfter(state.lastVisibleAssemblies),
 //     limit(state.limit)
 //   );
-  
+
 //   try {
 //     const querySnapshot = await getDocs(q);
 //     const newAssemblies = querySnapshot.docs.map((doc) => doc.data());
@@ -95,7 +95,7 @@ export const updateAssemblyVsiSteps = async ({ commit }, payload) => {
   const assemblyRef = doc(db, "vsi", payload.id);
   await updateDoc(assemblyRef, {
     steps: payload.newSteps,
-  });
+  });  
 }
 
 export const updateAssemblyMediaSteps = async ({ commit }, payload) => {

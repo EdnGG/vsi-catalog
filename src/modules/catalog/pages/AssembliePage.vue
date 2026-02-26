@@ -243,6 +243,7 @@
                 :key="index"
                 :media="mediaItem.src"
               >
+                {{ mediaItem.src }}
                 <div
                   class="modal-responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-if="
@@ -268,6 +269,14 @@
                       "
                     />
                   </div>
+                  <div>
+                    <q-btn
+                      class="q-mt-lg q-mb-lg"
+                      label="Delete Media"
+                      color="negative"
+                      @click="deleteMediaItem(mediaItem, index)"
+                    />
+                  </div>
                 </div>
                 <div
                   class="modal-responsive__video q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
@@ -289,6 +298,14 @@
                       @update:model-value="
                         (val) => (mediaItem.caption = val.toUpperCase())
                       "
+                    />
+                  </div>
+                  <div>
+                    <q-btn
+                      class="q-mt-lg q-mb-lg"
+                      label="Delete Video"
+                      color="negative"
+                      @click="deleteMediaItem(mediaItem, index)"
                     />
                   </div>
                 </div>
@@ -428,8 +445,77 @@ export default defineComponent({
     const isMediaLoaded = ref(false);
     const category = ref();
 
+    const deleteVideoItem = async (mediaItem, index) => {
+      console.log(`Video item: ${mediaItem}, index: ${index}`);
+      // try {
+      const updatedMedia = mediaList.value.filter(
+        (item) => item.src !== mediaItem.src
+      );
+      console.log("🚀 ~ deleteVideoItem ~ updatedMedia:", updatedMedia);
+
+      //   await updateAssemblyMediaSteps(props.id, updatedMedia);
+      //   mediaList.value = updatedMedia;
+      //   $q.notify({
+      //     color: "primary",
+      //     textColor: "white",
+      //     icon: "las la-check-circle",
+      //     message: "Video deleted successfully",
+      //   });
+      // } catch (error) {
+      //   console.error("Error deleting video:", error);
+      //   $q.notify({
+      //     color: "negative",
+      //     textColor: "white",
+      //     icon: "error",
+      //     message: "Error deleting video",
+      //   });
+      // }
+    };
+
+    const deleteMediaItem = async (mediaItem, index) => {
+      console.log(`Media item: ${mediaItem}, index: ${index}`);
+      try {
+        // updateMedia trae el arregla sin el elemento eliminado
+        // ese es el que hay que actulizar en la UI y en DB
+        const updatedMedia = mediaList.value.filter(
+          (item) => item.src !== mediaItem.src
+        );
+        console.log("🚀 ~ deleteMediaItem ~ updatedMedia:", updatedMedia);
+
+        await updateAssemblyMediaSteps(props.id, updatedMedia);
+        showEditDialog.value = false;
+        mediaList.value = updatedMedia;
+        $q.notify({
+          color: "primary",
+          textColor: "white",
+          icon: "las la-check-circle",
+          message: "Media deleted successfully",
+        });
+      } catch (error) {
+        console.error("Error deleting media item:", error);
+      }
+
+      //   await updateAssemblyMediaSteps(props.id, updatedMedia);
+      //   mediaList.value = updatedMedia;
+      //   $q.notify({
+      //     color: "primary",
+      //     textColor: "white",
+      //     icon: "las la-check-circle",
+      //     message: "Media deleted successfully",
+      //   });
+      // } catch (error) {
+      //   console.error("Error deleting media:", error);
+      //   $q.notify({
+      //     color: "negative",
+      //     textColor: "white",
+      //     icon: "error",
+      //     message: "Error deleting media",
+      //   });
+      // }
+    };
+
     const openWidget = (assemblieId) => {
-      const uploadWidget = widget((error, result) => {
+      const uploadWidget = widget(async (error, result) => {
         if (error) {
           console.error("Widget error:", error);
           $q.notify({
@@ -443,12 +529,10 @@ export default defineComponent({
 
         if (result && result.event === "success") {
           const secureUrl = result.info.secure_url;
-          console.log(`secureUrlWidget: ${secureUrl}`);
-          console.log("Widget result:", result);
           // Actualiza la UI
           mediaList.value.push({ src: secureUrl, caption: "" });
-          // assemblie.value.media.push({ src: secureUrl, caption: "" });
-
+        }
+        if (result && result.event === "queues-end") {
           // Actualiza DB
           editableAssembly.value.id = props.id;
           editableAssembly.value.name = assemblie.value.name;
@@ -456,24 +540,13 @@ export default defineComponent({
           editableAssembly.value.description = assemblie.value.description;
           editableAssembly.value.hardware = assemblie.value.hardware;
           editableAssembly.value.notes = assemblie.value.notes;
-          editableAssembly.value.media = [...assemblie.value.media]; // Usamos spread para copiar el array
-          editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
+          editableAssembly.value.media = [...mediaList.value];
+          editableAssembly.value.steps = [...assemblie.value.steps];
           editableAssembly.value.technical_name =
             assemblie.value.technical_name;
 
-          /*
-          una vez modificado editableAssembly,
-          le asigno el nuevo valor de media
-          */
-          editableAssembly.value.media.push({ src: secureUrl, caption: "" });
-
-          // mejorar esta parte para que solo actualice el media y no todo el assemblie
-          updateAssemblyVsi(editableAssembly.value);
-
-          console.log(
-            "🚀 ~ openWidget ~ editableAssembly.value:",
-            editableAssembly.value
-          );
+          // Funcion que actualiza la DB con el nuevo media
+          await updateAssemblyVsi(editableAssembly.value);
 
           $q.notify({
             color: "primary",
@@ -664,6 +737,8 @@ export default defineComponent({
 
     return {
       // category,
+      deleteVideoItem,
+      deleteMediaItem,
       openWidget,
       addMoreMedia,
       isMediaLoaded,
