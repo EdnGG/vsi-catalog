@@ -149,6 +149,16 @@
               <q-btn
                 class="card--steps__button"
                 v-if="isAuthenticated"
+                @click="openWidget(assemblie.id)"
+              >
+                Add More Media
+              </q-btn>
+            </template>
+
+            <template v-if="isAuthenticated">
+              <q-btn
+                class="card--steps__button"
+                v-if="isAuthenticated"
                 @click="toggleSorting"
               >
                 {{ sorting ? "Stop Sorting Media" : "Sorting Media" }}</q-btn
@@ -300,12 +310,14 @@
                 "
               />
             </div>
+
             <q-btn
               class="q-mt-lg q-mb-lg"
               label="Add Step"
               color="primary"
               @click="addStep"
             />
+
             <q-input
               class="q-mt-lg q-mb-lg"
               v-model="editableAssembly.technical_name"
@@ -353,6 +365,8 @@
 import "vue-inner-image-zoom/lib/vue-inner-image-zoom.css";
 import InnerImageZoom from "vue-inner-image-zoom";
 import { VueDraggableNext } from "vue-draggable-next";
+
+import widget from "../helpers/widget.js";
 
 import {
   defineComponent,
@@ -410,8 +424,68 @@ export default defineComponent({
     const list = ref([]);
     const mediaList = ref([]);
     const sorting = ref(false);
+
     const isMediaLoaded = ref(false);
     const category = ref();
+
+    const openWidget = (assemblieId) => {
+      const uploadWidget = widget((error, result) => {
+        if (error) {
+          console.error("Widget error:", error);
+          $q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Error uploading media",
+          });
+          return;
+        }
+
+        if (result && result.event === "success") {
+          const secureUrl = result.info.secure_url;
+          console.log(`secureUrlWidget: ${secureUrl}`);
+          console.log("Widget result:", result);
+          // Actualiza la UI
+          mediaList.value.push({ src: secureUrl, caption: "" });
+          // assemblie.value.media.push({ src: secureUrl, caption: "" });
+
+          // Actualiza DB
+          editableAssembly.value.id = props.id;
+          editableAssembly.value.name = assemblie.value.name;
+          editableAssembly.value.category = assemblie.value.category;
+          editableAssembly.value.description = assemblie.value.description;
+          editableAssembly.value.hardware = assemblie.value.hardware;
+          editableAssembly.value.notes = assemblie.value.notes;
+          editableAssembly.value.media = [...assemblie.value.media]; // Usamos spread para copiar el array
+          editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
+          editableAssembly.value.technical_name =
+            assemblie.value.technical_name;
+
+          /*
+          una vez modificado editableAssembly,
+          le asigno el nuevo valor de media
+          */
+          editableAssembly.value.media.push({ src: secureUrl, caption: "" });
+
+          // mejorar esta parte para que solo actualice el media y no todo el assemblie
+          updateAssemblyVsi(editableAssembly.value);
+
+          console.log(
+            "🚀 ~ openWidget ~ editableAssembly.value:",
+            editableAssembly.value
+          );
+
+          $q.notify({
+            color: "primary",
+            textColor: "white",
+            icon: "info",
+            message: "Media uploaded Successfully",
+          });
+        }
+      });
+
+      uploadWidget.open();
+    };
 
     const normalizeMedia = (arr) => {
       if (!Array.isArray(arr)) return [];
@@ -510,7 +584,7 @@ export default defineComponent({
       mediaList.value = normalizeMedia(assemblie.value.media);
       category.value = assemblie.value.category;
 
-      console.log("mediaList:", mediaList.value);
+      // console.log("mediaList:", mediaList.value);
     });
 
     const editAssembly = () => {
@@ -583,9 +657,15 @@ export default defineComponent({
     const toggleSorting = () => {
       sorting.value = !sorting.value;
     };
+    const addMoreMedia = () => {
+      console.log("addMoreMedia");
+      // editableAssembly.value.media.push({ src: "", caption: "" });
+    };
 
     return {
       // category,
+      openWidget,
+      addMoreMedia,
       isMediaLoaded,
       sorting,
       toggleSorting,

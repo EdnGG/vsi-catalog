@@ -2,7 +2,7 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 export const useCatalog = () => {
-  const store = useStore(); 
+  const store = useStore();
 
   const loadAssembliesVsi = async () => {
     const resp = await store.dispatch("catalogModule/loadAssembliesVsi");
@@ -30,7 +30,7 @@ export const useCatalog = () => {
   };
 
   const getAssemblyById = async (id) => {
-    const assembly = await store.getters["catalogModule/getAssemblyById"](id);
+    const assembly = await store.getters["catalogModule/getAssemblyById"](id); 
     return assembly;
   };
 
@@ -65,7 +65,7 @@ export const useCatalog = () => {
         return store.commit("catalogModule/toggleSideMenu");
       },
     }),
-  
+
     // METHODS
     updateAssemblyVsiSteps,
     updateAssemblyMediaSteps,

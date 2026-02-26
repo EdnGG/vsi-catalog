@@ -173,7 +173,7 @@ export default defineComponent({
         sources: ["local", "url", "camera", "image_search"],
         multiple: true,
         maxFileSize: 100000000000,
-        maxImageFileSize: 100000000000,
+        maxImageFileSize: 100000000000, 
         maxVideoFileSize: 100000000000,
         maxVideoDuration: 120,
         resourceType: "auto",
@@ -210,6 +210,8 @@ export default defineComponent({
       (error, results) => {
         if (!error && results && results.event === "success") {
           const secureUrl = results.info.secure_url;
+          // console.log("Done! Here is the image info: ", results.info);
+          // hay que hacer algo aqui
           assemblyMedia.value.push(secureUrl);
         }
       }
@@ -221,6 +223,7 @@ export default defineComponent({
       //   message: "Media uploaded Successfully",
       // })
     );
+
     const openUploadWidget = () => {
       widget.open();
 
