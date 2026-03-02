@@ -328,12 +328,12 @@
               />
             </div>
 
-            <q-btn
+            <!-- <q-btn
               class="q-mt-lg q-mb-lg"
               label="Add Step"
               color="primary"
               @click="addStep"
-            />
+            /> -->
 
             <q-input
               class="q-mt-lg q-mb-lg"
@@ -452,28 +452,10 @@ export default defineComponent({
         (item) => item.src !== mediaItem.src
       );
       console.log("🚀 ~ deleteVideoItem ~ updatedMedia:", updatedMedia);
-
-      //   await updateAssemblyMediaSteps(props.id, updatedMedia);
-      //   mediaList.value = updatedMedia;
-      //   $q.notify({
-      //     color: "primary",
-      //     textColor: "white",
-      //     icon: "las la-check-circle",
-      //     message: "Video deleted successfully",
-      //   });
-      // } catch (error) {
-      //   console.error("Error deleting video:", error);
-      //   $q.notify({
-      //     color: "negative",
-      //     textColor: "white",
-      //     icon: "error",
-      //     message: "Error deleting video",
-      //   });
-      // }
     };
 
     const deleteMediaItem = async (mediaItem, index) => {
-      console.log(`Media item: ${mediaItem}, index: ${index}`);
+      // console.log(`Media item: ${mediaItem}, index: ${index}`);
       try {
         // updateMedia trae el arregla sin el elemento eliminado
         // ese es el que hay que actulizar en la UI y en DB
@@ -494,24 +476,6 @@ export default defineComponent({
       } catch (error) {
         console.error("Error deleting media item:", error);
       }
-
-      //   await updateAssemblyMediaSteps(props.id, updatedMedia);
-      //   mediaList.value = updatedMedia;
-      //   $q.notify({
-      //     color: "primary",
-      //     textColor: "white",
-      //     icon: "las la-check-circle",
-      //     message: "Media deleted successfully",
-      //   });
-      // } catch (error) {
-      //   console.error("Error deleting media:", error);
-      //   $q.notify({
-      //     color: "negative",
-      //     textColor: "white",
-      //     icon: "error",
-      //     message: "Error deleting media",
-      //   });
-      // }
     };
 
     const openWidget = (assemblieId) => {
