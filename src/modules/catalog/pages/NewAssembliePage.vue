@@ -2,7 +2,7 @@
   <q-page class="q-ma-sm">
     <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
-        <h2 class="text-h4 text-dark q-py-sm">Add VSI Assembly</h2>
+        <h2 class="text-h4 text-dark q-py-sm">Add Plate</h2>
       </div>
     </div>
     <q-separator></q-separator>
@@ -15,12 +15,12 @@
         <q-input
           filled
           v-model="assembly.name"
-          label="Assembly name"
+          label="Plate name"
           type="text"
           lazy-rules
           :rules="[
             (val) =>
-              (val && val.length > 0) || 'Please introduce the assembly name',
+              (val && val.length > 0) || 'Please introduce the plate name',
           ]"
           @update:model-value="(val) => (assembly.name = val.toUpperCase())"
         />
@@ -28,12 +28,12 @@
           filled
           autogrow
           v-model="assembly.description"
-          label="Description"
+          label="Price"
           type="text"
           lazy-rules
           :rules="[
             (val) =>
-              (val && val.length > 0) || 'Please introduce a description',
+              (val && val.length > 0) || 'Please introduce the price plate',
           ]"
           @update:model-value="
             (val) => (assembly.description = val.toUpperCase())
@@ -46,7 +46,8 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce a categorie',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the category plate',
           ]"
           @update:model-value="(val) => (assembly.category = val.toUpperCase())"
         />
@@ -54,12 +55,12 @@
           filled
           autogrow
           v-model="assembly.hardware"
-          label="Add Hardware"
+          label="Add Ingredients"
           type="text"
           lazy-rules
           :rules="[
             (val) =>
-              (val && val.length > 0) || 'Please introduce a hardware type',
+              (val && val.length > 0) || 'Please introduce the ingredients',
           ]"
           @update:model-value="(val) => (assembly.hardware = val.toUpperCase())"
         />
@@ -67,10 +68,13 @@
           filled
           autogrow
           v-model="assembly.notes"
-          label="Add Notes"
+          label="Add Ingredients Notes"
           type="text"
           lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please add some notes']"
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please add the ingredients notes',
+          ]"
           @update:model-value="(val) => (assembly.notes = val.toUpperCase())"
         />
 
@@ -93,11 +97,13 @@
           filled
           autogrow
           v-model="assembly.technical_name"
-          label="Technical Name"
+          label="Added by"
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type technical name',
+            (val) =>
+              (val && val.length > 0) ||
+              'Please type the name of the person who added this plate',
           ]"
           @update:model-value="
             (val) => (assembly.technical_name = val.toUpperCase())
@@ -173,7 +179,7 @@ export default defineComponent({
         sources: ["local", "url", "camera", "image_search"],
         multiple: true,
         maxFileSize: 100000000000,
-        maxImageFileSize: 100000000000, 
+        maxImageFileSize: 100000000000,
         maxVideoFileSize: 100000000000,
         maxVideoDuration: 120,
         resourceType: "auto",
@@ -292,7 +298,7 @@ export default defineComponent({
 <style scoped>
 .text-dark {
   color: #444;
-  font-weight: 300;
+  font-weight: 600;
 }
 .button-upload {
   background-color: #0078ff;

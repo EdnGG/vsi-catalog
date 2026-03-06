@@ -1,16 +1,16 @@
 const links = [
-  {
-    title: "ASSEMBLIES",
-    caption: "Assemblies Page",
-    icon: "las la-hippo",
-    link: "IndexPage",
-  },
+  // {
+  //   title: "ASSEMBLIES",
+  //   caption: "Assemblies Page",
+  //   icon: "las la-hippo",
+  //   link: "IndexPage",
+  // },
   // {
   //   title: "LOGIN",
   //   caption: "Login Page",
   //   icon: "las la-hippo",
   //   link: "LoginPage",
-  // }, 
+  // },
   {
     title: "CREATE NEW USER",
     caption: "New user",

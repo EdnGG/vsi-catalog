@@ -7,18 +7,18 @@
             rounded
             outlined
             v-model="assemblyName"
-            label="Search for Assemblie, Category or Technical Name"
+            label="Category"
           />
         </div>
       </div>
-   
+
       <div class="list-catalog-container row justify-center">
         <div class="col-12 justify-center items-center text-center">
-          <h1 class="text-h4 text-dark q-py-sm">Water Works Assemblies</h1>
+          <h1 class="text-h4 text-dark q-py-sm">Tacos y Tequilas</h1>
         </div>
-  
+
         <!--  ***************** -->
-  
+
         <!-- <div v-if="isLoading" class="row justify-center align-center">
           <div class="col-3  text-center q-mt-md">
             Please wait...
@@ -27,7 +27,7 @@
             </h3>
           </div>
         </div> -->
-  
+
         <!-- *****************-->
         <div class="container-listcatalog col-12 justify-center items-center text-center">
           <ListCatalog
@@ -35,14 +35,14 @@
             v-for="assemblie in filteredAssemblies"
             :key="assemblie.id"
             v-bind="assemblie"
-            @click="getAssembliePage(assemblie.id)" 
+            @click="getAssembliePage(assemblie.id)"
           />
         </div>
-  
+
       </div>
     </q-page>
   </template>
-  
+
   <script>
   import {
     defineAsyncComponent,
@@ -52,9 +52,9 @@
     computed,
   } from "vue";
   import { useRouter } from "vue-router";
-  
+
   import { useCatalog } from "../composables/useCatalog";
-  
+
   export default defineComponent({
     name: "CatalogPageWworks",
     components: {
@@ -66,16 +66,16 @@
     setup() {
       const assemblyName = ref("");
       const router = useRouter();
-  
+
       const isLoading = ref(true);
-  
+
       const {
         loadAssemblies,
         getAssemblies,
         getWworksAssemblyByName,
         loadAssembliesWworks,
       } = useCatalog();
-  
+
       onMounted(async () => {
         isLoading.value = true;
         console.log(isLoading.value)
@@ -83,25 +83,25 @@
         isLoading.value = false;
         console.log(isLoading.value)
       });
-  
+
       const filteredAssemblies = computed(() =>
         getWworksAssemblyByName(assemblyName.value)
       );
-  
+
       return {
         isLoading,
         assemblyName,
         getWworksAssemblyByName,
         loadAssemblies,
         getAssemblies,
-  
+
         // METHODS
         filteredAssemblies,
         getAssembliePage: (assemblie) => {
           // console.log(assemblie);
           // console.log(assemblie.id);
           router.push({
-            name: "WworksAssembliePage", 
+            name: "WworksAssembliePage",
             params: { id: assemblie },
           });
         },
@@ -109,7 +109,7 @@
     },
   });
   </script>
-  
+
   <style scoped>
 .search-input {
   width: 100%;
@@ -150,7 +150,7 @@
 
 /* Media Query para Móviles */
 @media (max-width: 767px) {
- 
+
 }
 
 </style>

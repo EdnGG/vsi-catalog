@@ -1,10 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-positive">
         <q-btn
-          flat
-          dense
           round
           icon="las la-ellipsis-v"
           aria-label="Menu"
@@ -15,8 +13,8 @@
           <router-link to="/" class="text-primary">
             <q-avatar square size="xl" class="q-mr-sm">
               <img
-                src="https://lh6.googleusercontent.com/-abnSC9wsKEs/AAAAAAAAAAI/AAAAAAAAAAA/ESxpoblFfb0/s66-p-k-no-ns-nd/photo.jpg"
-                alt="Quasar Logo"
+                src="../../../assets/azotealogotemp.png"
+                alt="Azotea Cantina Logo"
               />
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
@@ -25,22 +23,22 @@
         <!-- <div>Quasar v{{ $q.version }}</div> -->
         <div v-if="isAuthenticated" class="container-logout" @click="onLogout">
           <q-icon name="las la-door-open" />
-          <q-toolbar-title> EXIT </q-toolbar-title>
+          <q-toolbar-title> LOGOUT </q-toolbar-title>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="sideMenuOpen" show-if-above bordered>
+    <q-drawer class="bg-positive" v-model="sideMenuOpen" show-if-above bordered>
       <q-list v-if="isAuthenticated">
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+        <q-item-label header> LA BONANZA LLC. </q-item-label>
 
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
 
       <q-list v-else>
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
-
+        <!-- <q-item-label header> que opas</q-item-label> -->
         <EssentialLink
+          class="bg-positive"
           v-for="link in customLinks"
           :key="link.title"
           v-bind="link"
@@ -79,7 +77,7 @@ export default defineComponent({
     const customLinks = ref([
       {
         title: "LOGIN",
-        caption: "Add VSI Assembly",
+        caption: "La Bonanza Group",
         icon: "las la-cogs",
         link: "LoginPage",
       },
@@ -93,15 +91,15 @@ export default defineComponent({
     ]);
 
     const onLogout = () => {
-      console.log('logout')
+      console.log("logout");
       $q.notify({
         color: "primary",
-          textColor: "white",
-          icon: "info",
-          message: "Logout Succesfully",
+        textColor: "white",
+        icon: "info",
+        message: "Logout Succesfully",
       });
-      logout()
-    }
+      logout();
+    };
 
     return {
       links,

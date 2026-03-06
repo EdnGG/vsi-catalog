@@ -1,8 +1,9 @@
 <template>
-  <q-item 
-    clickable 
-    tag="a" 
+  <q-item
+    clickable
+    tag="a"
     @click="navigateTo"
+    class="bg-"
     >
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />

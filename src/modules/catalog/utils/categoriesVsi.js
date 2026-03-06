@@ -1,3 +1,4 @@
+// No eliminar
 const getCategoriesVsi = {
   "BUTTERFLY VALVE":
     "https://valvesolutions.com/product-category/valves/butterfly-valves/",

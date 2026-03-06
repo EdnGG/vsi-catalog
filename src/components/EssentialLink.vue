@@ -1,7 +1,8 @@
 <template>
-  <q-item 
-    clickable 
-    tag="a" 
+  <q-item
+    class="bg-positive"
+    clickable
+    tag="a"
     @click="navigateTo"
     >
     <q-item-section v-if="icon" avatar>
@@ -56,3 +57,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+body {
+  background-color: rgb(82, 30, 82);
+}
+</style>

@@ -1,38 +1,34 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+    <q-header elevated class="bg-positive">
+      <q-toolbar class="bg-positive">
         <q-btn
-          flat
-          dense
           round
           icon="las la-ellipsis-v"
           aria-label="Menu"
           @click="toogleLeftDrawer"
         />
 
-        <q-toolbar-title> ASSEMBLY CATALOG </q-toolbar-title>
+        <q-toolbar-title class="font-weight: 500;">
+          LA BONANZA LLC.
+        </q-toolbar-title>
 
         <div v-if="isAuthenticated" class="container-logout">
           <q-icon name="las la-door-open" />
-          <q-toolbar-title> EXIT </q-toolbar-title>
+          <q-toolbar-title> LOGOUT </q-toolbar-title>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="sideMenuOpen" show-if-above bordered>
+    <q-drawer v-model="sideMenuOpen" class="bg-positive" show-if-above bordered>
       <q-list v-if="isAuthenticated">
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+        <q-item-label header>LA BONANZA LLC.</q-item-label>
 
-        <EssentialLink 
-          v-for="link in links" 
-          :key="link.title" 
-          v-bind="link" 
-        />
+        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
 
       <q-list v-else>
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+        <q-item-label header> LA BONANZA LLC. </q-item-label>
 
         <EssentialLink
           v-for="link in regularLinks"
@@ -69,12 +65,12 @@ export default defineComponent({
     const { sideMenuOpen, toogleLeftDrawer } = catalog;
 
     const regularLinks = ref([
-      {
-        title: "ASSEMBLIES",
-        caption: "Assemblies Page",
-        icon: "las la-hippo",
-        link: "IndexPage",
-      },
+      // {
+      //   title: "ASSEMBLIES",
+      //   caption: "Assemblies Page",
+      //   icon: "las la-hippo",
+      //   link: "IndexPage",
+      // },
       {
         title: "LOGIN",
         caption: "Login Page",
@@ -109,10 +105,9 @@ export default defineComponent({
   margin-right: 0;
   padding: 0 10px;
   border-radius: 5px;
-  background-color: rgba(183, 183, 194, 0.568);
-  color: whitesmoke;
-  font-size: 14px;
-  font-weight: 500;
+  background-color: rgba(210, 200, 194, 0.568);
+  color: white;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 }

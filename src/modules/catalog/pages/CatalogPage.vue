@@ -4,7 +4,7 @@
       <div class="col-12 col-md-4 col-sm-6">
         <!-- <h3 class="justify-center align-center text-h6 text-dark q-py-sm">Search by Assemblie Name or Category</h3> -->
         <q-toggle
-          class="q-ma-md q-pa-md col-12 col-md-4 col-sm-6 justify-center align-center"
+          class="q-ma-md q-pa-md col-12 col-md-4 col-sm-6 justify-center align-center text-h6 text-dark"
           v-model="showInput"
           color="primary"
           keep-color
@@ -14,7 +14,7 @@
           checked-icon="check"
           unchecked-icon="clear"
           left-label
-          label="Search by Assemblie Name or Category"
+          label="Search by Category"
         />
         <q-input
           v-if="showInput"
@@ -22,7 +22,7 @@
           rounded
           outlined
           v-model="assemblyName"
-          label="Search for Assemblie Name or Technical Name"
+          label="Category"
         />
 
         <q-select
@@ -43,7 +43,8 @@
 
     <div class="list-catalog-container row justify-center">
       <div class="col-12 justify-center items-center text-center">
-        <h1 class="text-h4 text-dark q-py-sm">VSI Assemblies</h1>
+        <!-- need to get the text bellow bold -->
+        <h1 class="text-h4 text-dark q-py-sm">Azotea Cantina</h1>
       </div>
       <!--  LOADING -->
       <LoadingSpinner v-if="isLoading" />
@@ -67,22 +68,29 @@
 
     <div class="flex row q-ma-md justify-center align-center">
       <q-btn
-        class="q-ma-md"
-        color="primary"
+        class="q-ma-md bg-positive"
         label="Previous"
         @click="previousPage"
         :disabled="currentPage === 1"
       />
       <q-btn
-        class="q-ma-md"
-        color="primary"
+        class="q-ma-md bg-positive"
         label="Next"
         @click="nextPage"
         :disabled="currentPage === totalPages"
       />
     </div>
+    <div class="flex row q-ma-md justify-center align-center">
+      <q-btn
+        @click="backToHome"
+        class="button_upload bg-positive"
+        label="Back to Home"
+        type="button"
+
+      />
+    </div>
   </q-page>
-</template> 
+</template>
 
 <script>
 import {
@@ -94,6 +102,7 @@ import {
 } from "vue";
 import { useRouter } from "vue-router";
 
+import { useAuth } from "../../auth/composables/useAuth";
 import { useCatalog } from "../composables/useCatalog";
 
 export default defineComponent({
@@ -109,6 +118,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const { getAssemblyByName, loadAssembliesVsi } = useCatalog();
+    const { backToHome } = useAuth();
 
     const assemblyName = ref("");
     const isLoading = ref(true);
@@ -176,6 +186,7 @@ export default defineComponent({
     });
 
     return {
+      backToHome,
       currentPage,
       isLoading,
       assemblyName,

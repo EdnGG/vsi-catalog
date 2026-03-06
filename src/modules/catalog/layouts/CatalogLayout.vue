@@ -1,10 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-positive">
         <q-btn
-          flat
-          dense
           round
           icon="las la-ellipsis-v"
           aria-label="Menu"
@@ -15,32 +13,32 @@
           <router-link to="/" class="text-primary">
             <q-avatar square size="xl" class="q-mr-sm">
               <img
-                src="https://lh6.googleusercontent.com/-abnSC9wsKEs/AAAAAAAAAAI/AAAAAAAAAAA/ESxpoblFfb0/s66-p-k-no-ns-nd/photo.jpg"
-                alt="Quasar Logo"
+                src="https://azoteacantina.com/wp-content/uploads/2025/09/azotealogotemp.webp"
+                alt="La Bonanza LLC Logo"
               />
             </q-avatar>
             <!-- <span class="text-weight-medium">Quasar ddsfdssdCatalog</span> -->
           </router-link>
-          <span>ASSEMBLY CATALOG</span>
+          <!-- <span>INTERACTIVE MENU</span> -->
         </q-toolbar-title>
 
         <div v-if="isAuthenticated" class="container-logout" @click="onLogout">
           <q-icon name="las la-door-open" />
-          <q-toolbar-title> EXIT </q-toolbar-title>
+          <q-toolbar-title> LOGOUT </q-toolbar-title>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="sideMenuOpen" show-if-above bordered>
-      <q-list v-if="isAuthenticated">
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+    <q-drawer v-model="sideMenuOpen" show-if-above bordered class="bg-positive">
+      <q-list v-if="isAuthenticated" class="bg-positive">
+        <q-item-label header> LA BONANZA LLC. </q-item-label>
 
-        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+        <EssentialLink v-for="link in regularLinks" :key="link.title" v-bind="link" />
       </q-list>
       <!--  -->
 
-      <q-list v-else>
-        <q-item-label header> VALVE SOLUTIONS INC. </q-item-label>
+      <q-list v-else class="bg-positive">
+        <q-item-label header> LA BONANZA LLC. </q-item-label>
 
         <EssentialLink
           v-for="link in regularLinks"
@@ -83,14 +81,14 @@ export default defineComponent({
 
     const regularLinks = ref([
       {
-        title: "VSI Catalog",
-        caption: "VSI Catalog assemblies",
+        title: "Azotea Cantina",
+        caption: "Menu",
         icon: "las la-list-ul",
         link: "CatalogPage",
       },
       {
-        title: "WATERWORKS catalog",
-        caption: "WATER WORKS Catalog assemblies",
+        title: "Tacos & Tequilas",
+        caption: "Menu",
         icon: "las la-list-ul",
         link: "CatalogPageWworks",
       },
@@ -128,9 +126,8 @@ export default defineComponent({
   margin-right: 0;
   padding: 0 10px;
   border-radius: 5px;
-  background-color: rgba(183, 183, 194, 0.568);
-  color: whitesmoke;
-  font-size: 14px;
+  background-color: rgba(210, 200, 194, 0.568);
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;

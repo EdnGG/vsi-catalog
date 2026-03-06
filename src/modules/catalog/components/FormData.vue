@@ -9,11 +9,12 @@
         <q-input
           filled
           v-model="assembly.name"
-          label="Assembly name" 
+          label="Plate Name"
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce the assembly name',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the plate name',
           ]"
         />
 
@@ -21,11 +22,12 @@
           filled
           autogrow
           v-model="assembly.description"
-          label="Description"
+          label="Price"
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce a description',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce a description',
           ]"
         />
 
@@ -48,7 +50,8 @@
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please introduce a hardware type',
+            (val) =>
+              (val && val.length > 0) || 'Please introduce a hardware type',
           ]"
         />
 
@@ -59,20 +62,18 @@
           label="Add Notes"
           type="text"
           lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Please add some notes',
-          ]"
+          :rules="[(val) => (val && val.length > 0) || 'Please add notes']"
         />
 
         <q-input
           filled
           autogrow
           v-model="assembly.technical_name"
-          label="Technical Name"
+          label="Added By"
           type="text"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Please type technical name',
+            (val) => (val && val.length > 0) || 'Please type the name of the person who added this item',
           ]"
         />
 
@@ -83,17 +84,17 @@
               label="Upload Media"
               type="button"
               @click="openUploadWidget"
-              color="primary"
+              color="bg-positive"
             />
           </div>
         </div>
 
         <div class="q-pt-lg text-center">
-          <q-btn unelevated label="Submit" type="submit" color="primary" />
+          <q-btn unelevated label="Submit" type="submit" color="bg-positive" />
           <q-btn
             label="Reset"
             type="reset"
-            color="primary"
+            color="bg-positive"
             flat
             class="q-ml-sm"
           />
@@ -102,7 +103,7 @@
     </div>
   </q-page>
 </template>
-  
+
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -115,8 +116,8 @@ export default defineComponent({
   props: {
     isVSI: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
     // assembly: {
     //     type: Object,
     //     default: () => ({
@@ -134,7 +135,7 @@ export default defineComponent({
     const router = useRouter();
     const $q = useQuasar();
     const { addAssemblyWaterWorks } = useCatalog();
-    
+
     const assemblyMedia = ref([]);
     const isVSI = ref(false);
     const isAlertShown = ref(false);
@@ -220,7 +221,6 @@ export default defineComponent({
     const openUploadWidget = () => {
       widget.open();
       isAlertShown.value = false;
-      
     };
 
     const assembly = ref({
@@ -265,8 +265,8 @@ export default defineComponent({
   },
 });
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .text-dark {
   color: #444;
   font-weight: 300;
@@ -283,4 +283,3 @@ export default defineComponent({
   transition: all 0.3s ease;
 }
 </style>
-  

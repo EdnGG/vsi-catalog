@@ -2,17 +2,19 @@
   <footer>
     <div class="container">
       <div>
-        <p>Category</p>
+        <p><strong>Category</strong></p>
         <span
           ><a :href="categories" target="_blank"> {{ category }}</a></span
         >
       </div>
       <div class="vertical-separator"></div>
-      <div>
-        <p>Website</p>
+      <div
+        class=""
+      >
+        <p><strong>Website</strong></p>
         <span
           ><a :href="website" target="_blank">
-            <img :src="logo" alt="Valve Solutions Inc" /></a
+            <img :src="logo" alt="La Bonanza LLC" style="width: 150px; height: 50px" /> </a
         ></span>
       </div>
     </div>
@@ -20,12 +22,8 @@
     <div class="subcontainer">
       <!-- <h3> new category {{ categoriesVsi }}</h3> -->
       <div>
-        <p>
-        1205 Alpha Drive Alpharetta, GA 30004 770-740-0800
-        sales@valvesolutions.com
-      </p>
+        <p><strong>1025 Alpharetta St, Suite 1600 Roswell, GA 30075</strong></p>
       </div>
-      
     </div>
   </footer>
 </template>
@@ -44,23 +42,21 @@ export default defineComponent({
   },
   setup(props) {
     const categoriesVsi = ref([]);
-    const logo = ref(
-      "https://valvesolutions.com/wp-content/uploads/2020/12/Valve-Solutions-Logo-1-150x72-1.png"
-    );
-    const website = ref("https://valvesolutions.com/");
+    const logo = ref(require("../../../assets/azotealogotemp.png"));
+    const website = ref("https://azoteacantina.com/");
 
     onMounted(() => {
       categoriesVsi.value = getCategoriesVsi;
     });
 
     const categories = computed(() => {
-      return categoriesVsi.value[props.category]
+      return categoriesVsi.value[props.category];
     });
     return {
       categories,
       website,
       logo,
-      categoriesVsi
+      categoriesVsi,
     };
   },
 });
@@ -71,7 +67,7 @@ footer {
   /* display: flex; */
   justify-content: center;
   align-items: center;
-  background-color: #0c0303;
+  background-color: #2a0404;
   padding: 20px;
   text-align: center;
   height: 250px;
@@ -102,21 +98,19 @@ footer {
   width: 100%;
   color: aqua;
 }
-.vertical-separator{
+.vertical-separator {
   border-left: 1px solid aqua;
   height: 100%;
   margin: 0 20px;
 }
-.horizontal-separator{
+.horizontal-separator {
   border-top: 1px solid aqua;
   /* height: 100%; */
   margin: 0 20px;
 }
 
-
 /* Estilos para dispositivos móviles */
 @media (max-width: 767px) {
-  
   .container div {
     margin-bottom: 20px;
     /* padding-bottom: 20px; */
@@ -129,11 +123,18 @@ footer {
   .vertical-separator {
     display: none; /* O ajusta según tus necesidades */
   }
+  .small-logo {
+    width: 1%;
+    height: auto;
+  }
 }
 
 /* Estilos para tabletas */
 @media (min-width: 768px) and (max-width: 1023px) {
- 
+  .small-logo {
+    width: 1%;
+    height: auto;
+  }
   .container div {
     margin-bottom: 20px;
   }

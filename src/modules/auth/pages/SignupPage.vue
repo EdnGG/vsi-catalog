@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent ,defineComponent, ref } from "vue";
+import { defineAsyncComponent, defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -79,7 +79,7 @@ import { useAuth } from "../composables/useAuth";
 
 export default defineComponent({
   name: "LoginPage",
-  components:{
+  components: {
     // GoogleSignIn: defineAsyncComponent(() =>
     //   import("../components/GoogleSignIn.vue")
     // ),
@@ -104,26 +104,26 @@ export default defineComponent({
 
     const onSubmit = async (event) => {
       event.preventDefault();
-      if(user.value.email === "" || user.value.password === ""){
-          $q.dialog({
-            title: "Error",
-            message: "Please fill all the fields",
-            persistent: true,
-          })
-          return
-        }
+      if (user.value.email === "" || user.value.password === "") {
+        $q.dialog({
+          title: "Error",
+          message: "Please fill all the fields",
+          persistent: true,
+        });
+        return;
+      }
       try {
         const res = await register(user.value);
-        
-       if(!res){
-        $q.notify({
-          color: "red",
-          textColor: "white",
-          icon: "error",
-          message: 'Invalid credentials',
-        });
-        return
-       }
+
+        if (!res) {
+          $q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Invalid credentials",
+          });
+          return;
+        }
         $q.notify({
           color: "primary",
           textColor: "white",
@@ -140,7 +140,7 @@ export default defineComponent({
           color: "red",
           textColor: "white",
           icon: "error",
-          message: 'Invalid credentials',
+          message: "Invalid credentials",
         });
       }
     };

@@ -8,9 +8,9 @@
             <q-spinner-pie v-if="!isImageLoaded" color="primary" size="4em" />
             <img :src="media[0].src" :alt="media[0].name" @load="onImageLoad" />
             <!-- @load="isImageLoaded = true" -->
-            <!-- <img 
-              :src="media[0].src" 
-              :alt="media[0].name" 
+            <!-- <img
+              :src="media[0].src"
+              :alt="media[0].name"
               @load="onImageLoad"
               :class="{'loading': !isImageLoaded}"
             /> -->

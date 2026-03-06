@@ -5,14 +5,13 @@
         class="vsi-container flex flex-center column q-gutter-md cursor-pointer"
         @click="goToVsiCatalog"
       >
-        <!-- <div>
-        <h4 class="text-h4 q-my-md ">VALVE SOLUTIONS </h4>
-      </div> -->
-        <div>
+
+        <div class="flex row q-ma-md justify-center align-center bg-positive">
           <img
-            alt="Valve Solutions Inc"
-            src="~assets/vsi.png"
-            style="width: 200px; height: 200px"
+            alt="Azotea Cantina"
+            src="~assets/azotealogotemp.png"
+            style="width: 300px; height: 300px"
+
           />
         </div>
       </div>
@@ -22,14 +21,11 @@
         class="waterworks-container flex flex-center column q-gutter-md cursor-pointer"
         @click="goToWaterWorksCatalog"
       >
-        <div>
-          <h4 class="text-h4 q-my-md">WATERWORKS</h4>
-        </div>
-        <div>
+        <div class="flex row q-ma-sm justify-center align-center bg-positive">
           <img
-            alt="Valve Solutions Inc"
-            src="~assets/waterworks.png"
-            style="width: 200px; height: 200px"
+            alt="Tacos y Tequilas"
+            src="~assets/tacos-tequilas.png"
+            style="width: 300px; height: 300px"
           />
         </div>
       </div>

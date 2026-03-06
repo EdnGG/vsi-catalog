@@ -44,14 +44,8 @@
         />
 
         <div class="q-pt-lg text-center">
-          <q-btn unelevated label="Submit" type="submit" color="primary" />
-          <q-btn
-            label="Reset"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
-          />
+          <q-btn unelevated label="Submit" type="submit" class="bg-positive" />
+          <q-btn label="Reset" type="reset" flat class="q-ml-sm bg-positive" />
         </div>
       </q-form>
     </div>
@@ -59,18 +53,18 @@
       <div class="row justify-center">
         <q-btn
           @click="backToHome"
-          class="button_upload"
+          class="button_upload bg-positive"
           label="Back to Home"
           type="button"
-          color="primary"
+          color="primary" 
         />
         <!-- <google-sign-in /> -->
       </div>
     </div>
   </q-page>
 </template>
-  
-  <script>
+
+<script>
 import { defineAsyncComponent, defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
@@ -102,30 +96,30 @@ export default defineComponent({
         email: "",
         password: "",
       };
-    }; 
-    createNewUser
+    };
+    createNewUser;
     const onSubmit = async (event) => {
       event.preventDefault();
-      if(user.value.email === "" || user.value.password === ""){
-          $q.dialog({
-            title: "Error",
-            message: "Please fill all the fields",
-            persistent: true,
-          })
-          return
-        }
+      if (user.value.email === "" || user.value.password === "") {
+        $q.dialog({
+          title: "Error",
+          message: "Please fill all the fields",
+          persistent: true,
+        });
+        return;
+      }
       try {
         const res = await createNewUser(user.value);
-        
-       if(!res){
-        $q.notify({
-          color: "red",
-          textColor: "white",
-          icon: "error",
-          message: 'Invalid credentials',
-        });
-        return
-       }
+
+        if (!res) {
+          $q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Invalid credentials",
+          });
+          return;
+        }
         $q.notify({
           color: "primary",
           textColor: "white",
@@ -142,7 +136,7 @@ export default defineComponent({
           color: "red",
           textColor: "white",
           icon: "error",
-          message: 'Invalid credentials',
+          message: "Invalid credentials",
         });
       }
     };
@@ -158,11 +152,11 @@ export default defineComponent({
   },
 });
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .text-dark {
   color: #444;
-  font-weight: 300;
+  font-weight: 600;
 }
 .button-upload {
   background-color: #0078ff;

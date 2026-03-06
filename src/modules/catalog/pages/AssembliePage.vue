@@ -104,7 +104,9 @@
         </div>
       </div>
       <!-- DESCRIPTION SECCION -->
-      <div class="assembly-container__description">
+      <div
+        class="assembly-container__description bg-positive col-4 q-pa-md text-black"
+      >
         <div class="assembly-card">
           <h3>{{ assemblie.name }}</h3>
           <p class="assembly-category">{{ assemblie.category }}</p>
@@ -125,9 +127,9 @@
               <strong>ASSEMBLED BY:</strong>
               <p>{{ assemblie.technical_name || "EDEN G" }}</p>
             </div>
-            <p v-if="isAuthenticated" class="q-ma-lg">
+            <!-- <p v-if="isAuthenticated" class="q-ma-lg">
               <strong>STEPS:</strong>
-            </p>
+            </p> -->
             <div class="card--steps__container">
               <draggable
                 v-model="list"
@@ -179,12 +181,12 @@
       <!-- ENDS DESCRIPTION SECTION -->
       <!-- START MODAL EDIT SECTION -->
       <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
-        <q-card>
+        <q-card class="bg-positive text-white">
           <q-card-section>
-            <div class="text-h6">EDIT ASSEMBLY</div>
+            <div class="text-h6">EDIT PLATE</div>
           </q-card-section>
 
-          <q-card-section>
+          <q-card-section class="text-white">
             <q-input
               class="q-ma-sm"
               v-model="editableAssembly.name"
@@ -208,7 +210,7 @@
             <q-input
               class="q-ma-sm"
               v-model="editableAssembly.description"
-              label="Descripción"
+              label="Price"
               filled
               type="textarea"
               @update:model-value="
@@ -243,7 +245,7 @@
                 :key="index"
                 :media="mediaItem.src"
               >
-                {{ mediaItem.src }}
+                <!-- {{ mediaItem.src }} -->
                 <div
                   class="modal-responsive-image q-pa-md justify-center align-center q-gutter-md q-gutter-sm"
                   v-if="
@@ -338,7 +340,7 @@
             <q-input
               class="q-mt-lg q-mb-lg"
               v-model="editableAssembly.technical_name"
-              label="Assembled by"
+              label="Added By"
               filled
               @update:model-value="
                 (val) => (editableAssembly.technical_name = val.toUpperCase())
@@ -360,16 +362,16 @@
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
-          color="primary"
-          class="q-mb-xl q-ma-md text-white"
+          class="q-mb-xl q-ma-md text-white bg-positive"
           @click="goBack"
         >
           Back
         </q-btn>
       </div>
-      <div class="">
+      <!-- chatbot VSI -->
+      <!-- <div class="">
         <ChatBotVsi />
-      </div>
+      </div> -->
     </div>
     <LoadingSpinner v-else />
     <div class="foote-container">
@@ -411,9 +413,9 @@ export default defineComponent({
     LoadingSpinner: defineAsyncComponent(() =>
       import("src/modules/catalog/components/LoadingSpinner.vue")
     ),
-    ChatBotVsi: defineAsyncComponent(() =>
-      import("src/modules/catalog/components/ChatBotVsi.vue")
-    ),
+    // ChatBotVsi: defineAsyncComponent(() =>
+    //   import("src/modules/catalog/components/ChatBotVsi.vue")
+    // ),
   },
   props: {
     id: {

@@ -2,7 +2,7 @@
   <q-page class="q-ma-sm">
     <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
-        <h2 class="text-h4 text-dark q-py-sm">LOGIN</h2>
+        <h2 class="title-login-page text-h3 text-dark q-py-sm">LOGIN</h2>
       </div>
     </div>
     <q-separator></q-separator>
@@ -33,14 +33,8 @@
         />
 
         <div class="q-pt-lg text-center">
-          <q-btn unelevated label="Submit" type="submit" color="primary" />
-          <q-btn
-            label="Reset"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
-          />
+          <q-btn unelevated label="Submit" type="submit" class="bg-positive" />
+          <q-btn label="Reset" type="reset" flat class="q-ml-sm bg-positive" />
         </div>
       </q-form>
     </div>
@@ -48,10 +42,9 @@
       <div class="row justify-center">
         <q-btn
           @click="backToHome"
-          class="button_upload"
+          class="button_upload bg-positive"
           label="BACK TO HOME"
           type="button"
-          color="primary"
         />
         <!-- <google-sign-in /> -->
       </div>
@@ -91,27 +84,27 @@ export default defineComponent({
 
     const onSubmit = async (event) => {
       event.preventDefault();
-      if(user.value.email === "" || user.value.password === ""){
-          $q.dialog({
-            title: "Error",
-            message: "Please fill all the fields",
-            persistent: true,
-          })
-          return
-        }
+      if (user.value.email === "" || user.value.password === "") {
+        $q.dialog({
+          title: "Error",
+          message: "Please fill all the fields",
+          persistent: true,
+        });
+        return;
+      }
       try {
         const res = await login(user.value);
-        
-       if(!res){
-        $q.notify({
-          color: "red",
-          textColor: "white",
-          icon: "error",
-          message: 'Invalid credentials',
-        });
-        // onReset();
-        return
-       }
+
+        if (!res) {
+          $q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Invalid credentials",
+          });
+          // onReset();
+          return;
+        }
         $q.notify({
           color: "primary",
           textColor: "white",
@@ -122,17 +115,14 @@ export default defineComponent({
         onReset();
         router.push({ name: "CatalogPage" });
         console.log("Login succesfull");
-
       } catch (err) {
-
         console.log(err);
         $q.notify({
           color: "red",
           textColor: "white",
           icon: "error",
-          message: 'Invalid credentials',
+          message: "Invalid credentials",
         });
-
       }
     };
 
@@ -151,7 +141,7 @@ export default defineComponent({
 <style scoped>
 .text-dark {
   color: #444;
-  font-weight: 300;
+  font-weight: 500;
 }
 .button-upload {
   background-color: #0078ff;
