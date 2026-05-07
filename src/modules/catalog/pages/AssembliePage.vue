@@ -112,11 +112,11 @@
           <p class="assembly-category">{{ assemblie.category }}</p>
           <div class="assembly-info-block">
             <div class="assembly-info">
-              <strong>DESCRIPTION:</strong>
+              <strong>PRICE:</strong>
               <p>{{ assemblie.description }}</p>
             </div>
             <div class="assembly-info">
-              <strong>HARDWARE:</strong>
+              <strong>INGREDIENTS:</strong>
               <p>{{ assemblie.hardware }}</p>
             </div>
             <div v-if="isAuthenticated" class="assembly-info">
@@ -124,8 +124,11 @@
               <p>{{ assemblie.notes }}</p>
             </div>
             <div class="assembly-info">
-              <strong>ASSEMBLED BY:</strong>
-              <p>{{ assemblie.technical_name || "EDEN G" }}</p>
+              <strong>MADE WITH LOVE BY:</strong>
+              <p>{{ "Azotea Cantina Team " }}.</p>
+              <!-- <p>
+                {{ assemblie.technical_name || "EDEN G" }}.
+              </p> -->
             </div>
             <!-- <p v-if="isAuthenticated" class="q-ma-lg">
               <strong>STEPS:</strong>
@@ -359,6 +362,9 @@
         </q-card>
       </q-dialog>
       <!-- ENDS MODAL EDIT SECTION  -->
+      <div class="col-12 q-px-m q-mb-xl flex justify-center align-center">
+        <RatingMenu />
+      </div>
       <div class="col-12 q-px-xl q-mb-xl flex justify-center align-center">
         <q-btn
           size="lg"
@@ -397,10 +403,12 @@ import {
   watch,
 } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import { LocalStorage, useQuasar } from "quasar";
 
 import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "src/modules/auth/composables/useAuth";
+import RatingMenu from "../components/RatingMenu.vue";
+import { isAuthenticated } from "src/modules/auth/store/getters.js";
 
 export default defineComponent({
   name: "AssembliePage",
@@ -412,6 +420,9 @@ export default defineComponent({
     ),
     LoadingSpinner: defineAsyncComponent(() =>
       import("src/modules/catalog/components/LoadingSpinner.vue")
+    ),
+    RatingMenu: defineAsyncComponent(() =>
+      import("src/modules/catalog/components/RatingMenu.vue")
     ),
     // ChatBotVsi: defineAsyncComponent(() =>
     //   import("src/modules/catalog/components/ChatBotVsi.vue")
@@ -446,6 +457,11 @@ export default defineComponent({
 
     const isMediaLoaded = ref(false);
     const category = ref();
+
+    const actualUser = JSON.parse(LocalStorage.getItem("user")) || null;
+    // const getUserEmail =() =>{
+    //   filter(actualUser, (user) => user.email);
+    // }
 
     const deleteVideoItem = async (mediaItem, index) => {
       console.log(`Video item: ${mediaItem}, index: ${index}`);
@@ -623,6 +639,8 @@ export default defineComponent({
       mediaList.value = normalizeMedia(assemblie.value.media);
       category.value = assemblie.value.category;
 
+      console.log(`UserEmail: ${actualUser.email}`);
+
       // console.log("mediaList:", mediaList.value);
     });
 
@@ -703,6 +721,7 @@ export default defineComponent({
 
     return {
       // category,
+      actualUser,
       deleteVideoItem,
       deleteMediaItem,
       openWidget,

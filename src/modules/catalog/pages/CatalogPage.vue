@@ -4,21 +4,19 @@
       <div class="col-12 col-md-4 col-sm-6">
         <!-- <h3 class="justify-center align-center text-h6 text-dark q-py-sm">Search by Assemblie Name or Category</h3> -->
         <q-toggle
-          class="q-ma-md q-pa-md col-12 col-md-4 col-sm-6 justify-center align-center text-h6 text-dark"
           v-model="showInput"
-          color="primary"
-          keep-color
+          color="grey-9"
           readonly
           size="lg"
-          val="lg"
           checked-icon="check"
           unchecked-icon="clear"
           left-label
           label="Search by Category"
+          class="search-input"
         />
         <q-input
           v-if="showInput"
-          class="search-input"
+          class="search-field q-mt-md"
           rounded
           outlined
           v-model="assemblyName"
@@ -26,6 +24,7 @@
         />
 
         <q-select
+          id="category-select"
           v-else
           v-model="selectedCategory"
           :options="categoryOptions"
@@ -36,7 +35,8 @@
           map-options
           outlined
           rounded
-          class="q-mt-md"
+          class="search-select q-mt-md"
+          popup-content-class="category-popup bg-white text-dark"
         />
       </div>
     </div>
@@ -86,7 +86,6 @@
         class="button_upload bg-positive"
         label="Back to Home"
         type="button"
-
       />
     </div>
   </q-page>
@@ -217,6 +216,38 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* TEXTO DEL Q-TOGGLE */
+.search-toggle :deep(.q-toggle__label) {
+  color: #111 !important;
+}
+
+/* FONDO DEL INPUT Y SELECT */
+.search-field :deep(.q-field__control),
+.search-select :deep(.q-field__control) {
+  background: #ffffff;
+  color: #111111;
+}
+
+/* TEXTO INTERNO DEL INPUT Y SELECT */
+.search-field :deep(.q-field__native),
+.search-field :deep(.q-field__input),
+.search-select :deep(.q-field__native),
+.search-select :deep(.q-field__input) {
+  color: #111111 !important;
+}
+
+/* LABEL DEL INPUT Y SELECT */
+.search-field :deep(.q-field__label),
+.search-select :deep(.q-field__label) {
+  color: #333 !important;
+}
+
+/* TEXTO SELECCIONADO DEL Q-SELECT */
+.search-select :deep(.q-field__native span),
+.search-select :deep(.q-field__input span) {
+  color: #111 !important;
+}
+
 .search-input {
   width: 100%;
   border-radius: 4px;
@@ -239,9 +270,33 @@ export default defineComponent({
   height: 100%vh;
 }
 
+/* background cuando está apagado */
+.dark-toggle :deep(.q-toggle__track) {
+  background: #444 !important;
+  opacity: 1 !important;
+}
+
+/* background cuando está encendido */
+.dark-toggle :deep(.q-toggle__inner--truthy .q-toggle__track) {
+  background: #1b5e20 !important;
+  opacity: 1 !important;
+}
+
+/*.dark-toggle :deep(.q-toggle__track) {
+  opacity: 0.7 !important;
+}
+*/
+
+/*.dark-toggle :deep(.q-toggle__thumb:after) {
+  background: #222 !important;
+}
+*/
 /* MEDIA QUERIES */
 /* TABLET  */
 @media (min-width: 768px) and (max-width: 1024px) {
+  .my-black-toggle :deep(.q-toggle__label) {
+    color: black !important;
+  }
   .list-catalog-container {
     width: 100%;
   }
@@ -255,5 +310,26 @@ export default defineComponent({
 
 /* Media Query para Móviles */
 @media (max-width: 767px) {
+  .my-black-toggle :deep(.q-toggle__label) {
+    color: black !important;
+  }
+}
+</style>
+
+<style>
+.category-popup .q-item,
+.category-popup .q-item__label,
+.category-popup .q-item__section {
+  color: #111111 !important;
+  background: #ffffff !important;
+}
+
+.category-popup .q-item--active {
+  color: #111111 !important;
+  background: #f2f2f2 !important;
+}
+
+.category-popup .q-item:hover {
+  background: #f5f5f5 !important;
 }
 </style>
