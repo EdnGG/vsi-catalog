@@ -6,7 +6,7 @@
         <q-toggle
           v-model="showInput"
           color="grey-9"
-          readonly
+          rounded
           size="lg"
           checked-icon="check"
           unchecked-icon="clear"
@@ -20,7 +20,7 @@
           rounded
           outlined
           v-model="assemblyName"
-          label="Category"
+          label="Search by Plate Name"
         />
 
         <q-select
@@ -98,6 +98,7 @@ import {
   onMounted,
   ref,
   computed,
+  watch,
 } from "vue";
 import { useRouter } from "vue-router";
 
@@ -143,12 +144,6 @@ export default defineComponent({
       }
     };
 
-    const paginatedAssemblies = computed(() => {
-      const start = (currentPage.value - 1) * itemsPerPage.value;
-      const end = start + itemsPerPage.value;
-      return filteredAssemblies.value.slice(start, end);
-    });
-
     const categoryOptions = computed(() => {
       return [
         { label: "All", value: "" },
@@ -160,7 +155,7 @@ export default defineComponent({
     });
 
     const filteredAssemblies = computed(() => {
-      let assemblies = getAssemblyByName(assemblyName.value);
+      let assemblies = getAssemblyByName(assemblyName.value); //getAssemblyByName devuelve un array de objetos, no un solo objeto, este viene de useCatalog.js
       if (selectedCategory.value) {
         assemblies = assemblies.filter(
           (item) => item.category === selectedCategory.value
@@ -170,9 +165,22 @@ export default defineComponent({
       // return getAssemblyByName(assemblyName.value);
     });
 
+    // const totalPages = computed(() => {
+    //   const totalItems = getPaginationLength.value?.length || 0;
+    //   return Math.ceil(totalItems / itemsPerPage.value);
+    // });
     const totalPages = computed(() => {
-      const totalItems = getPaginationLength.value?.length || 0;
-      return Math.ceil(totalItems / itemsPerPage.value);
+      return Math.ceil(filteredAssemblies.value.length / itemsPerPage.value);
+    });
+
+    watch([assemblyName, selectedCategory], () => {
+      currentPage.value = 1;
+    });
+
+    const paginatedAssemblies = computed(() => {
+      const start = (currentPage.value - 1) * itemsPerPage.value;
+      const end = start + itemsPerPage.value;
+      return filteredAssemblies.value.slice(start, end);
     });
 
     onMounted(async () => {
