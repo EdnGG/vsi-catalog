@@ -5,7 +5,7 @@ export default {
   component: () => import("../layouts/CatalogLayout.vue"),
   children: [
     {
-      path: "new-assemblie",
+      path: "new-azotea-plate",
       name: "NewAssembliePage",
       beforeEnter: catalogGuard,
       component: () =>
@@ -14,7 +14,7 @@ export default {
         ),
     },
     {
-      path: "waterworks-assembly",
+      path: "new-t&t-plate",
       name: "NewWaterWorksAssembly",
       beforeEnter: catalogGuard,
       component: () =>

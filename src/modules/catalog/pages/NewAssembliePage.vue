@@ -2,7 +2,7 @@
   <q-page class="q-ma-sm">
     <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
-        <h2 class="text-h4 text-dark q-py-sm">Add Plate</h2>
+        <h2 class="text-h4 text-dark q-py-sm">Add Azotea Plate</h2>
       </div>
     </div>
     <q-separator></q-separator>
@@ -112,7 +112,7 @@
         <div class="q-pa-md">
           <div class="row justify-center">
             <q-btn
-              class="button_upload"
+              class="button_upload bg-positive"
               label="Upload Media"
               type="button"
               @click="openUploadWidget"
@@ -120,15 +120,26 @@
             />
           </div>
         </div>
-        <div class="q-pt-lg text-center">
-          <q-btn unelevated label="Submit" type="submit" color="primary" />
+        <div class="text-center">
+          <q-btn unelevated label="Submit" type="submit" color="primary" class="bg-positive" />
           <q-btn
             label="Reset"
             type="reset"
             color="primary"
             flat
-            class="q-ml-sm"
+            class="q-ml-sm "
           />
+        </div>
+        <div class="q-pa-lg">
+          <div class="row justify-center">
+            <q-btn
+              @click="backToHome"
+              class="button_upload bg-positive"
+              label="Back to Home"
+              type="button"
+              color="primary"
+            />
+          </div>
         </div>
       </q-form>
     </div>
@@ -141,11 +152,14 @@ import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
 import { useCatalog } from "../composables/useCatalog";
+import { useAuth } from "../../auth/composables/useAuth";
 
 export default defineComponent({
   name: "NewAssembliePage",
   setup() {
     const router = useRouter();
+    const { backToHome } = useAuth();
+
     const assemblyMedia = ref([]);
     const $q = useQuasar();
     const { addAssemblyVsi } = useCatalog();
@@ -290,6 +304,7 @@ export default defineComponent({
       // METHODS
       onSubmit,
       addSteps,
+      backToHome,
     };
   },
 });
