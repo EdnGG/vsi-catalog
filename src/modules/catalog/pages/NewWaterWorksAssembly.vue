@@ -1,51 +1,314 @@
 <template>
-    <q-page class="q-ma-sm">
-      <div class="row justify-center items-center">
-        <div class="justify-center text-center items-center col-12">
-          <h2 class="text-h4 text-dark q-py-sm">Add WaterWorks Assembly</h2>
-        </div>
+  <q-page class="q-ma-sm">
+    <div class="row justify-center items-center">
+      <div class="justify-center text-center items-center col-12">
+        <h2 class="text-h4 text-dark q-py-sm">Add Plate</h2>
       </div>
-      <q-separator></q-separator>
+    </div>
+    <q-separator></q-separator>
+    <div class="row justify-center">
+      <q-form
+        @submit="onSubmit"
+        @reset="onReset"
+        class="q-gutter-xs col-xs-12 col-sm-12 col-md-6 q-pt-xl q-pb-xl"
+      >
+        <q-input
+          filled
+          v-model="assembly.name"
+          label="Plate name"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the plate name',
+          ]"
+          @update:model-value="(val) => (assembly.name = val.toUpperCase())"
+        />
+        <q-input
+          filled
+          autogrow
+          v-model="assembly.description"
+          label="Price"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the price plate',
+          ]"
+          @update:model-value="
+            (val) => (assembly.description = val.toUpperCase())
+          "
+        />
+        <q-input
+          filled
+          v-model="assembly.category"
+          label="Category"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the category plate',
+          ]"
+          @update:model-value="(val) => (assembly.category = val.toUpperCase())"
+        />
+        <q-input
+          filled
+          autogrow
+          v-model="assembly.hardware"
+          label="Add Ingredients"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please introduce the ingredients',
+          ]"
+          @update:model-value="(val) => (assembly.hardware = val.toUpperCase())"
+        />
+        <q-input
+          filled
+          autogrow
+          v-model="assembly.notes"
+          label="Add Ingredients Notes"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) || 'Please add the ingredients notes',
+          ]"
+          @update:model-value="(val) => (assembly.notes = val.toUpperCase())"
+        />
 
-      <FormData :isVSI="false" />
- 
-    </q-page>
-  </template>
-  
-  <script>
-  import { defineComponent, defineAsyncComponent } from "vue";
-  
-  
-  export default defineComponent({
-    name: "NewWaterWorksAssembly",
-    components: {
-        FormData: defineAsyncComponent( () => import("../components/FormData.vue") )
-    },
-    setup() {
-    
-      return {
-  
-        // METHODS
+        <!-- <div class="q-mb-lg row text-center justify-center">
+          <q-btn
+            class=""
+            label="Add Steps"
+            color="primary"
+            @click="addSteps"
+            v-model="assembly.steps"
+          />
+        </div>
+        <div class="q-mb-lg text-center" v-if="assembly.steps.length">
+          <div v-for="(note, index) in assembly.steps" :key="index">
+            <strong>{{ index + 1 }}) :</strong> {{ note }}
+          </div>
+        </div> -->
+
+        <q-input
+          filled
+          autogrow
+          v-model="assembly.technical_name"
+          label="Added by"
+          type="text"
+          lazy-rules
+          :rules="[
+            (val) =>
+              (val && val.length > 0) ||
+              'Please type the name of the person who added this plate',
+          ]"
+          @update:model-value="
+            (val) => (assembly.technical_name = val.toUpperCase())
+          "
+        />
+        <div class="q-pa-md">
+          <div class="row justify-center">
+            <q-btn
+              class="button_upload"
+              label="Upload Media"
+              type="button"
+              @click="openUploadWidget"
+              color="primary"
+            />
+          </div>
+        </div>
+        <div class="q-pt-lg text-center">
+          <q-btn unelevated label="Submit" type="submit" color="primary" />
+          <q-btn
+            label="Reset"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+        </div>
+      </q-form>
+    </div>
+  </q-page>
+</template>
+
+<script>
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
+
+import { useCatalog } from "../composables/useCatalog";
+
+export default defineComponent({
+  name: "NewAssembliePage",
+  setup() {
+    const router = useRouter();
+    const assemblyMedia = ref([]);
+    const $q = useQuasar();
+    const { addAssemblyVsi } = useCatalog();
+    const isAlertShown = ref(false);
+
+    const addSteps = () => {
+      $q.dialog({
+        title: "Assembly Steps",
+        message: `Step ${assembly.value.steps.length + 1}`,
+        prompt: {
+          model: "",
+          type: "text",
+        },
+        cancel: true,
+        persistent: true,
+      })
+        .onOk((data) => {
+          if (data) {
+            assembly.value.steps.push(data);
+          }
+        })
+        .onCancel(() => {
+          // Usuario canceló, no hacemos nada
+        });
+    };
+
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+        sources: ["local", "url", "camera", "image_search"],
+        multiple: true,
+        maxFileSize: 100000000000,
+        maxImageFileSize: 100000000000,
+        maxVideoFileSize: 100000000000,
+        maxVideoDuration: 120,
+        resourceType: "auto",
+        clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "mp4", "mov"],
+        maxFiles: 40,
+        showAdvancedOptions: true,
+        cropping: false,
+        showSkipCropButton: false,
+        styles: {
+          palette: {
+            window: "#FFFFFF",
+            windowBorder: "#90A0B3",
+            tabIcon: "#0078FF",
+            menuIcons: "#5A616A",
+            textDark: "#000000",
+            textLight: "#FFFFFF",
+            link: "#0078FF",
+            action: "#FF620C",
+            inactiveTabIcon: "#0E2F5A",
+            error: "#F44235",
+            inProgress: "#0078FF",
+            complete: "#20B832",
+            sourceBg: "#E4EBF1",
+          },
+          fonts: {
+            default: null,
+            "'Poppins', sans-serif": {
+              url: "https://fonts.googleapis.com/css?family=Poppins",
+              active: true,
+            },
+          },
+        },
+      },
+      (error, results) => {
+        if (!error && results && results.event === "success") {
+          const secureUrl = results.info.secure_url;
+          // console.log("Done! Here is the image info: ", results.info);
+          // hay que hacer algo aqui
+          assemblyMedia.value.push(secureUrl);
+        }
+      }
+      // ,
+      // $q.notify({
+      //   color: "primary",
+      //   textColor: "white",
+      //   icon: "info",
+      //   message: "Media uploaded Successfully",
+      // })
+    );
+
+    const openUploadWidget = () => {
+      widget.open();
+
+      isAlertShown.value = false;
+    };
+    const assembly = ref({
+      name: "",
+      description: "",
+      category: "",
+      hardware: "",
+      technical_name: "",
+      notes: "",
+      steps: [],
+      media: [],
+    });
+
+    const onReset = () => {
+      assembly.value = {
+        name: "",
+        description: "",
+        category: "",
+        hardware: "",
+        notes: "",
+        technical_name: "",
+        steps: [],
+        media: [],
       };
-    },
-  });
-  </script>
-  
-  <style scoped>
-  .text-dark {
-    color: #444;
-    font-weight: 300;
-  }
-  .button-upload {
-    background-color: #0078ff;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-  </style>
-  
+    };
+
+    const onSubmit = async () => {
+      try {
+        assembly.value.media = [];
+        assemblyMedia.value.forEach((secureUrl) => {
+          assembly.value.media.push({
+            src: secureUrl,
+            caption: "",
+          });
+        });
+        await addAssemblyVsi(assembly.value);
+        $q.notify({
+          color: "primary",
+          textColor: "white",
+          icon: "info",
+          message: "Assembly added succesfully",
+        });
+        router.push({ name: "CatalogPage" });
+        onReset();
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    return {
+      assemblyMedia,
+      openUploadWidget,
+      assembly,
+      onReset,
+      // METHODS
+      onSubmit,
+      addSteps,
+    };
+  },
+});
+</script>
+
+<style scoped>
+.text-dark {
+  color: #444;
+  font-weight: 600;
+}
+.button-upload {
+  background-color: #0078ff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+</style>

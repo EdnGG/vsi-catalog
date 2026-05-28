@@ -12,17 +12,17 @@ const links = [
   //   link: "LoginPage",
   // },
   {
-    title: "CREATE NEW USER",
-    caption: "New user",
+    title: "CREATE NEW T&T PLATE",
+    caption: "New T&T Plate",
     icon: "las la-cogs",
     link: "CreateNewUserPage",
   },
-  // {
-  //   title: "SIGN UP",
-  //   caption: "Signup Page",
-  //   icon: "las la-hippo",
-  //   link: "SignupPage",
-  // },
+  {
+    title: "CREATE NEW AZOTRA PLATE",
+    caption: "New Azotea Plate",
+    icon: "las la-hippo",
+    link: "SignupPage",
+  },
 ];
 
 export default links;
