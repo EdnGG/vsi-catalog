@@ -16,7 +16,7 @@
             /> -->
           </div>
         </q-item-section>
-        <q-item-section class="container-description">
+        <q-item-section class="container-description"> 
           <q-item-label
             style="
               font-weight: bolder;

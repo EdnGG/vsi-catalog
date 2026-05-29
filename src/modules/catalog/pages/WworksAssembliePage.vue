@@ -125,7 +125,7 @@
             </div>
             <div class="assembly-info">
               <strong>MADE WITH LOVE BY:</strong>
-              <p>{{ "Azotea Cantina Team " }}.</p>
+              <p>{{ "T&T Team " }}.</p>
               <!-- <p>
                 {{ assemblie.technical_name || "EDEN G" }}.
               </p> -->
@@ -441,7 +441,9 @@ export default defineComponent({
     const { isAuthenticated } = useAuth();
     const {
       getAssemblyById,
+      getWworksAssemblieById,
       loadAssembliesVsi,
+      loadAssembliesWworks,
       updateAssemblyVsi,
       updateAssemblyVsiSteps,
       updateAssemblyMediaSteps,
@@ -602,7 +604,7 @@ export default defineComponent({
       }
     };
     const loadAssemblies = async () => {
-      await loadAssembliesVsi();
+      await loadAssembliesWworks();
       return (assemblie.value = await getAssemblyById(props.id));
     };
 
@@ -1358,4 +1360,3 @@ export default defineComponent({
 }
 /* Ends Media Query */
 </style>
-

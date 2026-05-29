@@ -1,15 +1,15 @@
 // export function someMutation (/* state */) {
 // }
 export const addAssemblyVsi = (state, assembly) => {
-    state.assemblies.push(assembly)
-}
+  state.assemblies.push(assembly);
+};
 
 export const addAssemblyWaterWorks = (state, assembly) => {
-    state.assembliesWaterWorks.push(assembly)
-}
+  state.assembliesWaterWorks.push(assembly);
+};
 
-export function toggleSideMenu ( state ) {
-    state.isSideMenuOpen = !state.isSideMenuOpen
+export function toggleSideMenu(state) {
+  state.isSideMenuOpen = !state.isSideMenuOpen;
 }
 
 // export const setCurrentAssemblies = (state, assemblies) => {
@@ -17,36 +17,38 @@ export function toggleSideMenu ( state ) {
 //     state.currentVisibleAssemblies = assemblies
 // }
 
-// export const setLastVisible = (state, lastVisible) => { 
+// export const setLastVisible = (state, lastVisible) => {
 //     console.log('setLastVisible was called from mutations')
 //     state.lastVisibleAssemblies = lastVisible
 // }
 
 export const setAssembliesVsi = (state, assemblies) => {
-    state.assemblies = assemblies  
-}
+  state.assemblies = assemblies;
+};
 
 export const setAssemblies = (state, assemblies) => {
-    state.assemblies = assemblies
-}
+  state.assemblies = assemblies;
+};
 
 export const setAssembliesWworks = (state, assemblies) => {
-    state.assembliesWaterWorks = assemblies
-}
+  state.assembliesWaterWorks = assemblies;
+};
 
 export const updateAssemblyVsi = (state, assembly) => {
-    const index = state.assemblies.findIndex((a) => a.id === assembly.id);
-    state.assemblies[index] = assembly;
-}
+  const index = state.assemblies.findIndex((a) => a.id === assembly.id);
+  state.assemblies[index] = assembly;
+};
 
-export const updateAssemblyMediaSteps = (state, {id, newSteps}) => {
-    const index = state.assemblies.findIndex((a) => a.id === id);
-    state.assemblies[index].media = newSteps;
-}
+export const updateAssemblyWworks = (state, assembly) => {
+  const index = state.assemblies.findIndex((a) => a.id === assembly.id);
+  state.assemblies[index] = assembly;
+};
+
+export const updateAssemblyMediaSteps = (state, { id, newSteps }) => {
+  const index = state.assemblies.findIndex((a) => a.id === id);
+  state.assemblies[index].media = newSteps;
+};
 
 export const setSearchResults = (state, results) => {
-    state.asemblies = results;
-}
-
-
-
+  state.asemblies = results;
+};

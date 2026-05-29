@@ -187,6 +187,7 @@ export default defineComponent({
       const data = await loadAssembliesVsi();
       getPaginationLength.value = data || [];
 
+      console.log('categories.value:', categories.value);
       categories.value = [...new Set(data.map((item) => item.category))];
 
       isLoading.value = false;

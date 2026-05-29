@@ -30,13 +30,19 @@ export const useCatalog = () => {
   };
 
   const getAssemblyById = async (id) => {
-    const assembly = await store.getters["catalogModule/getAssemblyById"](id); 
+    const assembly = await store.getters["catalogModule/getAssemblyById"](id);
     return assembly;
   };
 
   const updateAssemblyVsi = async (assembly) => {
     console.log('assembly', assembly)
     const resp = await store.dispatch("catalogModule/updateAssemblyVsi", assembly);
+    return resp;
+  }
+
+  const updateAssemblyWworks = async (assembly) => {
+    console.log('assembly', assembly)
+    const resp = await store.dispatch("catalogModule/updateAssemblyWworks", assembly);
     return resp;
   }
 
@@ -74,6 +80,7 @@ export const useCatalog = () => {
     loadAssembliesVsi,
     loadAssembliesWworks,
     updateAssemblyVsi,
+    updateAssemblyWworks,
     toogleLeftDrawer: () => store.commit("catalogModule/toggleSideMenu"),
 
     // GETTERS

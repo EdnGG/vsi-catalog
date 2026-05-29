@@ -85,6 +85,17 @@ export const updateAssemblyVsi = async ({ commit }, assembly) => {
   }
 };
 
+export const updateAssemblyWworks = async ({ commit }, assembly) => {
+  try{
+    const assemblyRef = doc(db, "waterworks", assembly.id);
+    await updateDoc(assemblyRef, assembly);
+    commit("updateAssemblyWworks", assembly);
+
+  }catch(error){
+    console.log('Error updating assembly', error.message)
+  }
+};
+
 export const setSearchResults = ({ commit }, results) => {
   commit("setSearchResults", results);
 };
@@ -95,7 +106,7 @@ export const updateAssemblyVsiSteps = async ({ commit }, payload) => {
   const assemblyRef = doc(db, "vsi", payload.id);
   await updateDoc(assemblyRef, {
     steps: payload.newSteps,
-  });  
+  });
 }
 
 export const updateAssemblyMediaSteps = async ({ commit }, payload) => {
