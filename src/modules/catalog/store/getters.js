@@ -38,15 +38,31 @@ export const getAssemblyVsiByCategory =
     );
   };
 
+export const getAssemblyWworksByCategory =
+  (state) =>
+  (assemblyWworksCategory = "") => {
+    if (assemblyWworksCategory.length === 0) {
+      return state.assembliesWaterWorks;
+    }
+    return state.assembliesWworksorksByCategory.filter((assembly) =>
+      assembly.category
+        .toLowerCase()
+        .includes(assemblyWworksCategory.toLowerCase())
+    );
+  };
+
 export const getWworksAssemblyByName =
   (state) =>
   (assemblyName = "") => {
     if (assemblyName.length === 0) {
       return state.assembliesWaterWorks;
     }
-    return state.assembliesWaterWorks.filter((assembly) =>
-      assembly.name.toLowerCase().includes(assemblyName.toLowerCase()) |
-      assembly.category.toLowerCase().includes(assemblyName.toLowerCase()) ||
+    return state.assembliesWaterWorks.filter(
+      (assembly) =>
+        assembly.name.toLowerCase().includes(assemblyName.toLowerCase()) |
+          assembly.category
+            .toLowerCase()
+            .includes(assemblyName.toLowerCase()) ||
         assembly.technical_name
           .toLowerCase()
           .includes(assemblyName.toLowerCase())
@@ -55,6 +71,10 @@ export const getWworksAssemblyByName =
 
 export const getAssemblyById = (state) => (id) => {
   return state.assemblies.find((assembly) => assembly.id === id);
+};
+
+export const getAssemblyByIdWworks = (state) => (id) => {
+  return state.assembliesWaterWorks.find((assembly) => assembly.id === id);
 };
 
 export const getWworksAssemblyById = (state) => (id) => {

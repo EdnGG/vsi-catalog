@@ -2,7 +2,7 @@
   <q-page class="q-ma-sm">
     <div class="row justify-center items-center">
       <div class="justify-center text-center items-center col-12">
-        <h2 class="text-h4 text-dark q-py-sm">Add Azotea Plate</h2>
+        <h2 class="text-h4 text-dark q-py-sm">Add T&T Plate</h2>
       </div>
     </div>
     <q-separator></q-separator>
@@ -155,14 +155,14 @@ import { useCatalog } from "../composables/useCatalog";
 import { useAuth } from "../../auth/composables/useAuth";
 
 export default defineComponent({
-  name: "NewAssembliePage",
+  name: "NewWworksAssembliePage",
   setup() {
     const router = useRouter();
     const { backToHome } = useAuth();
 
     const assemblyMedia = ref([]);
     const $q = useQuasar();
-    const { addAssemblyVsi, addAssemblyWaterWorks } = useCatalog();
+    const { addAssemblyWaterWorks } = useCatalog();
     const isAlertShown = ref(false);
 
     const addSteps = () => {
@@ -287,7 +287,7 @@ export default defineComponent({
           color: "primary",
           textColor: "white",
           icon: "info",
-          message: "Assembly added succesfully",
+          message: "T&T Plate added succesfully",
         });
         router.push({ name: "CatalogPageWworks" });
         onReset();

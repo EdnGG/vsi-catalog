@@ -40,13 +40,23 @@ export const updateAssemblyVsi = (state, assembly) => {
 };
 
 export const updateAssemblyWworks = (state, assembly) => {
-  const index = state.assemblies.findIndex((a) => a.id === assembly.id);
-  state.assemblies[index] = assembly;
+  const index = state.assembliesWaterWorks.findIndex(
+    (a) => a.id === assembly.id
+  );
+
+  if (index !== -1) {
+    state.assembliesWaterWorks[index] = assembly;
+  }
 };
 
 export const updateAssemblyMediaSteps = (state, { id, newSteps }) => {
   const index = state.assemblies.findIndex((a) => a.id === id);
   state.assemblies[index].media = newSteps;
+};
+
+export const updateAssemblyMediaStepsWworks = (state, { id, newSteps }) => {
+  const index = state.assembliesWaterWorks.findIndex((a) => a.id === id);
+  state.assembliesWaterWorks[index].media = newSteps;
 };
 
 export const setSearchResults = (state, results) => {

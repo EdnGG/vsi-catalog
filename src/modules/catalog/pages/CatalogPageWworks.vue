@@ -119,6 +119,7 @@ export default defineComponent({
     const router = useRouter();
     const {
       getAssemblyByName,
+
       loadAssembliesVsi,
       loadAssembliesWworks,
       getWworksAssemblyByName,
@@ -161,11 +162,15 @@ export default defineComponent({
 
     const filteredAssemblies = computed(() => {
       let assemblies = getWworksAssemblyByName(assemblyName.value); //getWworksAssemblyByName devuelve un array de objetos, no un solo objeto, este viene de useCatalog.js
+      // console.log("t&t plates", assemblies);
+      // console.log("t&t category selected", selectedCategory);
+      // console.log("t&t category selected.value", selectedCategory.value);
       if (selectedCategory.value) {
         assemblies = assemblies.filter(
           (item) => item.category === selectedCategory.value
         );
       }
+      // console.log('despes de filtrar por categoria en t&t', assemblies);
       return assemblies;
       // return getAssemblyByName(assemblyName.value);
     });
@@ -192,12 +197,10 @@ export default defineComponent({
       const data = await loadAssembliesWworks();
       getPaginationLength.value = data || [];
 
+      categories.value = [...new Set(data.map((item) => item.category))];
+      // console.log('on mounted t&t categories.value: ', categories.value);
+
       isLoading.value = false;
-
-      console.log(categories.value);
-
-      // Checar si puedo hace rfuncionar co  esta linea de abajo, ya que categories.value es un array vacio, y no se actualiza con los datos de loadAssembliesWworks, por lo que no se muestra nada en el select de categorias, y tampoco se pueden filtrar por categoria, revisar si el problema es que loadAssembliesWworks no esta cargando los datos correctamente, o si el problema es que categories.value no se esta actualizando correctamente con los datos de loadAssembliesWworks, revisar si el problema es que getWworksAssemblyByName no esta funcionando correctamente, ya que este es el que se encarga de filtrar los datos por nombre de placa, y si este no esta funcionando correctamente, entonces no se mostraran los datos en la lista de catalogo, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos, sino un solo objeto, lo cual causaria problemas al intentar filtrar por categoria, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos con la propiedad category, lo cual causaria problemas al intentar filtrar por categoria, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos con la propiedad category con el mismo formato que la propiedad category de los objetos devueltos por loadAssembliesWworks, lo cual causaria problemas al intentar filtrar por categoria, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos con la propiedad category con el mismo formato que la propiedad category de los objetos devueltos por loadAssembliesWworks, lo cual causaria problemas al intentar filtrar por categoria, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos con la propiedad category con el mismo formato que la propiedad category de los objetos devueltos por loadAssembliesWworks, lo cual causaria problemas al intentar filtrar por categoria, revisar si el problema es que getWworksAssemblyByName no esta devolviendo un array de objetos con la propiedad category con el mismo formato que la propiedad category de los objetos devueltos por loadAssembliesWworks, lo cual causaria problemas al intentar filtrar por categoria.
-      // categories.value = [...new Set(data.map((item) => item.category))];
     });
 
     return {
@@ -206,6 +209,7 @@ export default defineComponent({
       isLoading,
       assemblyName,
       getAssemblyByName,
+
       categoryOptions, // computed
       selectedCategory,
       showInput,

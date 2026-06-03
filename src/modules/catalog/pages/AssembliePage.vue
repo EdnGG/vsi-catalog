@@ -171,7 +171,7 @@
             </template>
 
             <q-btn v-if="isAuthenticated" @click="editAssembly">
-              <q-icon name="edit" /> EDIT ASSEMBLIE
+              <q-icon name="edit" /> EDIT AZOTEA PLATE
             </q-btn>
             <!-- PENDING... -->
             <!-- <q-btn v-if="isAuthenticated" class="q-mt-md">
@@ -186,7 +186,7 @@
       <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
         <q-card class="bg-positive text-white">
           <q-card-section>
-            <div class="text-h6">EDIT PLATE</div>
+            <div class="text-h6">EDIT AZOTEA PLATE</div>
           </q-card-section>
 
           <q-card-section class="text-white">
@@ -534,7 +534,7 @@ export default defineComponent({
             color: "primary",
             textColor: "white",
             icon: "info",
-            message: "Media uploaded Successfully",
+            message: "Media was uploaded Successfully",
           });
         }
       });
@@ -639,7 +639,8 @@ export default defineComponent({
       mediaList.value = normalizeMedia(assemblie.value.media);
       category.value = assemblie.value.category;
 
-      console.log(`UserEmail: ${actualUser.email}`);
+      //  checar porque obtengo warning prop type "expected string  "undefined", got Undefined
+      console.log(`Category: ${category.value}`);
 
       // console.log("mediaList:", mediaList.value);
     });
@@ -669,12 +670,13 @@ export default defineComponent({
           color: "primary",
           textColor: "white",
           icon: "las la-check-circle",
-          message: "Assembly updated successfully",
+          message: "Azotea Plate was updated successfully",
         });
       } catch (err) {
         console.log(err.message);
       }
     };
+    // updateSteps() no se esta usando
     const updateSteps = async () => {
       const newList = list.value.slice();
       try {

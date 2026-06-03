@@ -287,7 +287,7 @@ export default defineComponent({
           color: "primary",
           textColor: "white",
           icon: "info",
-          message: "Assembly added succesfully",
+          message: "Azotea Plate added succesfully",
         });
         router.push({ name: "CatalogPage" });
         onReset();

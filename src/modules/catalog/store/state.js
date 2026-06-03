@@ -3,10 +3,10 @@ export default function () {
     isLoading: true,
     isSideMenuOpen: true,
     assemblies: [], // Este es el que se esta usando
+    assembliesWaterWorks: [], // Este se usara para Wworks (t&t)
     assembliesVsi: [],
-    assembliesWaterWorks: [], 
     currentVisibleAssemblies: [],
     lastVisibleAssemblies: null,
     limit: 8,
-  }
+  };
 }

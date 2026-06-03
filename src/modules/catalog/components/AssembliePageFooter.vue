@@ -31,6 +31,8 @@
 <script>
 import { defineComponent, ref, defineProps, computed, onMounted } from "vue";
 import getCategoriesVsi from "src/modules/catalog/utils/categoriesVsi.js";
+// import getCategoriesWworks from "src/modules/catalog/utils/categoriesWworks.js";
+
 
 export default defineComponent({
   name: "AssembliePageFooter",
@@ -50,7 +52,7 @@ export default defineComponent({
     });
 
     const categories = computed(() => {
-      return categoriesVsi.value[props.category];
+      return categoriesVsi.value[props.category]; 
     });
     return {
       categories,

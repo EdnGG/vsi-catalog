@@ -156,11 +156,15 @@ export default defineComponent({
 
     const filteredAssemblies = computed(() => {
       let assemblies = getAssemblyByName(assemblyName.value); //getAssemblyByName devuelve un array de objetos, no un solo objeto, este viene de useCatalog.js
+      // console.log("azotea plates", assemblies);
+      // console.log("azotea category selected", selectedCategory);
+      // console.log("azotea category selected.value", selectedCategory.value);
       if (selectedCategory.value) {
         assemblies = assemblies.filter(
           (item) => item.category === selectedCategory.value
         );
       }
+      // console.log("despes de filtrar por categoria en azotea", assemblies);
       return assemblies;
       // return getAssemblyByName(assemblyName.value);
     });
@@ -187,8 +191,8 @@ export default defineComponent({
       const data = await loadAssembliesVsi();
       getPaginationLength.value = data || [];
 
-      console.log('categories.value:', categories.value);
       categories.value = [...new Set(data.map((item) => item.category))];
+      // console.log(" on mounted  azotea categories.value: ", categories.value);
 
       isLoading.value = false;
     });

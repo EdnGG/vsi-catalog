@@ -171,7 +171,7 @@
             </template>
 
             <q-btn v-if="isAuthenticated" @click="editAssembly">
-              <q-icon name="edit" /> EDIT ASSEMBLIE
+              <q-icon name="edit" /> EDIT T&T PLATE
             </q-btn>
             <!-- PENDING... -->
             <!-- <q-btn v-if="isAuthenticated" class="q-mt-md">
@@ -186,7 +186,7 @@
       <q-dialog class="q-dialog-custom" v-model="showEditDialog" persistent>
         <q-card class="bg-positive text-white">
           <q-card-section>
-            <div class="text-h6">EDIT PLATE</div>
+            <div class="text-h6">EDIT T&T PLATE</div>
           </q-card-section>
 
           <q-card-section class="text-white">
@@ -441,12 +441,14 @@ export default defineComponent({
     const { isAuthenticated } = useAuth();
     const {
       getAssemblyById,
+      getWworksAssemblyById,
       getWworksAssemblieById,
-      loadAssembliesVsi,
       loadAssembliesWworks,
       updateAssemblyVsi,
+      updateAssemblyWworks,
       updateAssemblyVsiSteps,
       updateAssemblyMediaSteps,
+      updateAssemblyMediaStepsWworks,
     } = useCatalog();
 
     const assemblie = ref(null);
@@ -484,7 +486,7 @@ export default defineComponent({
         );
         console.log("🚀 ~ deleteMediaItem ~ updatedMedia:", updatedMedia);
 
-        await updateAssemblyMediaSteps(props.id, updatedMedia);
+        await updateAssemblyMediaStepsWworks(props.id, updatedMedia);
         showEditDialog.value = false;
         mediaList.value = updatedMedia;
         $q.notify({
@@ -530,13 +532,13 @@ export default defineComponent({
             assemblie.value.technical_name;
 
           // Funcion que actualiza la DB con el nuevo media
-          await updateAssemblyVsi(editableAssembly.value);
+          await updateAssemblyWworks(editableAssembly.value);
 
           $q.notify({
             color: "primary",
             textColor: "white",
             icon: "info",
-            message: "Media uploaded Successfully",
+            message: "Media was uploaded Successfully",
           });
         }
       });
@@ -603,10 +605,16 @@ export default defineComponent({
         videoElement.play();
       }
     };
+
     const loadAssemblies = async () => {
       await loadAssembliesWworks();
-      return (assemblie.value = await getAssemblyById(props.id));
+      return (assemblie.value = await getWworksAssemblyById(props.id));
     };
+
+    // const loadAssemblies = async () => {
+    //   await loadAssembliesWworks();
+    //   return (assemblie.value = await getAssemblyById(props.id));
+    // };
 
     onMounted(async () => {
       await loadAssemblies();
@@ -641,7 +649,8 @@ export default defineComponent({
       mediaList.value = normalizeMedia(assemblie.value.media);
       category.value = assemblie.value.category;
 
-      console.log(`UserEmail: ${actualUser.email}`);
+      //  checar porque obtengo warning prop type "expected string  "undefined", got Undefined
+      console.log(`Category: ${category.value}`);
 
       // console.log("mediaList:", mediaList.value);
     });
@@ -664,19 +673,21 @@ export default defineComponent({
       try {
         // assemblie.value.steps = list.value;
         // Object.assign(assemblie.value, editableAssembly.value);
-        await updateAssemblyVsi(editableAssembly.value);
+        await updateAssemblyWworks(editableAssembly.value);
         await loadAssemblies();
         showEditDialog.value = false;
         $q.notify({
           color: "primary",
           textColor: "white",
           icon: "las la-check-circle",
-          message: "Assembly updated successfully",
+          message: "T&T  Plate was updated successfully",
         });
       } catch (err) {
         console.log(err.message);
       }
     };
+
+    // updateSteps() no se esta usando
     const updateSteps = async () => {
       const newList = list.value.slice();
       try {
@@ -704,7 +715,7 @@ export default defineComponent({
       }));
 
       try {
-        await updateAssemblyMediaSteps(props.id, newList);
+        await updateAssemblyMediaStepsWworks(props.id, newList);
         await loadAssemblies();
         $q.notify({ type: "positive", message: "Media updated successfully!" });
       } catch (error) {
@@ -754,7 +765,7 @@ export default defineComponent({
       isAuthenticated,
       // INLINE METHODS
       goBack: () => {
-        router.push({ name: "CatalogPage" });
+        router.push({ name: "CatalogPageWworks" });
       },
       addStep: () => {
         editableAssembly.value.steps.push("");
