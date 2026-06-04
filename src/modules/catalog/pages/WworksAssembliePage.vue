@@ -223,7 +223,7 @@
             <q-input
               class="q-ma-sm"
               v-model="editableAssembly.hardware"
-              label="Hardware"
+              label="Ingredients"
               filled
               type="textarea"
               @update:model-value="
@@ -265,6 +265,15 @@
                   />
                   <div>
                     <q-input
+                      :model-value="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
+                      @update:model-value="
+                        (val) => updateMediaCaption(index, val)
+                      "
+                    />
+                    <!-- <q-input
                       v-model="mediaItem.caption"
                       label="Add Description"
                       filled
@@ -272,7 +281,7 @@
                       @update:model-value="
                         (val) => (mediaItem.caption = val.toUpperCase())
                       "
-                    />
+                    /> -->
                   </div>
                   <div>
                     <q-btn
@@ -296,6 +305,15 @@
                   </video>
                   <div>
                     <q-input
+                      :model-value="mediaItem.caption"
+                      label="Add Description"
+                      filled
+                      type="text"
+                      @update:model-value="
+                        (val) => updateMediaCaption(index, val)
+                      "
+                    />
+                    <!-- <q-input
                       v-model="mediaItem.caption"
                       label="Add Description"
                       filled
@@ -303,7 +321,7 @@
                       @update:model-value="
                         (val) => (mediaItem.caption = val.toUpperCase())
                       "
-                    />
+                    /> -->
                   </div>
                   <div>
                     <q-btn
@@ -440,14 +458,10 @@ export default defineComponent({
 
     const { isAuthenticated } = useAuth();
     const {
-      getAssemblyById,
       getWworksAssemblyById,
-      getWworksAssemblieById,
       loadAssembliesWworks,
-      updateAssemblyVsi,
       updateAssemblyWworks,
       updateAssemblyVsiSteps,
-      updateAssemblyMediaSteps,
       updateAssemblyMediaStepsWworks,
     } = useCatalog();
 
@@ -463,9 +477,32 @@ export default defineComponent({
     const category = ref();
 
     const actualUser = JSON.parse(LocalStorage.getItem("user")) || null;
-    // const getUserEmail =() =>{
-    //   filter(actualUser, (user) => user.email);
-    // }
+
+    const cloneMediaForEdit = (media) => {
+      if (!Array.isArray(media)) return [];
+
+      return media
+        .map((item) => {
+          // Compatibilidad con media antigua guardada como string
+          if (typeof item === "string") {
+            return {
+              src: item,
+              caption: "",
+            };
+          }
+
+          // Media guardada como objeto { src, caption }
+          if (item && typeof item === "object") {
+            return {
+              src: typeof item.src === "string" ? item.src : "",
+              caption: typeof item.caption === "string" ? item.caption : "",
+            };
+          }
+
+          return null;
+        })
+        .filter((item) => item && item.src);
+    };
 
     const deleteVideoItem = async (mediaItem, index) => {
       console.log(`Video item: ${mediaItem}, index: ${index}`);
@@ -611,11 +648,6 @@ export default defineComponent({
       return (assemblie.value = await getWworksAssemblyById(props.id));
     };
 
-    // const loadAssemblies = async () => {
-    //   await loadAssembliesWworks();
-    //   return (assemblie.value = await getAssemblyById(props.id));
-    // };
-
     onMounted(async () => {
       await loadAssemblies();
       assemblie.value.media
@@ -655,20 +687,60 @@ export default defineComponent({
       // console.log("mediaList:", mediaList.value);
     });
 
-    const editAssembly = () => {
-      if (assemblie.value) {
-        editableAssembly.value.id = props.id;
-        editableAssembly.value.name = assemblie.value.name;
-        editableAssembly.value.category = assemblie.value.category;
-        editableAssembly.value.description = assemblie.value.description;
-        editableAssembly.value.hardware = assemblie.value.hardware;
-        editableAssembly.value.notes = assemblie.value.notes;
-        editableAssembly.value.media = [...assemblie.value.media]; // Usamos spread para copiar el array
-        editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
-        editableAssembly.value.technical_name = assemblie.value.technical_name;
-        showEditDialog.value = true;
-      }
+    // ACTUALIZAR EL CAPTION
+
+    const updateMediaCaption = (index, value) => {
+      const mediaItem = editableAssembly.value.media[index];
+
+      if (!mediaItem) return;
+
+      mediaItem.caption = String(value ?? "").toUpperCase();
     };
+
+    // NEW VERSION OF editableAssembly() que maneja ambos tipos de media (string y objeto {src, caption})
+
+    const editAssembly = () => {
+      if (!assemblie.value) return;
+
+      editableAssembly.value = {
+        id: props.id,
+        name: assemblie.value.name ?? "",
+        category: assemblie.value.category ?? "",
+        description: assemblie.value.description ?? "",
+        hardware: assemblie.value.hardware ?? "",
+        notes: assemblie.value.notes ?? "",
+
+        // Copia profunda de cada objeto de media
+        media: cloneMediaForEdit(assemblie.value.media),
+
+        // Los steps parecen ser strings, por eso el spread es suficiente
+        steps: Array.isArray(assemblie.value.steps)
+          ? [...assemblie.value.steps]
+          : [],
+
+        technical_name: assemblie.value.technical_name ?? "",
+      };
+
+      showEditDialog.value = true;
+    };
+
+    // OLD VERSION OF editableAssembly()
+
+    // const editAssembly = () => {
+    //   if (assemblie.value) {
+    //     editableAssembly.value.id = props.id;
+    //     editableAssembly.value.name = assemblie.value.name;
+    //     editableAssembly.value.category = assemblie.value.category;
+    //     editableAssembly.value.description = assemblie.value.description;
+    //     editableAssembly.value.hardware = assemblie.value.hardware;
+    //     editableAssembly.value.notes = assemblie.value.notes;
+    //     editableAssembly.value.media = [...assemblie.value.media]; // Usamos spread para copiar el array
+    //     editableAssembly.value.steps = [...assemblie.value.steps]; // Usamos spread para copiar el array
+    //     editableAssembly.value.technical_name = assemblie.value.technical_name;
+    //     showEditDialog.value = true;
+    //   }
+    // };
+
     const updateAssemblie = async () => {
       try {
         // assemblie.value.steps = list.value;
@@ -734,6 +806,7 @@ export default defineComponent({
 
     return {
       // category,
+      updateMediaCaption,
       actualUser,
       deleteVideoItem,
       deleteMediaItem,

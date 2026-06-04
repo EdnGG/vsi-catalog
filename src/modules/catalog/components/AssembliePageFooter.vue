@@ -3,18 +3,18 @@
     <div class="container">
       <div>
         <p><strong>Category</strong></p>
-        <span
-          ><a :href="categories" target="_blank"> {{ category }}</a></span
-        >
+        <span>{{ category }}</span>
       </div>
       <div class="vertical-separator"></div>
-      <div
-        class=""
-      >
+      <div class="">
         <p><strong>Website</strong></p>
         <span
           ><a :href="website" target="_blank">
-            <img :src="logo" alt="La Bonanza LLC" style="width: 150px; height: 50px" /> </a
+            <img
+              :src="logo"
+              alt="La Bonanza LLC"
+              style="width: 150px; height: 50px"
+            /> </a
         ></span>
       </div>
     </div>
@@ -33,12 +33,12 @@ import { defineComponent, ref, defineProps, computed, onMounted } from "vue";
 import getCategoriesVsi from "src/modules/catalog/utils/categoriesVsi.js";
 // import getCategoriesWworks from "src/modules/catalog/utils/categoriesWworks.js";
 
-
 export default defineComponent({
   name: "AssembliePageFooter",
   props: {
     category: {
-      type: String,
+      // type: String,
+      // default: ["vsi", "waterworks"],
       required: true,
     },
   },
@@ -52,7 +52,7 @@ export default defineComponent({
     });
 
     const categories = computed(() => {
-      return categoriesVsi.value[props.category]; 
+      return categoriesVsi.value[props.category];
     });
     return {
       categories,
