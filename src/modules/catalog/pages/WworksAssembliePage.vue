@@ -119,8 +119,8 @@
               <strong>INGREDIENTS:</strong>
               <p>{{ assemblie.hardware }}</p>
             </div>
-            <div v-if="isAuthenticated" class="assembly-info">
-              <strong>NOTES:</strong>
+            <div class="assembly-info">
+              <strong>INGREDIENTES:</strong>
               <p>{{ assemblie.notes }}</p>
             </div>
             <div class="assembly-info">
